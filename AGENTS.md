@@ -26,4 +26,4 @@ Elbow Coach: a mobile-first web app for daily tennis elbow rehab. Static files, 
 - State lives in `localStorage` under `elbow-coach-v1`. If you change its shape, migrate old data or bump the key, because users have real progress saved.
 - Colors and fonts come from the CSS tokens on `:root`. Every token needs both light and dark values.
 - Exercise content (cues, doses) is health guidance. Keep it conservative and evidence-based, and don't remove the "not medical advice" note.
-- Demos are a YouTube search link per exercise. Don't embed third-party clips without confirming they play on elbow-coach.armonge.info (the CSP/Physiotec SproutVideo clips are domain-locked).
+- Demos are a YouTube search link per exercise. Do not embed third-party clips or videos (such as Physiotec or CSP clips) due to copyright and licensing restrictions; keep using dynamic YouTube search links.

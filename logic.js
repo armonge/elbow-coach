@@ -34,7 +34,7 @@ const PHASES = [
     exercises: [
       { kind: 'Stretch', name: 'Extensor stretch, elbow straight', mode: 'hold', sets: 3, secs: 30,
         cues: ['Make a fist, palm down, arm straight', 'Bend the wrist down and toward the pinky', 'Mild pull only'] },
-      { kind: 'Strength', name: 'FlexBar Tyler twist', mode: 'tempo', sets: 3, reps: 15, tempo: [1, 4],
+      { kind: 'Strength', name: 'Tyler twist (resistance bar)', mode: 'tempo', sets: 3, reps: 15, tempo: [1, 4],
         cues: ['Hold the bar upright in the sore hand, wrist bent fully back', 'Grab the top end with the good hand, palm facing away', 'Twist the top with the good hand while the sore wrist stays bent back', 'Hold the twist and bring both arms out in front, elbows straight', 'Let the sore wrist slowly untwist over 4 seconds', 'Release and reset with the good hand'] },
       { kind: 'Tennis', name: 'Mini tennis at the service line', mode: 'time', sets: 1, mins: 10,
         cues: ['Soft feel shots, loose grip', 'Contact in front of the body', 'No backhand slices yet'] },
