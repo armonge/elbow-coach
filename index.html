@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1d4f7a">
+<title>Elbow Coach</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@600;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+/* Layout: one narrow column, hard-court blue scoreboard on top, one card per screen below. */
+:root {
+  --court: #1d4f7a;
+  --court-ink: #f4f7f2;
+  --ball: #d4e23a;
+  --bg: #eef2ee;
+  --surface: #ffffff;
+  --fg: #172430;
+  --muted: #5a6b76;
+  --line: #d3dcd8;
+  --green: #2e8b4e;
+  --amber: #d08a12;
+  --red: #c4402f;
+  --display: 'Saira Condensed', 'Arial Narrow', sans-serif;
+  --body: 'Atkinson Hyperlegible', system-ui, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --court: #163b5c; --court-ink: #eef3ec; --ball: #d4e23a;
+    --bg: #0f1820; --surface: #18242f; --fg: #e6ece9; --muted: #93a3ad; --line: #2a3a47;
+    --green: #4fb873; --amber: #e9a83a; --red: #e86a58; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --court: #163b5c; --court-ink: #eef3ec; --ball: #d4e23a;
+  --bg: #0f1820; --surface: #18242f; --fg: #e6ece9; --muted: #93a3ad; --line: #2a3a47;
+  --green: #4fb873; --amber: #e9a83a; --red: #e86a58; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--fg); font: 17px/1.5 var(--body); -webkit-tap-highlight-color: transparent; }
+main { max-width: 34rem; margin: 0 auto; padding-inline: 16px; padding-block: 16px 48px; display: grid; gap: 16px; }
+h1, h2, h3 { font-family: var(--display); font-weight: 800; line-height: 1.05; margin: 0; text-wrap: balance; letter-spacing: .01em; }
+h2 { font-size: 1.9rem; }
+h3 { font-size: 1.3rem; }
+p { margin: 0; }
+.label { font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+
+/* Scoreboard */
+.board { background: var(--court); color: var(--court-ink); padding: 16px; border-radius: 14px; display: grid; gap: 12px; }
+.board .label { color: color-mix(in srgb, var(--court-ink) 70%, transparent); }
+.board-top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.board h1 { font-size: 1.6rem; }
+.sets { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+.set { border: 2px solid color-mix(in srgb, var(--court-ink) 45%, transparent); border-radius: 6px; padding: 6px 4px; text-align: center;
+  font: 800 1.5rem/1 var(--display); font-variant-numeric: tabular-nums; }
+.set small { display: block; font: 700 .55rem/1.2 var(--body); letter-spacing: .04em; overflow-wrap: anywhere; text-transform: uppercase; opacity: .75; margin-top: 4px; }
+.set.won { background: var(--court-ink); color: var(--court); border-color: var(--court-ink); }
+.set.now { border-color: var(--ball); color: var(--ball); }
+.games { display: flex; gap: 6px; align-items: center; }
+.ball { width: 18px; height: 18px; border-radius: 50%; border: 2px solid color-mix(in srgb, var(--court-ink) 45%, transparent); }
+.ball.on { background: var(--ball); border-color: var(--ball); }
+
+/* Cards */
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 20px 16px; display: grid; gap: 14px; }
+button { font: 700 1rem var(--body); border-radius: 10px; border: 2px solid var(--line); background: var(--surface); color: var(--fg); padding: 14px 16px; cursor: pointer; min-height: 52px; }
+button:focus-visible, input:focus-visible { outline: 3px solid var(--ball); outline-offset: 2px; }
+button.primary { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+button.small { min-height: 40px; padding: 8px 12px; font-size: .9rem; }
+.row { display: flex; gap: 8px; flex-wrap: wrap; }
+.row > button { flex: 1 1 8rem; }
+
+/* Morning check */
+.stiff { display: grid; gap: 8px; }
+.stiff-value { font: 800 3.4rem/1 var(--display); font-variant-numeric: tabular-nums; }
+input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
+.scale { display: flex; justify-content: space-between; font-size: .8rem; color: var(--muted); }
+
+/* Traffic light */
+.light { display: flex; gap: 12px; align-items: center; }
+.lamp { width: 44px; height: 44px; border-radius: 50%; flex: none; }
+.lamp.green { background: var(--green); } .lamp.amber { background: var(--amber); } .lamp.red { background: var(--red); }
+.plan { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.plan li { display: grid; grid-template-columns: 5.5rem 1fr; gap: 8px; border-top: 1px solid var(--line); padding-top: 10px; }
+.plan li > * { min-width: 0; }
+.dose { color: var(--muted); font-size: .9rem; }
+
+/* Exercise card */
+.progress { display: flex; gap: 6px; }
+.progress span { flex: 1; height: 6px; border-radius: 3px; background: var(--line); }
+.progress span.done { background: var(--fg); }
+.cues { margin: 0; padding-left: 1.2rem; display: grid; gap: 4px; }
+.timer { border: 2px solid var(--line); border-radius: 12px; padding: 16px; display: grid; gap: 10px; text-align: center; }
+.timer-label { font-weight: 700; }
+.timer-clock { font: 800 4rem/1 var(--display); font-variant-numeric: tabular-nums; }
+.timer.down .timer-clock { color: var(--court); }
+:root[data-theme="dark"] .timer.down .timer-clock { color: var(--ball); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .timer.down .timer-clock { color: var(--ball); } }
+.timer.rest .timer-clock { color: var(--muted); }
+.pain { display: grid; gap: 8px; }
+.pain button { text-align: left; }
+.pain button[data-p="0"] { border-color: var(--green); }
+.pain button[data-p="1"] { border-color: var(--amber); }
+.pain button[data-p="2"] { border-color: var(--red); }
+
+/* History */
+.history { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.history li { display: grid; grid-template-columns: 14px 5rem 1fr auto; gap: 10px; align-items: center; padding: 8px 0; border-top: 1px solid var(--line); font-size: .92rem; }
+.history .dot { width: 12px; height: 12px; border-radius: 50%; }
+.dot.green { background: var(--green); } .dot.amber { background: var(--amber); } .dot.red { background: var(--red); }
+.history .when { font-variant-numeric: tabular-nums; color: var(--muted); }
+.history .res { color: var(--muted); text-align: right; }
+.empty { color: var(--muted); }
+.note { color: var(--muted); font-size: .85rem; }
+@media (prefers-reduced-motion: no-preference) { .card { animation: in .2s ease-out; } @keyframes in { from { transform: translateY(6px); opacity: .6; } } }
+</style>
+</head>
+<body>
+<main>
+  <section class="board" aria-label="Progress">
+    <div class="board-top">
+      <h1>Elbow Coach</h1>
+      <span class="label" id="phase-name"></span>
+    </div>
+    <div class="sets" id="sets"></div>
+    <div class="board-top">
+      <span class="label">Games this set</span>
+      <div class="games" id="games"></div>
+    </div>
+  </section>
+
+  <!-- Morning check -->
+  <section class="card" id="v-check" hidden>
+    <span class="label">Morning check</span>
+    <h2>How stiff is your elbow right now?</h2>
+    <div class="stiff">
+      <div class="stiff-value" id="stiff-out">2</div>
+      <input type="range" id="stiff" min="0" max="10" step="1" value="2" aria-label="Stiffness from 0 to 10">
+      <div class="scale"><span>0 · none</span><span>5 · moderate</span><span>10 · worst</span></div>
+    </div>
+    <button class="primary" id="btn-calibrate">Set today's load</button>
+  </section>
+
+  <!-- Plan -->
+  <section class="card" id="v-plan" hidden>
+    <div class="light"><div class="lamp" id="lamp"></div><div><h2 id="light-title"></h2><p id="light-text"></p></div></div>
+    <ul class="plan" id="plan"></ul>
+    <button class="primary" id="btn-start">Start session</button>
+    <button class="small" id="btn-recheck">Redo morning check</button>
+  </section>
+
+  <!-- Exercise -->
+  <section class="card" id="v-ex" hidden>
+    <div class="progress" id="ex-progress"></div>
+    <span class="label" id="ex-kind"></span>
+    <h2 id="ex-name"></h2>
+    <p class="dose" id="ex-dose"></p>
+    <ul class="cues" id="ex-cues"></ul>
+    <div class="timer" id="timer">
+      <div class="timer-label" id="t-label">Timer is optional</div>
+      <div class="timer-clock" id="t-clock">–</div>
+      <div class="row">
+        <button class="small" id="t-toggle">Start timer</button>
+        <button class="small" id="t-skip" hidden>Skip</button>
+      </div>
+    </div>
+    <div id="ex-done-wrap"><button class="primary" id="btn-done" style="width:100%">I'm done</button></div>
+    <div class="pain" id="pain" hidden>
+      <p><strong>How does the elbow feel after this?</strong></p>
+    </div>
+  </section>
+
+  <!-- Done -->
+  <section class="card" id="v-done" hidden>
+    <span class="label">Today</span>
+    <h2 id="done-title"></h2>
+    <p id="done-text"></p>
+    <p class="note">The next morning check opens tomorrow.</p>
+  </section>
+
+  <section class="card" aria-label="Match log">
+    <span class="label">Match log</span>
+    <ul class="history" id="history"></ul>
+    <div class="row"><button class="small" id="btn-reset">Reset all progress</button></div>
+    <div class="row" id="reset-confirm" hidden>
+      <button class="small" id="btn-reset-yes">Yes, delete everything</button>
+      <button class="small" id="btn-reset-no">Keep my data</button>
+    </div>
+  </section>
+
+  <p class="note">An educational self-management tool, not medical advice. If pain is sharp, at night, or getting worse over weeks, see a clinician. Data stays in this browser.</p>
+</main>
+
+<script src="logic.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const KEY = 'elbow-coach-v1';
+const today = () => new Date().toLocaleDateString('sv'); // YYYY-MM-DD local
+
+function load() {
+  try { return JSON.parse(localStorage.getItem(KEY)) || null; } catch { return null; }
+}
+function save() {
+  try { localStorage.setItem(KEY, JSON.stringify(state)); } catch {}
+}
+let state = load() || { phase: 0, games: 0, log: [], current: null };
+// A session left open on an earlier day is dropped.
+if (state.current && state.current.date !== today()) state.current = null;
+
+function show(id) {
+  for (const v of ['v-check', 'v-plan', 'v-ex', 'v-done']) $(v).hidden = v !== id;
+}
+
+function renderBoard() {
+  $('phase-name').textContent = PHASES[state.phase].name;
+  $('sets').innerHTML = PHASES.map((p, i) =>
+    `<div class="set ${i < state.phase ? 'won' : i === state.phase ? 'now' : ''}">${i + 1}<small>${p.name.split(' ')[0]}</small></div>`).join('');
+  $('games').innerHTML = Array.from({ length: GAMES_TO_WIN_SET }, (_, i) =>
+    `<span class="ball ${i < state.games ? 'on' : ''}"></span>`).join('');
+  $('games').setAttribute('aria-label', `${state.games} of ${GAMES_TO_WIN_SET} games`);
+}
+
+function renderHistory() {
+  const rows = state.log.slice(-14).reverse();
+  $('history').innerHTML = rows.length ? rows.map(e => {
+    const worst = Math.max(...e.results);
+    const res = e.setWon ? 'Set won' : worst === 2 ? 'Flare-up, game lost' : e.light === 'green' && worst === 0 ? 'Game won' : 'Held steady';
+    return `<li><span class="dot ${e.light}"></span><span class="when">${e.date.slice(5)}</span><span>Stiffness ${e.stiffness} · ${PHASES[e.phase].name}</span><span class="res">${res}</span></li>`;
+  }).join('') : '<li class="empty" style="display:block">No sessions yet. Your first morning check starts the match.</li>';
+}
+
+const LIGHTS = {
+  green: ['Green: full session', 'Your elbow is ready for the full dose.'],
+  amber: ['Amber: hold steady', 'One set less today. It keeps your progress but earns no game.'],
+  red: ['Red: rest day', 'Only a gentle stretch today. Ice or rest if needed.'],
+};
+
+function renderPlan() {
+  const c = state.current;
+  $('lamp').className = 'lamp ' + c.light;
+  [$('light-title').textContent, $('light-text').textContent] = LIGHTS[c.light];
+  $('plan').innerHTML = c.plan.map(e => `<li><span class="label">${e.kind}</span><div><strong>${e.name}</strong><div class="dose">${dose(e)}</div></div></li>`).join('');
+  $('btn-start').textContent = c.idx > 0 ? `Resume (exercise ${c.idx + 1} of ${c.plan.length})` : 'Start session';
+  show('v-plan');
+}
+
+function renderExercise() {
+  const c = state.current, ex = c.plan[c.idx];
+  stopTimer();
+  seq = []; si = 0; // fresh timer for each exercise
+  $('ex-progress').innerHTML = c.plan.map((_, i) => `<span class="${i < c.idx ? 'done' : ''}"></span>`).join('');
+  $('ex-kind').textContent = `${ex.kind} · ${c.idx + 1} of ${c.plan.length}`;
+  $('ex-name').textContent = ex.name;
+  $('ex-dose').textContent = dose(ex);
+  $('ex-cues').innerHTML = ex.cues.map(t => `<li>${t}</li>`).join('');
+  $('t-label').textContent = 'Timer is optional';
+  $('t-clock').textContent = '–';
+  $('timer').className = 'timer';
+  $('t-toggle').textContent = 'Start timer';
+  $('t-skip').hidden = true;
+  $('ex-done-wrap').hidden = false;
+  $('pain').hidden = true;
+  show('v-ex');
+}
+
+function renderDone() {
+  const e = state.log[state.log.length - 1];
+  const worst = Math.max(...e.results);
+  $('done-title').textContent = e.setWon ? `Set won! On to ${PHASES[state.phase].name}.`
+    : worst === 2 ? 'Flare-up logged. Game lost.'
+    : e.light === 'green' && worst === 0 ? 'Game won.' : 'Held steady.';
+  $('done-text').textContent = e.setWon ? PHASES[state.phase].goal
+    : worst === 2 ? 'Tomorrow is capped at amber. Back off the load and let it settle.'
+    : e.light === 'green' && worst === 0 ? `${state.games} of ${GAMES_TO_WIN_SET} games in this set.`
+    : 'No game today, no progress lost.';
+  show('v-done');
+}
+
+function render() {
+  renderBoard();
+  renderHistory();
+  const last = state.log[state.log.length - 1];
+  if (state.current) state.current.started ? renderExercise() : renderPlan();
+  else if (last && last.date === today()) renderDone();
+  else show('v-check');
+}
+
+// Morning check
+$('stiff').addEventListener('input', e => $('stiff-out').textContent = e.target.value);
+$('btn-calibrate').onclick = () => {
+  const stiffness = +$('stiff').value;
+  const light = trafficLight(stiffness, state.log[state.log.length - 1]);
+  state.current = { date: today(), stiffness, light, phase: state.phase, plan: todaysPlan(state.phase, light), idx: 0, results: [], started: false };
+  save(); render();
+};
+$('btn-recheck').onclick = () => { state.current = null; save(); render(); };
+$('btn-start').onclick = () => { state.current.started = true; save(); render(); };
+
+// Exercise flow
+$('btn-done').onclick = () => { stopTimer(); $('ex-done-wrap').hidden = true; $('pain').hidden = false; $('pain').querySelector('button').focus(); };
+PAIN.forEach((label, p) => {
+  const b = document.createElement('button');
+  b.dataset.p = p;
+  b.textContent = label;
+  b.onclick = () => {
+    const c = state.current;
+    c.results.push(p);
+    c.idx++;
+    if (c.idx >= c.plan.length) {
+      const { plan, idx, started, ...entry } = c;
+      state.current = null;
+      state = finishSession(state, entry);
+    }
+    save(); render();
+  };
+  $('pain').appendChild(b);
+});
+
+// Timer with audio cues: a tick every second, a high beep when the step changes.
+let audio, timer = null, seq = [], si = 0, left = 0, wakeLock = null;
+function beep(freq, ms) {
+  try {
+    audio = audio || new AudioContext();
+    const o = audio.createOscillator(), g = audio.createGain();
+    o.frequency.value = freq; g.gain.value = 0.15;
+    o.connect(g).connect(audio.destination);
+    o.start(); o.stop(audio.currentTime + ms / 1000);
+  } catch {}
+}
+function showStep() {
+  const s = seq[si];
+  $('t-label').textContent = s.label;
+  $('t-clock').textContent = s.secs >= 60 ? `${Math.floor(left / 60)}:${String(left % 60).padStart(2, '0')}` : left;
+  $('timer').className = 'timer' + (s.rest ? ' rest' : / Down$/.test(s.label) ? ' down' : '');
+}
+function nextStep() {
+  si++;
+  if (si >= seq.length) { stopTimer(); beep(660, 500); $('t-label').textContent = 'Finished. Tap "I\'m done".'; $('t-clock').textContent = '✓'; return; }
+  left = seq[si].secs; beep(seq[si].rest ? 440 : 990, 180); showStep();
+}
+function tick() {
+  left--;
+  if (left <= 0) return nextStep();
+  if (seq[si].secs <= 10 || left <= 3) beep(seq[si].rest ? 330 : 520, 40); // metronome on tempo reps, countdown otherwise
+  showStep();
+}
+async function startTimer() {
+  if (!seq.length || si >= seq.length) { seq = steps(state.current.plan[state.current.idx]); si = 0; left = seq[0].secs; beep(990, 180); }
+  showStep();
+  timer = setInterval(tick, 1000);
+  $('t-toggle').textContent = 'Pause';
+  $('t-skip').hidden = false;
+  try { wakeLock = await navigator.wakeLock.request('screen'); } catch {}
+}
+function stopTimer() {
+  clearInterval(timer); timer = null;
+  $('t-toggle').textContent = seq.length && si < seq.length ? 'Resume' : 'Start timer';
+  try { wakeLock && wakeLock.release(); } catch {}
+  wakeLock = null;
+}
+$('t-toggle').onclick = () => timer ? stopTimer() : startTimer();
+$('t-skip').onclick = () => nextStep();
+
+// Reset
+$('btn-reset').onclick = () => { $('reset-confirm').hidden = false; };
+$('btn-reset-no').onclick = () => { $('reset-confirm').hidden = true; };
+$('btn-reset-yes').onclick = () => { state = { phase: 0, games: 0, log: [], current: null }; save(); $('reset-confirm').hidden = true; render(); };
+
+render();
+</script>
+</body>
+</html>
