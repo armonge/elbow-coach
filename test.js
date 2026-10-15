@@ -1,6 +1,6 @@
 // Run: node test.js
 const assert = require('assert');
-const { trafficLight, todaysPlan, finishSession, steps, GAMES_TO_WIN_SET } = require('./logic.js');
+const { PHASES, trafficLight, todaysPlan, finishSession, steps, GAMES_TO_WIN_SET } = require('./logic.js');
 
 assert.equal(trafficLight(1), 'green');
 assert.equal(trafficLight(4), 'amber');
@@ -20,4 +20,6 @@ s = finishSession(s, { light: 'green', results: [0, 2, 0] });
 assert.equal(s.games, 0, 'flare loses a game');
 
 assert.equal(steps({ mode: 'tempo', sets: 2, reps: 3, tempo: [1, 4] }).length, 2 * 3 * 2 + 1);
+// Red days and the #stretch break both use the first exercise, so it must be the stretch.
+for (const p of PHASES) assert.equal(p.exercises[0].kind, 'Stretch');
 console.log('ok');

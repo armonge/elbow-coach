@@ -8,11 +8,41 @@ DTSTART:20261016T080000
 DURATION:PT15M
 RRULE:FREQ=DAILY
 SUMMARY:Elbow rehab
-DESCRIPTION:Morning check and session: https://elbow-coach.armonge.info
-URL:https://elbow-coach.armonge.info
+DESCRIPTION:Morning check and session: https://elbow-coach.armonge.info/
+URL:https://elbow-coach.armonge.info/
 BEGIN:VALARM
 ACTION:DISPLAY
 DESCRIPTION:Elbow rehab
+TRIGGER:PT0M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:stretch-1300@elbow-coach.armonge.info
+DTSTAMP:20261015T000000Z
+DTSTART:20261016T130000
+DURATION:PT15M
+RRULE:FREQ=DAILY
+SUMMARY:Elbow stretch break
+DESCRIPTION:Stretch break: https://elbow-coach.armonge.info/#stretch
+URL:https://elbow-coach.armonge.info/#stretch
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Elbow stretch break
+TRIGGER:PT0M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:stretch-1800@elbow-coach.armonge.info
+DTSTAMP:20261015T000000Z
+DTSTART:20261016T180000
+DURATION:PT15M
+RRULE:FREQ=DAILY
+SUMMARY:Elbow stretch break
+DESCRIPTION:Stretch break: https://elbow-coach.armonge.info/#stretch
+URL:https://elbow-coach.armonge.info/#stretch
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Elbow stretch break
 TRIGGER:PT0M
 END:VALARM
 END:VEVENT

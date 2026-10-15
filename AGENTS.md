@@ -17,6 +17,7 @@ Elbow Coach: a mobile-first web app for daily tennis elbow rehab. Static files, 
 
 - Morning stiffness 0–2 = green (full dose), 3–5 = amber (one set less), 6+ = red (stretch only). A "much worse" result yesterday caps today at amber.
 - A green session with every result "same or better" wins a game. Any "much worse" loses one. 6 games (`GAMES_TO_WIN_SET`) win a set, which moves you to the next phase.
+- `/#stretch` opens the current phase's stretch as a break outside the session. It doesn't count towards games. `reminder.ics` schedules it at 13:00 and 18:00, plus the session at 8:00.
 - When you change a rule, update `test.js` and this section.
 
 ## Conventions

@@ -188,7 +188,7 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
   <section class="card" aria-label="Match log">
     <span class="label">Match log</span>
     <ul class="history" id="history"></ul>
-    <div class="row"><a class="more" href="reminder.ics" download>Add daily 8:00 reminder to calendar</a></div>
+    <div class="row"><a class="more" href="reminder.ics" download>Add daily reminders to calendar (8:00 session, 13:00 and 18:00 stretch)</a></div>
     <div class="row"><button class="small" id="btn-reset">Reset all progress</button></div>
     <div class="row" id="reset-confirm" hidden>
       <button class="small" id="btn-reset-yes">Yes, delete everything</button>
@@ -252,12 +252,12 @@ function renderPlan() {
   show('v-plan');
 }
 
-function renderExercise() {
-  const c = state.current, ex = c.plan[c.idx];
+function renderExercise(plan, idx) {
+  const ex = plan[idx];
   stopTimer();
   seq = []; si = 0; // fresh timer for each exercise
-  $('ex-progress').innerHTML = c.plan.map((_, i) => `<span class="${i < c.idx ? 'done' : ''}"></span>`).join('');
-  $('ex-kind').textContent = `${ex.kind} · ${c.idx + 1} of ${c.plan.length}`;
+  $('ex-progress').innerHTML = plan.map((_, i) => `<span class="${i < idx ? 'done' : ''}"></span>`).join('');
+  $('ex-kind').textContent = `${ex.kind} · ${idx + 1} of ${plan.length}`;
   $('ex-name').textContent = ex.name;
   $('ex-dose').textContent = dose(ex);
   $('ex-cues').innerHTML = ex.cues.map(t => `<li>${t}</li>`).join('');
@@ -285,11 +285,16 @@ function renderDone() {
   show('v-done');
 }
 
+// /#stretch (from the 13:00 and 18:00 calendar reminders) opens the phase's stretch on its own.
+// It is outside the daily session, so it does not count towards games.
+const stretchBreak = () => location.hash === '#stretch';
+
 function render() {
   renderBoard();
   renderHistory();
+  if (stretchBreak()) return renderExercise([PHASES[state.phase].exercises[0]], 0);
   const last = state.log[state.log.length - 1];
-  if (state.current) state.current.started ? renderExercise() : renderPlan();
+  if (state.current) state.current.started ? renderExercise(state.current.plan, state.current.idx) : renderPlan();
   else if (last && last.date === today()) renderDone();
   else show('v-check');
 }
@@ -306,7 +311,11 @@ $('btn-recheck').onclick = () => { state.current = null; save(); render(); };
 $('btn-start').onclick = () => { state.current.started = true; save(); render(); };
 
 // Exercise flow
-$('btn-done').onclick = () => { stopTimer(); $('ex-done-wrap').hidden = true; $('pain').hidden = false; $('pain').querySelector('button').focus(); };
+$('btn-done').onclick = () => {
+  stopTimer();
+  if (stretchBreak()) { history.replaceState(null, '', location.pathname); return render(); }
+  $('ex-done-wrap').hidden = true; $('pain').hidden = false; $('pain').querySelector('button').focus();
+};
 PAIN.forEach((label, p) => {
   const b = document.createElement('button');
   b.dataset.p = p;
@@ -375,6 +384,7 @@ $('btn-reset').onclick = () => { $('reset-confirm').hidden = false; };
 $('btn-reset-no').onclick = () => { $('reset-confirm').hidden = true; };
 $('btn-reset-yes').onclick = () => { state = { phase: 0, games: 0, log: [], current: null }; save(); $('reset-confirm').hidden = true; render(); };
 
+window.addEventListener('hashchange', render);
 render();
 </script>
 </body>
