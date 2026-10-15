@@ -106,10 +106,6 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
 .pain button[data-p="2"] { border-color: var(--red); }
 
 /* Demo */
-.demo { margin: 0; display: grid; gap: 6px; }
-.demo-frame { aspect-ratio: 16 / 9; max-width: 100%; border-radius: 10px; overflow: hidden; background: var(--line); }
-.demo iframe { width: 100%; height: 100%; border: 0; display: block; }
-.demo figcaption { font-size: .8rem; color: var(--muted); }
 .more { color: var(--fg); font-weight: 700; font-size: .9rem; }
 
 /* History */
@@ -164,13 +160,9 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
     <span class="label" id="ex-kind"></span>
     <h2 id="ex-name"></h2>
     <p class="dose" id="ex-dose"></p>
-    <figure class="demo" id="ex-demo" hidden>
-      <div class="demo-frame"><iframe id="ex-video" title="Exercise demo" loading="lazy" allow="autoplay; fullscreen" allowfullscreen></iframe></div>
-      <figcaption id="ex-video-note"></figcaption>
-    </figure>
     <span class="label">How to do it</span>
     <ol class="cues" id="ex-cues"></ol>
-    <a class="more" id="ex-more" target="_blank" rel="noopener">Find more demo videos on YouTube ↗</a>
+    <a class="more" id="ex-more" target="_blank" rel="noopener">Find demo videos on YouTube ↗</a>
     <div class="timer" id="timer">
       <div class="timer-label" id="t-label">Timer is optional</div>
       <div class="timer-clock" id="t-clock">–</div>
@@ -269,10 +261,6 @@ function renderExercise() {
   $('ex-name').textContent = ex.name;
   $('ex-dose').textContent = dose(ex);
   $('ex-cues').innerHTML = ex.cues.map(t => `<li>${t}</li>`).join('');
-  $('ex-demo').hidden = !ex.video;
-  const src = ex.video ? ex.video + '?transparent=1&playsInline=true&showControls=true&autoPlay=true&loop=true' : '';
-  if ($('ex-video').getAttribute('src') !== src) $('ex-video').setAttribute('src', src);
-  $('ex-video-note').textContent = ex.videoNote || 'Demo clip: Physiotec via the Chartered Society of Physiotherapy.';
   $('ex-more').href = 'https://www.youtube.com/results?search_query=' + encodeURIComponent(ex.name.replace(/\(.*\)/, '') + ' tennis elbow exercise');
   $('t-label').textContent = 'Timer is optional';
   $('t-clock').textContent = '–';

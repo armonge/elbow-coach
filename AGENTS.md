@@ -4,14 +4,14 @@ Elbow Coach: a mobile-first web app for daily tennis elbow rehab. Static files, 
 
 ## Files
 
-- `logic.js`: phases, exercises, demo clips (`CLIP`), and the rules (`trafficLight`, `todaysPlan`, `finishSession`, `steps`, `dose`). No DOM. Loaded as a classic `<script>` in the browser and via `require` in Node.
+- `logic.js`: phases, exercises, and the rules (`trafficLight`, `todaysPlan`, `finishSession`, `steps`, `dose`). No DOM. Loaded as a classic `<script>` in the browser and via `require` in Node.
 - `index.html`: all UI, CSS and app code. Screens are `<section>`s toggled with `hidden` (`show(id)`), and `render()` redraws from `state`.
 - `test.js`: assert-based checks for `logic.js`.
 
 ## Commands
 
 - Test: `node test.js` (prints `ok`).
-- Run: `python3 -m http.server`, then open `http://localhost:8000`. Demo clips don't play from `file://`.
+- Run: `python3 -m http.server`, then open `http://localhost:8000`.
 
 ## Rules of the app
 
@@ -25,4 +25,4 @@ Elbow Coach: a mobile-first web app for daily tennis elbow rehab. Static files, 
 - State lives in `localStorage` under `elbow-coach-v1`. If you change its shape, migrate old data or bump the key, because users have real progress saved.
 - Colors and fonts come from the CSS tokens on `:root`. Every token needs both light and dark values.
 - Exercise content (cues, doses) is health guidance. Keep it conservative and evidence-based, and don't remove the "not medical advice" note.
-- Demo videos are embeds of CSP/Physiotec clips (`videos.sproutvideo.com`). Only add clips you've confirmed are embeddable and show the right movement. Every exercise also gets a YouTube search link as a fallback.
+- Demos are a YouTube search link per exercise. Don't embed third-party clips without confirming they play on elbow-coach.armonge.info (the CSP/Physiotec SproutVideo clips are domain-locked).

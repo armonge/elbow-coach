@@ -2,22 +2,15 @@
 
 const GAMES_TO_WIN_SET = 6;
 
-// Short looping demo clips by Physiotec, from the Chartered Society of Physiotherapy (csp.org.uk elbow exercises).
-const CLIP = {
-  stretch: 'https://videos.sproutvideo.com/embed/489adfbb111de1c5c0/dfac378aa9937112',
-  extension: 'https://videos.sproutvideo.com/embed/e89adcb11c1feec460/dee3779a93011c84',
-  rotation: 'https://videos.sproutvideo.com/embed/e89adfb51b12eacd60/9fe5c46d91073e20',
-};
-
 // mode: 'hold' = isometric seconds, 'tempo' = reps at [up, down] seconds, 'time' = minutes of play
 const PHASES = [
   {
     name: 'Acute Phase',
     goal: 'Calm the tendon. Isometrics reduce pain without stressing it.',
     exercises: [
-      { kind: 'Stretch', name: 'Wrist extensor stretch', video: CLIP.stretch, mode: 'hold', sets: 3, secs: 30,
+      { kind: 'Stretch', name: 'Wrist extensor stretch', mode: 'hold', sets: 3, secs: 30,
         cues: ['Arm straight, palm down', 'Gently bend the wrist down with the other hand', 'Mild pull only, never sharp pain'] },
-      { kind: 'Strength', name: 'Isometric wrist extension', video: CLIP.extension, videoNote: 'Same start position, but the wrist does not move.', mode: 'hold', sets: 5, secs: 45,
+      { kind: 'Strength', name: 'Isometric wrist extension', mode: 'hold', sets: 5, secs: 45,
         cues: ['Forearm on a table, palm down, wrist off the edge', 'Push the back of the hand up into your other hand', 'About 50–70% effort, no movement', 'Pain up to 3/10 is OK'] },
       { kind: 'Tennis', name: 'Shadow strokes, no racquet', mode: 'time', sets: 1, mins: 3,
         cues: ['Slow forehand and backhand swings', 'Relaxed grip hand, lead with the shoulder', 'Stop if the elbow complains'] },
@@ -27,11 +20,11 @@ const PHASES = [
     name: 'Early Rehab',
     goal: 'Start loading the tendon with slow eccentrics.',
     exercises: [
-      { kind: 'Stretch', name: 'Wrist extensor stretch', video: CLIP.stretch, mode: 'hold', sets: 3, secs: 30,
+      { kind: 'Stretch', name: 'Wrist extensor stretch', mode: 'hold', sets: 3, secs: 30,
         cues: ['Arm straight, palm down', 'Gently bend the wrist down', 'Mild pull only'] },
-      { kind: 'Strength', name: 'Eccentric wrist extension (1–2 kg)', video: CLIP.extension, videoNote: 'Lift with the other hand, lower slowly with the sore one.', mode: 'tempo', sets: 3, reps: 15, tempo: [1, 4],
+      { kind: 'Strength', name: 'Eccentric wrist extension (1–2 kg)', mode: 'tempo', sets: 3, reps: 15, tempo: [1, 4],
         cues: ['Forearm supported, palm down', 'Use the other hand to lift the weight up', 'Lower slowly over 4 seconds', 'Pain up to 3/10 is OK'] },
-      { kind: 'Tennis', name: 'Racquet rotations', video: CLIP.rotation, videoNote: 'Same movement with a racquet held at the throat.', mode: 'tempo', sets: 2, reps: 15, tempo: [2, 2],
+      { kind: 'Tennis', name: 'Racquet rotations', mode: 'tempo', sets: 2, reps: 15, tempo: [2, 2],
         cues: ['Hold the racquet at the throat', 'Rotate palm up, then palm down', 'Slow and controlled'] },
     ],
   },
@@ -39,7 +32,7 @@ const PHASES = [
     name: 'Conditioning',
     goal: 'Add the Tyler twist and short hitting.',
     exercises: [
-      { kind: 'Stretch', name: 'Extensor stretch, elbow straight', video: CLIP.stretch, mode: 'hold', sets: 3, secs: 30,
+      { kind: 'Stretch', name: 'Extensor stretch, elbow straight', mode: 'hold', sets: 3, secs: 30,
         cues: ['Make a fist, palm down, arm straight', 'Bend the wrist down and toward the pinky', 'Mild pull only'] },
       { kind: 'Strength', name: 'FlexBar Tyler twist', mode: 'tempo', sets: 3, reps: 15, tempo: [1, 4],
         cues: ['Hold the bar upright in the sore hand, wrist bent fully back', 'Grab the top end with the good hand, palm facing away', 'Twist the top with the good hand while the sore wrist stays bent back', 'Hold the twist and bring both arms out in front, elbows straight', 'Let the sore wrist slowly untwist over 4 seconds', 'Release and reset with the good hand'] },
@@ -51,9 +44,9 @@ const PHASES = [
     name: 'Strength',
     goal: 'Heavy slow resistance builds tendon capacity.',
     exercises: [
-      { kind: 'Stretch', name: 'Extensor stretch, elbow straight', video: CLIP.stretch, mode: 'hold', sets: 3, secs: 30,
+      { kind: 'Stretch', name: 'Extensor stretch, elbow straight', mode: 'hold', sets: 3, secs: 30,
         cues: ['Fist, palm down, arm straight', 'Bend the wrist down', 'Mild pull only'] },
-      { kind: 'Strength', name: 'Heavy slow wrist extension', video: CLIP.extension, mode: 'tempo', sets: 3, reps: 8, tempo: [3, 3],
+      { kind: 'Strength', name: 'Heavy slow wrist extension', mode: 'tempo', sets: 3, reps: 8, tempo: [3, 3],
         cues: ['Pick a weight where 8 reps is hard', '3 seconds up, 3 seconds down', 'Raise the weight when 8 feels easy'] },
       { kind: 'Tennis', name: 'Baseline rally at 70%', mode: 'time', sets: 1, mins: 20,
         cues: ['Groundstrokes only', 'Check grip pressure every few balls', 'Stop at the first sharp pain'] },
@@ -63,9 +56,9 @@ const PHASES = [
     name: 'Sport-Proofing',
     goal: 'Return to full play and keep the tendon strong.',
     exercises: [
-      { kind: 'Stretch', name: 'Extensor stretch, elbow straight', video: CLIP.stretch, mode: 'hold', sets: 2, secs: 30,
+      { kind: 'Stretch', name: 'Extensor stretch, elbow straight', mode: 'hold', sets: 2, secs: 30,
         cues: ['Fist, palm down, arm straight', 'Bend the wrist down', 'Mild pull only'] },
-      { kind: 'Strength', name: 'Hammer pronation / supination', video: CLIP.rotation, mode: 'tempo', sets: 3, reps: 10, tempo: [3, 3],
+      { kind: 'Strength', name: 'Hammer pronation / supination', mode: 'tempo', sets: 3, reps: 10, tempo: [3, 3],
         cues: ['Hold a hammer by the handle, elbow at 90°', 'Rotate palm up, then palm down', 'Choke up to make it easier'] },
       { kind: 'Tennis', name: 'Serves and full practice', mode: 'time', sets: 1, mins: 30,
         cues: ['Warm up with 5 minutes of mini tennis', 'Serves at 80%, then full points', 'Keep doing strength work 2–3 times a week'] },
@@ -131,4 +124,4 @@ function dose(ex) {
   return `${ex.sets} × ${ex.reps} · tempo ${ex.tempo[0]} s up / ${ex.tempo[1]} s down`;
 }
 
-if (typeof module !== 'undefined') module.exports = { CLIP, PHASES, PAIN, GAMES_TO_WIN_SET, trafficLight, todaysPlan, finishSession, steps, dose };
+if (typeof module !== 'undefined') module.exports = { PHASES, PAIN, GAMES_TO_WIN_SET, trafficLight, todaysPlan, finishSession, steps, dose };
