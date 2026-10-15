@@ -253,7 +253,7 @@ function renderPlan() {
 }
 
 function renderExercise(plan, idx) {
-  const ex = plan[idx];
+  const ex = curEx = plan[idx];
   stopTimer();
   seq = []; si = 0; // fresh timer for each exercise
   $('ex-progress').innerHTML = plan.map((_, i) => `<span class="${i < idx ? 'done' : ''}"></span>`).join('');
@@ -335,7 +335,7 @@ PAIN.forEach((label, p) => {
 });
 
 // Timer with audio cues: a tick every second, a high beep when the step changes.
-let audio, timer = null, seq = [], si = 0, left = 0, wakeLock = null;
+let audio, timer = null, seq = [], si = 0, left = 0, wakeLock = null, curEx = null;
 function beep(freq, ms) {
   try {
     audio = audio || new AudioContext();
@@ -363,13 +363,19 @@ function tick() {
   showStep();
 }
 async function startTimer() {
-  if (!seq.length || si >= seq.length) { seq = steps(state.current.plan[state.current.idx]); si = 0; left = seq[0].secs; beep(990, 180); }
+  if (!seq.length || si >= seq.length) { seq = steps(curEx); si = 0; left = seq[0].secs; beep(990, 180); }
   showStep();
   timer = setInterval(tick, 1000);
   $('t-toggle').textContent = 'Pause';
   $('t-skip').hidden = false;
-  try { wakeLock = await navigator.wakeLock.request('screen'); } catch {}
+  await keepAwake();
 }
+// Keep the screen on while the timer runs. The browser drops the lock when the tab is hidden, so take it again on return.
+async function keepAwake() {
+  try { wakeLock = await navigator.wakeLock.request('screen'); } catch {}
+  if (!timer) stopTimer(); // paused while the request was pending
+}
+document.addEventListener('visibilitychange', () => { if (timer && document.visibilityState === 'visible') keepAwake(); });
 function stopTimer() {
   clearInterval(timer); timer = null;
   $('t-toggle').textContent = seq.length && si < seq.length ? 'Resume' : 'Start timer';
