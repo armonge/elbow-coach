@@ -56,7 +56,7 @@ p { margin: 0; }
 .sets { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
 .set { border: 2px solid color-mix(in srgb, var(--court-ink) 45%, transparent); border-radius: 6px; padding: 6px 4px; text-align: center;
   font: 800 1.5rem/1 var(--display); font-variant-numeric: tabular-nums; }
-.set small { display: block; font: 700 .55rem/1.2 var(--body); letter-spacing: .04em; overflow-wrap: anywhere; text-transform: uppercase; opacity: .75; margin-top: 4px; }
+.set small { display: block; font: 700 .55rem/1.2 var(--body); letter-spacing: .04em; text-transform: uppercase; opacity: .75; margin-top: 4px; }
 .set.won { background: var(--court-ink); color: var(--court); border-color: var(--court-ink); }
 .set.now { border-color: var(--ball); color: var(--ball); }
 .games { display: flex; gap: 6px; align-items: center; }
@@ -104,6 +104,13 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
 .pain button[data-p="0"] { border-color: var(--green); }
 .pain button[data-p="1"] { border-color: var(--amber); }
 .pain button[data-p="2"] { border-color: var(--red); }
+
+/* Demo */
+.demo { margin: 0; display: grid; gap: 6px; }
+.demo-frame { aspect-ratio: 16 / 9; max-width: 100%; border-radius: 10px; overflow: hidden; background: var(--line); }
+.demo iframe { width: 100%; height: 100%; border: 0; display: block; }
+.demo figcaption { font-size: .8rem; color: var(--muted); }
+.more { color: var(--fg); font-weight: 700; font-size: .9rem; }
 
 /* History */
 .history { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
@@ -157,7 +164,13 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
     <span class="label" id="ex-kind"></span>
     <h2 id="ex-name"></h2>
     <p class="dose" id="ex-dose"></p>
-    <ul class="cues" id="ex-cues"></ul>
+    <figure class="demo" id="ex-demo" hidden>
+      <div class="demo-frame"><iframe id="ex-video" title="Exercise demo" loading="lazy" allow="autoplay; fullscreen" allowfullscreen></iframe></div>
+      <figcaption id="ex-video-note"></figcaption>
+    </figure>
+    <span class="label">How to do it</span>
+    <ol class="cues" id="ex-cues"></ol>
+    <a class="more" id="ex-more" target="_blank" rel="noopener">Find more demo videos on YouTube ↗</a>
     <div class="timer" id="timer">
       <div class="timer-label" id="t-label">Timer is optional</div>
       <div class="timer-clock" id="t-clock">–</div>
@@ -216,7 +229,7 @@ function show(id) {
 function renderBoard() {
   $('phase-name').textContent = PHASES[state.phase].name;
   $('sets').innerHTML = PHASES.map((p, i) =>
-    `<div class="set ${i < state.phase ? 'won' : i === state.phase ? 'now' : ''}">${i + 1}<small>${p.name.split(' ')[0]}</small></div>`).join('');
+    `<div class="set ${i < state.phase ? 'won' : i === state.phase ? 'now' : ''}">${i + 1}<small>${['Acute', 'Early', 'Build', 'Strength', 'Sport'][i]}</small></div>`).join('');
   $('games').innerHTML = Array.from({ length: GAMES_TO_WIN_SET }, (_, i) =>
     `<span class="ball ${i < state.games ? 'on' : ''}"></span>`).join('');
   $('games').setAttribute('aria-label', `${state.games} of ${GAMES_TO_WIN_SET} games`);
@@ -255,6 +268,11 @@ function renderExercise() {
   $('ex-name').textContent = ex.name;
   $('ex-dose').textContent = dose(ex);
   $('ex-cues').innerHTML = ex.cues.map(t => `<li>${t}</li>`).join('');
+  $('ex-demo').hidden = !ex.video;
+  const src = ex.video ? ex.video + '?transparent=1&playsInline=true&showControls=true&autoPlay=true&loop=true' : '';
+  if ($('ex-video').getAttribute('src') !== src) $('ex-video').setAttribute('src', src);
+  $('ex-video-note').textContent = ex.videoNote || 'Demo clip: Physiotec via the Chartered Society of Physiotherapy.';
+  $('ex-more').href = 'https://www.youtube.com/results?search_query=' + encodeURIComponent(ex.name.replace(/\(.*\)/, '') + ' tennis elbow exercise');
   $('t-label').textContent = 'Timer is optional';
   $('t-clock').textContent = '–';
   $('timer').className = 'timer';
