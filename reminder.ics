@@ -1,0 +1,19 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Elbow Coach//EN
+BEGIN:VEVENT
+UID:daily-reminder@elbow-coach.armonge.info
+DTSTAMP:20261015T000000Z
+DTSTART:20261016T080000
+DURATION:PT15M
+RRULE:FREQ=DAILY
+SUMMARY:Elbow rehab
+DESCRIPTION:Morning check and session: https://elbow-coach.armonge.info
+URL:https://elbow-coach.armonge.info
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Elbow rehab
+TRIGGER:PT0M
+END:VALARM
+END:VEVENT
+END:VCALENDAR
