@@ -10,7 +10,8 @@ Elbow Coach: a mobile-first web app for daily elbow pain (lateral epicondylitis)
 
 ## Commands
 
-- Test: `node test.js` (prints `ok`).
+- Test: `node test.js` (prints `ok`) Also checks that the inline script in `index.html` parses.
+- Hooks: `prek install` once per clone; `.pre-commit-config.yaml` runs hygiene checks, Biome (`biome.json`: lint, plus formatting for `.js` only) and `node test.js` on commit.
 - Run: `python3 -m http.server`, then open `http://localhost:8000`.
 
 ## Rules of the app

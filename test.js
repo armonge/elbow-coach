@@ -1,5 +1,6 @@
 // Run: node test.js
-const assert = require('assert');
+const assert = require('node:assert');
+const fs = require('node:fs');
 const { PHASES, exercises, trafficLight, todaysPlan, finishSession, steps, GAMES_TO_WIN_SET } = require('./logic.js');
 
 assert.equal(trafficLight(1), 'green');
@@ -29,6 +30,14 @@ assert.equal(todaysPlan(0, 'amber', 'medial')[1].sets, 4, 'medial keeps the dose
 for (let i = 0; i < PHASES.length; i++) {
   const m = exercises(i, 'medial');
   assert.equal(m[0].kind, 'Stretch');
-  assert(m.every(e => !e.medial), 'override is not leaked');
+  assert(
+    m.every(e => !e.medial),
+    'override is not leaked',
+  );
 }
+
+// index.html: inline app script must parse, and the health note must stay.
+const html = fs.readFileSync(`${__dirname}/index.html`, 'utf8');
+for (const [, js] of html.matchAll(/<script>([\s\S]*?)<\/script>/g)) new Function(js);
+assert(html.includes('not medical advice'), 'keep the "not medical advice" note');
 console.log('ok');

@@ -258,13 +258,13 @@ function renderHistory() {
 
 const LIGHTS = {
   green: ['Green: full session', 'Your elbow is ready for the full dose.'],
-  amber: ['Amber: hold steady', 'One set less today. It keeps your progress but doesn't count as a good day.'],
+  amber: ['Amber: hold steady', 'One set less today. It keeps your progress but doesn’t count as a good day.'],
   red: ['Red: rest day', 'Only a gentle stretch today. Ice or rest if needed.'],
 };
 
 function renderPlan() {
   const c = state.current;
-  $('lamp').className = 'lamp ' + c.light;
+  $('lamp').className = `lamp ${c.light}`;
   [$('light-title').textContent, $('light-text').textContent] = LIGHTS[c.light];
   $('plan').innerHTML = c.plan.map(e => `<li><span class="label">${e.kind}</span><div><strong>${e.name}</strong><div class="dose">${dose(e)}</div></div></li>`).join('');
   $('btn-start').textContent = c.idx > 0 ? `Resume (exercise ${c.idx + 1} of ${c.plan.length})` : 'Start session';
@@ -272,7 +272,8 @@ function renderPlan() {
 }
 
 function renderExercise(plan, idx) {
-  const ex = curEx = plan[idx];
+  const ex = plan[idx];
+  curEx = ex;
   stopTimer();
   seq = []; si = 0; // fresh timer for each exercise
   $('ex-progress').innerHTML = plan.map((_, i) => `<span class="${i < idx ? 'done' : ''}"></span>`).join('');
@@ -280,7 +281,8 @@ function renderExercise(plan, idx) {
   $('ex-name').textContent = ex.name;
   $('ex-dose').textContent = dose(ex);
   $('ex-cues').innerHTML = ex.cues.map(t => `<li>${t}</li>`).join('');
-  $('ex-more').href = 'https://www.youtube.com/results?search_query=' + encodeURIComponent(ex.name.replace(/\(.*\)/, '') + ' elbow pain exercise');
+  const query = `${ex.name.replace(/\(.*\)/, '')} elbow pain exercise`;
+  $('ex-more').href = `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
   $('t-label').textContent = 'Timer is optional';
   $('t-clock').textContent = '–';
   $('timer').className = 'timer';
@@ -370,7 +372,7 @@ function showStep() {
   const s = seq[si];
   $('t-label').textContent = s.label;
   $('t-clock').textContent = s.secs >= 60 ? `${Math.floor(left / 60)}:${String(left % 60).padStart(2, '0')}` : left;
-  $('timer').className = 'timer' + (s.rest ? ' rest' : / Down$/.test(s.label) ? ' down' : '');
+  $('timer').className = `timer${s.rest ? ' rest' : / Down$/.test(s.label) ? ' down' : ''}`;
 }
 function nextStep() {
   si++;
@@ -400,7 +402,7 @@ document.addEventListener('visibilitychange', () => { if (timer && document.visi
 function stopTimer() {
   clearInterval(timer); timer = null;
   $('t-toggle').textContent = seq.length && si < seq.length ? 'Resume' : 'Start timer';
-  try { wakeLock && wakeLock.release(); } catch {}
+  try { wakeLock?.release(); } catch {}
   wakeLock = null;
 }
 $('t-toggle').onclick = () => timer ? stopTimer() : startTimer();
