@@ -65,8 +65,8 @@ p { margin: 0; }
 
 /* Cards */
 .card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 20px 16px; display: grid; gap: 14px; }
-button { font: 700 1rem var(--body); border-radius: 10px; border: 2px solid var(--line); background: var(--surface); color: var(--fg); padding: 14px 16px; cursor: pointer; min-height: 52px; }
-button:focus-visible, input:focus-visible { outline: 3px solid var(--ball); outline-offset: 2px; }
+button, select { font: 700 1rem var(--body); border-radius: 10px; border: 2px solid var(--line); background: var(--surface); color: var(--fg); padding: 14px 16px; cursor: pointer; min-height: 52px; }
+button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid var(--ball); outline-offset: 2px; }
 button.primary { background: var(--fg); color: var(--bg); border-color: var(--fg); }
 button.small { min-height: 40px; padding: 8px 12px; font-size: .9rem; }
 .row { display: flex; gap: 8px; flex-wrap: wrap; }
@@ -117,6 +117,9 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
 .history .res { color: var(--muted); text-align: right; }
 .empty { color: var(--muted); }
 .note { color: var(--muted); font-size: .85rem; }
+.how summary { font-weight: 700; cursor: pointer; }
+.how p, .how ul { margin: 0; }
+.how ul { padding-left: 1.2rem; display: grid; gap: 6px; }
 @media (prefers-reduced-motion: no-preference) { .card { animation: in .2s ease-out; } @keyframes in { from { transform: translateY(6px); opacity: .6; } } }
 </style>
 </head>
@@ -129,10 +132,21 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
     </div>
     <div class="sets" id="sets"></div>
     <div class="board-top">
-      <span class="label">Games this set</span>
+      <span class="label">Good days this stage</span>
       <div class="games" id="games"></div>
     </div>
   </section>
+
+  <details class="card how">
+    <summary>How the scoring works</summary>
+    <p>Each finished session counts as one of these:</p>
+    <ul>
+      <li><strong>Good day:</strong> a green day where every exercise felt the same or better.</li>
+      <li><strong>Held steady:</strong> an amber or red day, or one exercise felt slightly worse. Counts neither way.</li>
+      <li><strong>Flare-up:</strong> any exercise felt much worse. You lose one good day, and tomorrow is capped at amber.</li>
+    </ul>
+    <p>Collect 6 good days to move up to the next of the 5 stages, from calming the tendon to full activity. Steady days are fine: the rule is that you only add load once your elbow handles the current load well.</p>
+  </details>
 
   <!-- Morning check -->
   <section class="card" id="v-check" hidden>
@@ -143,6 +157,11 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
       <input type="range" id="stiff" min="0" max="10" step="1" value="2" aria-label="Stiffness from 0 to 10">
       <div class="scale"><span>0 · none</span><span>5 · moderate</span><span>10 · worst</span></div>
     </div>
+    <label class="label" for="side">Where does it hurt?</label>
+    <select id="side">
+      <option value="lateral">Outer elbow (tennis elbow)</option>
+      <option value="medial">Inner elbow (golfer's elbow)</option>
+    </select>
     <button class="primary" id="btn-calibrate">Set today's load</button>
   </section>
 
@@ -185,8 +204,8 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
     <p class="note">The next morning check opens tomorrow.</p>
   </section>
 
-  <section class="card" aria-label="Match log">
-    <span class="label">Match log</span>
+  <section class="card" aria-label="History">
+    <span class="label">History</span>
     <ul class="history" id="history"></ul>
     <div class="row"><a class="more" href="reminder.ics" download>Add daily reminders to calendar (8:00 session, 13:00 and 18:00 stretch)</a></div>
     <div class="row"><button class="small" id="btn-reset">Reset all progress</button></div>
@@ -225,21 +244,21 @@ function renderBoard() {
     `<div class="set ${i < state.phase ? 'won' : i === state.phase ? 'now' : ''}">${i + 1}<small>${['Acute', 'Early', 'Build', 'Strength', 'Sport'][i]}</small></div>`).join('');
   $('games').innerHTML = Array.from({ length: GAMES_TO_WIN_SET }, (_, i) =>
     `<span class="ball ${i < state.games ? 'on' : ''}"></span>`).join('');
-  $('games').setAttribute('aria-label', `${state.games} of ${GAMES_TO_WIN_SET} games`);
+  $('games').setAttribute('aria-label', `${state.games} of ${GAMES_TO_WIN_SET} good days`);
 }
 
 function renderHistory() {
   const rows = state.log.slice(-14).reverse();
   $('history').innerHTML = rows.length ? rows.map(e => {
     const worst = Math.max(...e.results);
-    const res = e.setWon ? 'Set won' : worst === 2 ? 'Flare-up, game lost' : e.light === 'green' && worst === 0 ? 'Game won' : 'Held steady';
+    const res = e.setWon ? 'Next stage' : worst === 2 ? 'Flare-up' : e.light === 'green' && worst === 0 ? 'Good day' : 'Held steady';
     return `<li><span class="dot ${e.light}"></span><span class="when">${e.date.slice(5)}</span><span>Stiffness ${e.stiffness} · ${PHASES[e.phase].name}</span><span class="res">${res}</span></li>`;
-  }).join('') : '<li class="empty" style="display:block">No sessions yet. Your first morning check starts the match.</li>';
+  }).join('') : '<li class="empty" style="display:block">No sessions yet. Your first morning check starts the plan.</li>';
 }
 
 const LIGHTS = {
   green: ['Green: full session', 'Your elbow is ready for the full dose.'],
-  amber: ['Amber: hold steady', 'One set less today. It keeps your progress but earns no game.'],
+  amber: ['Amber: hold steady', 'One set less today. It keeps your progress but doesn't count as a good day.'],
   red: ['Red: rest day', 'Only a gentle stretch today. Ice or rest if needed.'],
 };
 
@@ -261,7 +280,7 @@ function renderExercise(plan, idx) {
   $('ex-name').textContent = ex.name;
   $('ex-dose').textContent = dose(ex);
   $('ex-cues').innerHTML = ex.cues.map(t => `<li>${t}</li>`).join('');
-  $('ex-more').href = 'https://www.youtube.com/results?search_query=' + encodeURIComponent(ex.name.replace(/\(.*\)/, '') + ' tennis elbow exercise');
+  $('ex-more').href = 'https://www.youtube.com/results?search_query=' + encodeURIComponent(ex.name.replace(/\(.*\)/, '') + ' elbow pain exercise');
   $('t-label').textContent = 'Timer is optional';
   $('t-clock').textContent = '–';
   $('timer').className = 'timer';
@@ -275,24 +294,24 @@ function renderExercise(plan, idx) {
 function renderDone() {
   const e = state.log[state.log.length - 1];
   const worst = Math.max(...e.results);
-  $('done-title').textContent = e.setWon ? `Set won! On to ${PHASES[state.phase].name}.`
-    : worst === 2 ? 'Flare-up logged. Game lost.'
-    : e.light === 'green' && worst === 0 ? 'Game won.' : 'Held steady.';
+  $('done-title').textContent = e.setWon ? `Stage complete! On to ${PHASES[state.phase].name}.`
+    : worst === 2 ? 'Flare-up logged.'
+    : e.light === 'green' && worst === 0 ? 'Good day.' : 'Held steady.';
   $('done-text').textContent = e.setWon ? PHASES[state.phase].goal
-    : worst === 2 ? 'Tomorrow is capped at amber. Back off the load and let it settle.'
-    : e.light === 'green' && worst === 0 ? `${state.games} of ${GAMES_TO_WIN_SET} games in this set.`
-    : 'No game today, no progress lost.';
+    : worst === 2 ? 'You lose one good day, and tomorrow is capped at amber. Back off the load and let it settle.'
+    : e.light === 'green' && worst === 0 ? `${state.games} of ${GAMES_TO_WIN_SET} good days in this stage.`
+    : e.light === 'green' ? 'Something felt slightly worse, so this one doesn\'t count as a good day. No progress lost.' : 'Lighter days don\'t count as good days, but no progress is lost.';
   show('v-done');
 }
 
 // /#stretch (from the 13:00 and 18:00 calendar reminders) opens the phase's stretch on its own.
-// It is outside the daily session, so it does not count towards games.
+// It is outside the daily session, so it does not count towards good days.
 const stretchBreak = () => location.hash === '#stretch';
 
 function render() {
   renderBoard();
   renderHistory();
-  if (stretchBreak()) return renderExercise([PHASES[state.phase].exercises[0]], 0);
+  if (stretchBreak()) return renderExercise([exercises(state.phase, state.side)[0]], 0);
   const last = state.log[state.log.length - 1];
   if (state.current) state.current.started ? renderExercise(state.current.plan, state.current.idx) : renderPlan();
   else if (last && last.date === today()) renderDone();
@@ -301,10 +320,12 @@ function render() {
 
 // Morning check
 $('stiff').addEventListener('input', e => $('stiff-out').textContent = e.target.value);
+$('side').value = state.side || 'lateral';
+$('side').onchange = e => { state.side = e.target.value; save(); };
 $('btn-calibrate').onclick = () => {
   const stiffness = +$('stiff').value;
   const light = trafficLight(stiffness, state.log[state.log.length - 1]);
-  state.current = { date: today(), stiffness, light, phase: state.phase, plan: todaysPlan(state.phase, light), idx: 0, results: [], started: false };
+  state.current = { date: today(), stiffness, light, phase: state.phase, plan: todaysPlan(state.phase, light, state.side), idx: 0, results: [], started: false };
   save(); render();
 };
 $('btn-recheck').onclick = () => { state.current = null; save(); render(); };

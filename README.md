@@ -1,9 +1,10 @@
 # Elbow Coach
 
-Daily tennis elbow (lateral epicondylitis) rehab coach. Static web app, no build step.
+Daily rehab coach for elbow pain from overuse (lateral epicondylitis, often called tennis elbow, though climbing, lifting or desk work cause it too). Static web app, no build step.
 
+- Pick outer (lateral) or inner (medial, golfer's elbow) side; the stretch and strength exercises switch to match.
 - Morning stiffness check sets a traffic light: green = full session, amber = one set less, red = stretch only.
-- 5 phases ("sets"): Acute → Early Rehab → Conditioning → Strength → Sport-Proofing. 6 clean green sessions win a set; a flare-up loses a game.
+- 5 stages: Acute → Early Rehab → Conditioning → Strength → Sport-Proofing. 6 good days (green, nothing worse) move you up a stage; a flare-up takes one away.
 - Three exercises a day with an optional tempo/hold timer (audio metronome) and pain logging after each one.
 - Progress is saved in the browser (`localStorage`).
 

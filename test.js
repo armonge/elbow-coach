@@ -1,6 +1,6 @@
 // Run: node test.js
 const assert = require('assert');
-const { PHASES, trafficLight, todaysPlan, finishSession, steps, GAMES_TO_WIN_SET } = require('./logic.js');
+const { PHASES, exercises, trafficLight, todaysPlan, finishSession, steps, GAMES_TO_WIN_SET } = require('./logic.js');
 
 assert.equal(trafficLight(1), 'green');
 assert.equal(trafficLight(4), 'amber');
@@ -22,4 +22,13 @@ assert.equal(s.games, 0, 'flare loses a game');
 assert.equal(steps({ mode: 'tempo', sets: 2, reps: 3, tempo: [1, 4] }).length, 2 * 3 * 2 + 1);
 // Red days and the #stretch break both use the first exercise, so it must be the stretch.
 for (const p of PHASES) assert.equal(p.exercises[0].kind, 'Stretch');
+
+assert.equal(todaysPlan(0, 'green')[0].name, 'Wrist extensor stretch', 'lateral is the default side');
+assert.equal(todaysPlan(0, 'red', 'medial')[0].name, 'Wrist flexor stretch');
+assert.equal(todaysPlan(0, 'amber', 'medial')[1].sets, 4, 'medial keeps the dose');
+for (let i = 0; i < PHASES.length; i++) {
+  const m = exercises(i, 'medial');
+  assert.equal(m[0].kind, 'Stretch');
+  assert(m.every(e => !e.medial), 'override is not leaked');
+}
 console.log('ok');
