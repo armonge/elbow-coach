@@ -19,6 +19,8 @@ Elbow Coach: a mobile-first web app for daily elbow pain (lateral epicondylitis)
 - Morning stiffness 0–2 = green (full dose), 3–5 = amber (one set less), 6+ = red (stretch only). A "much worse" result yesterday caps today at amber.
 - A green session with every result "same or better" is a good day. Any "much worse" is a flare-up and takes one away. 6 good days (`GAMES_TO_WIN_SET`) move you to the next phase. The UI says "good days" and "stages"; the code still calls them `games` and `setWon`.
 - The morning check asks which side hurts (`state.side`: `lateral` default, or `medial`). Medial swaps in each exercise's `medial` name and cues (wrist flexors instead of extensors); doses stay the same.
+- Once a week the morning check also asks for pain-free grip (0–10 against the good hand, `gripDue`). It's stored as `grip` on the log entry and shown in the history. It doesn't change the plan.
+- Stages 3–5 add a shoulder exercise (band row) for the upper-limb kinetic chain, so those days have four exercises.
 - `/#stretch` opens the current phase's stretch as a break outside the session. It doesn't count towards good days. `reminder.ics` schedules it at 13:00 and 18:00, plus the session at 8:00.
 - When you change a rule, update `test.js` and this section.
 
@@ -29,3 +31,4 @@ Elbow Coach: a mobile-first web app for daily elbow pain (lateral epicondylitis)
 - Colors and fonts come from the CSS tokens on `:root`. Every token needs both light and dark values.
 - Exercise content (cues, doses) is health guidance. Keep it conservative and evidence-based, and don't remove the "not medical advice" note.
 - Demos are a YouTube search link per exercise. Do not embed third-party clips or videos (such as Physiotec or CSP clips) due to copyright and licensing restrictions; keep using dynamic YouTube search links.
+- Exception: pictures in `img/` (exercise `img` field, with extension). `.jpg` files are BruceBlaus, CC BY-SA 4.0, from Wikimedia Commons, credited under the picture. `.svg` files are our own schematic drawings. Only use a picture that shows the exact movement (e.g. the wrist-curl picture is palm up, so it's medial only).

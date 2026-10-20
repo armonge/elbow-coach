@@ -2,36 +2,45 @@
 
 const GAMES_TO_WIN_SET = 6;
 
+// img: file in img/. The .jpg ones are BruceBlaus (CC BY-SA 4.0, Wikimedia Commons), the .svg ones are our own. Medial overrides it.
 // mode: 'hold' = isometric seconds, 'tempo' = reps at [up, down] seconds, 'time' = minutes of activity
 const PHASES = [
   {
     name: 'Acute Phase',
-    goal: 'Calm the tendon. Isometrics reduce pain without stressing it.',
+    goal: 'Calm the tendon. Isometrics load it gently without movement; the benefit builds over weeks.',
     exercises: [
       {
         kind: 'Stretch',
         name: 'Wrist extensor stretch',
+        img: 'extensor-stretch.jpg',
         mode: 'hold',
         sets: 3,
         secs: 30,
         cues: ['Arm straight, palm down', 'Gently bend the wrist down with the other hand', 'Mild pull only, never sharp pain'],
-        medial: { name: 'Wrist flexor stretch', cues: ['Arm straight, palm up', 'Gently bend the wrist back with the other hand, fingers down', 'Mild pull only, never sharp pain'] },
+        medial: {
+          name: 'Wrist flexor stretch',
+          img: 'flexor-stretch.jpg',
+          cues: ['Arm straight, palm up', 'Gently bend the wrist back with the other hand, fingers down', 'Mild pull only, never sharp pain'],
+        },
       },
       {
         kind: 'Strength',
         name: 'Isometric wrist extension',
+        img: 'iso-extension.svg',
         mode: 'hold',
         sets: 5,
         secs: 45,
         cues: ['Forearm on a table, palm down, wrist off the edge', 'Push the back of the hand up into your other hand', 'About 50–70% effort, no movement', 'Pain up to 3/10 is OK'],
         medial: {
           name: 'Isometric wrist flexion',
+          img: 'iso-flexion.svg',
           cues: ['Forearm on a table, palm up, wrist off the edge', 'Push the palm up into your other hand', 'About 50–70% effort, no movement', 'Pain up to 3/10 is OK'],
         },
       },
       {
         kind: 'Activity',
         name: 'Gentle grip, elbow bent',
+        img: 'grip.svg',
         mode: 'hold',
         sets: 3,
         secs: 20,
@@ -46,25 +55,32 @@ const PHASES = [
       {
         kind: 'Stretch',
         name: 'Wrist extensor stretch',
+        img: 'extensor-stretch.jpg',
         mode: 'hold',
         sets: 3,
         secs: 30,
         cues: ['Arm straight, palm down', 'Gently bend the wrist down', 'Mild pull only'],
-        medial: { name: 'Wrist flexor stretch', cues: ['Arm straight, palm up', 'Gently bend the wrist back with the other hand, fingers down', 'Mild pull only'] },
+        medial: { name: 'Wrist flexor stretch', img: 'flexor-stretch.jpg', cues: ['Arm straight, palm up', 'Gently bend the wrist back with the other hand, fingers down', 'Mild pull only'] },
       },
       {
         kind: 'Strength',
         name: 'Eccentric wrist extension (1–2 kg)',
+        img: 'wrist-extension.svg',
         mode: 'tempo',
         sets: 3,
         reps: 15,
         tempo: [1, 4],
         cues: ['Forearm supported, palm down', 'Use the other hand to lift the weight up', 'Lower slowly over 4 seconds', 'Pain up to 3/10 is OK'],
-        medial: { name: 'Eccentric wrist flexion (1–2 kg)', cues: ['Forearm supported, palm up', 'Use the other hand to curl the weight up', 'Lower slowly over 4 seconds', 'Pain up to 3/10 is OK'] },
+        medial: {
+          name: 'Eccentric wrist flexion (1–2 kg)',
+          img: 'wrist-curls.jpg',
+          cues: ['Forearm supported, palm up', 'Use the other hand to curl the weight up', 'Lower slowly over 4 seconds', 'Pain up to 3/10 is OK'],
+        },
       },
       {
         kind: 'Activity',
         name: 'Finger extension with a rubber band',
+        img: 'finger-band.svg',
         mode: 'tempo',
         sets: 2,
         reps: 15,
@@ -75,20 +91,22 @@ const PHASES = [
   },
   {
     name: 'Conditioning',
-    goal: 'Add the Tyler twist and easy activity.',
+    goal: 'Add the Tyler twist, shoulder work and easy activity.',
     exercises: [
       {
         kind: 'Stretch',
         name: 'Extensor stretch, elbow straight',
+        img: 'extensor-stretch.jpg',
         mode: 'hold',
         sets: 3,
         secs: 30,
         cues: ['Make a fist, palm down, arm straight', 'Bend the wrist down and toward the pinky', 'Mild pull only'],
-        medial: { name: 'Flexor stretch, elbow straight', cues: ['Arm straight, palm up', 'Pull the fingers and wrist back with the other hand', 'Mild pull only'] },
+        medial: { name: 'Flexor stretch, elbow straight', img: 'flexor-stretch.jpg', cues: ['Arm straight, palm up', 'Pull the fingers and wrist back with the other hand', 'Mild pull only'] },
       },
       {
         kind: 'Strength',
         name: 'Tyler twist (resistance bar)',
+        img: 'tyler-twist.svg',
         mode: 'tempo',
         sets: 3,
         reps: 15,
@@ -103,6 +121,7 @@ const PHASES = [
         ],
         medial: {
           name: 'Reverse Tyler twist (resistance bar)',
+          img: 'reverse-tyler-twist.svg',
           cues: [
             'Hold one end of the bar in the sore hand, wrist curled in fully',
             'Grab the other end with the good hand',
@@ -112,6 +131,16 @@ const PHASES = [
             'Release and reset with the good hand',
           ],
         },
+      },
+      {
+        kind: 'Shoulder',
+        name: 'Band row',
+        img: 'band-row.svg',
+        mode: 'tempo',
+        sets: 2,
+        reps: 15,
+        tempo: [2, 2],
+        cues: ['Light band anchored at chest height', 'Loose grip, or loop the band around the wrist', 'Pull the elbow back past your side and squeeze the shoulder blades', 'Return slowly'],
       },
       {
         kind: 'Activity',
@@ -130,21 +159,37 @@ const PHASES = [
       {
         kind: 'Stretch',
         name: 'Extensor stretch, elbow straight',
+        img: 'extensor-stretch.jpg',
         mode: 'hold',
         sets: 3,
         secs: 30,
         cues: ['Fist, palm down, arm straight', 'Bend the wrist down', 'Mild pull only'],
-        medial: { name: 'Flexor stretch, elbow straight', cues: ['Arm straight, palm up', 'Pull the fingers and wrist back with the other hand', 'Mild pull only'] },
+        medial: { name: 'Flexor stretch, elbow straight', img: 'flexor-stretch.jpg', cues: ['Arm straight, palm up', 'Pull the fingers and wrist back with the other hand', 'Mild pull only'] },
       },
       {
         kind: 'Strength',
         name: 'Heavy slow wrist extension',
+        img: 'wrist-extension.svg',
         mode: 'tempo',
         sets: 3,
         reps: 8,
         tempo: [3, 3],
         cues: ['Pick a weight where 8 reps is hard', '3 seconds up, 3 seconds down', 'Raise the weight when 8 feels easy'],
-        medial: { name: 'Heavy slow wrist flexion', cues: ['Forearm supported, palm up', 'Pick a weight where 8 reps is hard', '3 seconds up, 3 seconds down', 'Raise the weight when 8 feels easy'] },
+        medial: {
+          name: 'Heavy slow wrist flexion',
+          img: 'wrist-curls.jpg',
+          cues: ['Forearm supported, palm up', 'Pick a weight where 8 reps is hard', '3 seconds up, 3 seconds down', 'Raise the weight when 8 feels easy'],
+        },
+      },
+      {
+        kind: 'Shoulder',
+        name: 'Band row',
+        img: 'band-row.svg',
+        mode: 'tempo',
+        sets: 3,
+        reps: 12,
+        tempo: [2, 2],
+        cues: ['Light band anchored at chest height', 'Loose grip, or loop the band around the wrist', 'Pull the elbow back past your side and squeeze the shoulder blades', 'Return slowly'],
       },
       {
         kind: 'Activity',
@@ -163,20 +208,32 @@ const PHASES = [
       {
         kind: 'Stretch',
         name: 'Extensor stretch, elbow straight',
+        img: 'extensor-stretch.jpg',
         mode: 'hold',
         sets: 2,
         secs: 30,
         cues: ['Fist, palm down, arm straight', 'Bend the wrist down', 'Mild pull only'],
-        medial: { name: 'Flexor stretch, elbow straight', cues: ['Arm straight, palm up', 'Pull the fingers and wrist back with the other hand', 'Mild pull only'] },
+        medial: { name: 'Flexor stretch, elbow straight', img: 'flexor-stretch.jpg', cues: ['Arm straight, palm up', 'Pull the fingers and wrist back with the other hand', 'Mild pull only'] },
       },
       {
         kind: 'Strength',
         name: 'Hammer pronation / supination',
+        img: 'forearm-rotation.jpg',
         mode: 'tempo',
         sets: 3,
         reps: 10,
         tempo: [3, 3],
         cues: ['Hold a hammer by the handle, elbow at 90°', 'Rotate palm up, then palm down', 'Choke up to make it easier'],
+      },
+      {
+        kind: 'Shoulder',
+        name: 'Band row',
+        img: 'band-row.svg',
+        mode: 'tempo',
+        sets: 3,
+        reps: 12,
+        tempo: [2, 2],
+        cues: ['Light band anchored at chest height', 'Loose grip, or loop the band around the wrist', 'Pull the elbow back past your side and squeeze the shoulder blades', 'Return slowly'],
       },
       {
         kind: 'Activity',
@@ -230,6 +287,12 @@ function finishSession(state, entry) {
   return s;
 }
 
+// Pain-free grip (0–10, 10 = as strong as the good hand) is asked once a week in the morning check.
+function gripDue(log, date) {
+  const last = log.findLast(e => e.grip != null);
+  return !last || (Date.parse(date) - Date.parse(last.date)) / 864e5 >= 7;
+}
+
 // Timer steps for one exercise.
 function steps(ex) {
   const out = [];
@@ -254,4 +317,4 @@ function dose(ex) {
   return `${ex.sets} × ${ex.reps} · tempo ${ex.tempo[0]} s up / ${ex.tempo[1]} s down`;
 }
 
-if (typeof module !== 'undefined') module.exports = { PHASES, PAIN, GAMES_TO_WIN_SET, trafficLight, exercises, todaysPlan, finishSession, steps, dose };
+if (typeof module !== 'undefined') module.exports = { PHASES, PAIN, GAMES_TO_WIN_SET, trafficLight, exercises, todaysPlan, finishSession, gripDue, steps, dose };

@@ -91,6 +91,12 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
 .progress { display: flex; gap: 6px; }
 .progress span { flex: 1; height: 6px; border-radius: 3px; background: var(--line); }
 .progress span.done { background: var(--fg); }
+.demo { margin: 0; display: grid; gap: 4px; }
+.demo img { max-width: 100%; max-height: 260px; width: auto; height: auto; justify-self: start; border-radius: 12px; background: #fff; }
+.demo figcaption { color: var(--muted); font-size: .75rem; }
+.demo figcaption a { color: inherit; }
+.grip { display: grid; gap: 6px; }
+.grip p { margin: 0; }
 .cues { margin: 0; padding-left: 1.2rem; display: grid; gap: 4px; }
 .timer { border: 2px solid var(--line); border-radius: 12px; padding: 16px; display: grid; gap: 10px; text-align: center; }
 .timer-label { font-weight: 700; }
@@ -146,6 +152,17 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
       <li><strong>Flare-up:</strong> any exercise felt much worse. You lose one good day, and tomorrow is capped at amber.</li>
     </ul>
     <p>Collect 6 good days to move up to the next of the 5 stages, from calming the tendon to full activity. Steady days are fine: the rule is that you only add load once your elbow handles the current load well.</p>
+    <p>That's at least 30 sessions, so expect weeks to months. Tendons adapt slowly, and most people recover within a year, many much sooner. The weekly grip check shows progress before the pain fully goes.</p>
+  </details>
+
+  <details class="card how">
+    <summary>Protecting the elbow day to day</summary>
+    <ul>
+      <li>Lift with the palm up, or with both hands, instead of palm down at arm's length.</li>
+      <li>Use thicker handles and a looser grip on tools, rackets, mice and bags.</li>
+      <li>Break up long gripping or typing with short pauses.</li>
+      <li>Keep moving: complete rest weakens the tendon. Reduce what hurts, don't stop everything.</li>
+    </ul>
   </details>
 
   <!-- Morning check -->
@@ -156,6 +173,15 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
       <div class="stiff-value" id="stiff-out">2</div>
       <input type="range" id="stiff" min="0" max="10" step="1" value="2" aria-label="Stiffness from 0 to 10">
       <div class="scale"><span>0 · none</span><span>5 · moderate</span><span>10 · worst</span></div>
+    </div>
+    <div class="grip" id="grip-wrap" hidden>
+      <label class="label" for="grip">Weekly grip check</label>
+      <p class="note">Arm straight, palm down. Squeeze a rolled towel until it starts to hurt. How strong was that compared with your good hand? 10 = just as strong. <span id="grip-last"></span></p>
+      <select id="grip">
+        <option value="">Skip this week</option>
+        <option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+        <option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
+      </select>
     </div>
     <label class="label" for="side">Where does it hurt?</label>
     <select id="side">
@@ -179,6 +205,10 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
     <span class="label" id="ex-kind"></span>
     <h2 id="ex-name"></h2>
     <p class="dose" id="ex-dose"></p>
+    <figure class="demo" id="ex-demo" hidden>
+      <img id="ex-img" alt="">
+      <figcaption id="ex-credit">Illustration: <a href="https://commons.wikimedia.org/wiki/User:BruceBlaus" target="_blank" rel="noopener">BruceBlaus</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a></figcaption>
+    </figure>
     <span class="label">How to do it</span>
     <ol class="cues" id="ex-cues"></ol>
     <a class="more" id="ex-more" target="_blank" rel="noopener">Find demo videos on YouTube ↗</a>
@@ -252,14 +282,14 @@ function renderHistory() {
   $('history').innerHTML = rows.length ? rows.map(e => {
     const worst = Math.max(...e.results);
     const res = e.setWon ? 'Next stage' : worst === 2 ? 'Flare-up' : e.light === 'green' && worst === 0 ? 'Good day' : 'Held steady';
-    return `<li><span class="dot ${e.light}"></span><span class="when">${e.date.slice(5)}</span><span>Stiffness ${e.stiffness} · ${PHASES[e.phase].name}</span><span class="res">${res}</span></li>`;
+    return `<li><span class="dot ${e.light}"></span><span class="when">${e.date.slice(5)}</span><span>Stiffness ${e.stiffness}${e.grip != null ? ` · Grip ${e.grip}/10` : ''} · ${PHASES[e.phase].name}</span><span class="res">${res}</span></li>`;
   }).join('') : '<li class="empty" style="display:block">No sessions yet. Your first morning check starts the plan.</li>';
 }
 
 const LIGHTS = {
   green: ['Green: full session', 'Your elbow is ready for the full dose.'],
   amber: ['Amber: hold steady', 'One set less today. It keeps your progress but doesn’t count as a good day.'],
-  red: ['Red: rest day', 'Only a gentle stretch today. Ice or rest if needed.'],
+  red: ['Red: rest day', 'Only a gentle stretch today. Avoid painful gripping; an elbow strap or rigid tape can ease pain short term.'],
 };
 
 function renderPlan() {
@@ -280,6 +310,9 @@ function renderExercise(plan, idx) {
   $('ex-kind').textContent = `${ex.kind} · ${idx + 1} of ${plan.length}`;
   $('ex-name').textContent = ex.name;
   $('ex-dose').textContent = dose(ex);
+  $('ex-demo').hidden = !ex.img;
+  if (ex.img) Object.assign($('ex-img'), { src: `img/${ex.img}`, alt: ex.name });
+  $('ex-credit').hidden = !ex.img?.endsWith('.jpg'); // the .svg drawings are ours
   $('ex-cues').innerHTML = ex.cues.map(t => `<li>${t}</li>`).join('');
   const query = `${ex.name.replace(/\(.*\)/, '')} elbow pain exercise`;
   $('ex-more').href = `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
@@ -317,7 +350,14 @@ function render() {
   const last = state.log[state.log.length - 1];
   if (state.current) state.current.started ? renderExercise(state.current.plan, state.current.idx) : renderPlan();
   else if (last && last.date === today()) renderDone();
-  else show('v-check');
+  else showCheck();
+}
+
+function showCheck() {
+  $('grip-wrap').hidden = !gripDue(state.log, today());
+  const last = state.log.findLast(e => e.grip != null);
+  $('grip-last').textContent = last ? `Last time: ${last.grip}/10.` : '';
+  show('v-check');
 }
 
 // Morning check
@@ -327,7 +367,8 @@ $('side').onchange = e => { state.side = e.target.value; save(); };
 $('btn-calibrate').onclick = () => {
   const stiffness = +$('stiff').value;
   const light = trafficLight(stiffness, state.log[state.log.length - 1]);
-  state.current = { date: today(), stiffness, light, phase: state.phase, plan: todaysPlan(state.phase, light, state.side), idx: 0, results: [], started: false };
+  const grip = $('grip-wrap').hidden || $('grip').value === '' ? undefined : +$('grip').value;
+  state.current = { date: today(), stiffness, grip, light, phase: state.phase, plan: todaysPlan(state.phase, light, state.side), idx: 0, results: [], started: false };
   save(); render();
 };
 $('btn-recheck').onclick = () => { state.current = null; save(); render(); };
