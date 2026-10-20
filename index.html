@@ -152,7 +152,7 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
       <li><strong>Flare-up:</strong> any exercise felt much worse. You lose one good day, and tomorrow is capped at amber.</li>
     </ul>
     <p>Collect 6 good days to move up to the next of the 5 stages, from calming the tendon to full activity. Steady days are fine: the rule is that you only add load once your elbow handles the current load well.</p>
-    <p>That's at least 30 sessions, so expect weeks to months. Tendons adapt slowly, and most people recover within a year, many much sooner. The weekly grip check shows progress before the pain fully goes.</p>
+    <p>That's at least 30 sessions. Tendons adapt slowly: some people recover in a few months, but for many it takes more than a year, and the pain often comes back. Keep doing strength work after you finish. The weekly grip check shows progress before the pain fully goes.</p>
   </details>
 
   <details class="card how">
@@ -161,6 +161,7 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
       <li>Lift with the palm up, or with both hands, instead of palm down at arm's length.</li>
       <li>Use thicker handles and a looser grip on tools, rackets, mice and bags.</li>
       <li>Break up long gripping or typing with short pauses.</li>
+      <li>A forearm strap worn during the activities that hurt can ease pain at the time.</li>
       <li>Keep moving: complete rest weakens the tendon. Reduce what hurts, don't stop everything.</li>
     </ul>
   </details>
@@ -207,7 +208,7 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
     <p class="dose" id="ex-dose"></p>
     <figure class="demo" id="ex-demo" hidden>
       <img id="ex-img" alt="">
-      <figcaption id="ex-credit">Illustration: <a href="https://commons.wikimedia.org/wiki/User:BruceBlaus" target="_blank" rel="noopener">BruceBlaus</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a></figcaption>
+      <figcaption>Illustration: <a href="https://commons.wikimedia.org/wiki/User:BruceBlaus" target="_blank" rel="noopener">BruceBlaus</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a></figcaption>
     </figure>
     <span class="label">How to do it</span>
     <ol class="cues" id="ex-cues"></ol>
@@ -245,7 +246,7 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
     </div>
   </section>
 
-  <p class="note">An educational self-management tool, not medical advice. If pain is sharp, at night, or getting worse over weeks, see a clinician. Data stays in this browser.</p>
+  <p class="note">An educational self-management tool, not medical advice. If pain is sharp, at night, or getting worse over weeks, or comes with numbness, tingling or neck pain, see a clinician. Data stays in this browser.</p>
 </main>
 
 <script src="logic.js"></script>
@@ -289,7 +290,7 @@ function renderHistory() {
 const LIGHTS = {
   green: ['Green: full session', 'Your elbow is ready for the full dose.'],
   amber: ['Amber: hold steady', 'One set less today. It keeps your progress but doesn’t count as a good day.'],
-  red: ['Red: rest day', 'Only a gentle stretch today. Avoid painful gripping; an elbow strap or rigid tape can ease pain short term.'],
+  red: ['Red: rest day', 'Only a gentle stretch today. Avoid painful gripping; ice, an elbow strap or rigid tape can ease pain short term.'],
 };
 
 function renderPlan() {
@@ -312,7 +313,6 @@ function renderExercise(plan, idx) {
   $('ex-dose').textContent = dose(ex);
   $('ex-demo').hidden = !ex.img;
   if (ex.img) Object.assign($('ex-img'), { src: `img/${ex.img}`, alt: ex.name });
-  $('ex-credit').hidden = !ex.img?.endsWith('.jpg'); // the .svg drawings are ours
   $('ex-cues').innerHTML = ex.cues.map(t => `<li>${t}</li>`).join('');
   const query = `${ex.name.replace(/\(.*\)/, '')} elbow pain exercise`;
   $('ex-more').href = `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;

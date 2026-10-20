@@ -2,7 +2,7 @@
 
 const GAMES_TO_WIN_SET = 6;
 
-// img: file in img/. The .jpg ones are BruceBlaus (CC BY-SA 4.0, Wikimedia Commons), the .svg ones are our own. Medial overrides it.
+// img: file in img/ (BruceBlaus, CC BY-SA 4.0, Wikimedia Commons). Medial overrides it; the curl picture is palm up, so lateral extension has none.
 // mode: 'hold' = isometric seconds, 'tempo' = reps at [up, down] seconds, 'time' = minutes of activity
 const PHASES = [
   {
@@ -26,21 +26,18 @@ const PHASES = [
       {
         kind: 'Strength',
         name: 'Isometric wrist extension',
-        img: 'iso-extension.svg',
         mode: 'hold',
         sets: 5,
         secs: 45,
-        cues: ['Forearm on a table, palm down, wrist off the edge', 'Push the back of the hand up into your other hand', 'About 50–70% effort, no movement', 'Pain up to 3/10 is OK'],
+        cues: ['Forearm on a table, palm down, wrist off the edge', 'Push the back of the hand up into your other hand', 'Start light, about 30–40% effort, no movement', 'Pain up to 3/10 is OK'],
         medial: {
           name: 'Isometric wrist flexion',
-          img: 'iso-flexion.svg',
-          cues: ['Forearm on a table, palm up, wrist off the edge', 'Push the palm up into your other hand', 'About 50–70% effort, no movement', 'Pain up to 3/10 is OK'],
+          cues: ['Forearm on a table, palm up, wrist off the edge', 'Push the palm up into your other hand', 'Start light, about 30–40% effort, no movement', 'Pain up to 3/10 is OK'],
         },
       },
       {
         kind: 'Activity',
         name: 'Gentle grip, elbow bent',
-        img: 'grip.svg',
         mode: 'hold',
         sets: 3,
         secs: 20,
@@ -65,7 +62,6 @@ const PHASES = [
       {
         kind: 'Strength',
         name: 'Eccentric wrist extension (1–2 kg)',
-        img: 'wrist-extension.svg',
         mode: 'tempo',
         sets: 3,
         reps: 15,
@@ -80,7 +76,6 @@ const PHASES = [
       {
         kind: 'Activity',
         name: 'Finger extension with a rubber band',
-        img: 'finger-band.svg',
         mode: 'tempo',
         sets: 2,
         reps: 15,
@@ -106,7 +101,6 @@ const PHASES = [
       {
         kind: 'Strength',
         name: 'Tyler twist (resistance bar)',
-        img: 'tyler-twist.svg',
         mode: 'tempo',
         sets: 3,
         reps: 15,
@@ -121,7 +115,6 @@ const PHASES = [
         ],
         medial: {
           name: 'Reverse Tyler twist (resistance bar)',
-          img: 'reverse-tyler-twist.svg',
           cues: [
             'Hold one end of the bar in the sore hand, wrist curled in fully',
             'Grab the other end with the good hand',
@@ -135,7 +128,6 @@ const PHASES = [
       {
         kind: 'Shoulder',
         name: 'Band row',
-        img: 'band-row.svg',
         mode: 'tempo',
         sets: 2,
         reps: 15,
@@ -169,7 +161,6 @@ const PHASES = [
       {
         kind: 'Strength',
         name: 'Heavy slow wrist extension',
-        img: 'wrist-extension.svg',
         mode: 'tempo',
         sets: 3,
         reps: 8,
@@ -184,7 +175,6 @@ const PHASES = [
       {
         kind: 'Shoulder',
         name: 'Band row',
-        img: 'band-row.svg',
         mode: 'tempo',
         sets: 3,
         reps: 12,
@@ -228,7 +218,6 @@ const PHASES = [
       {
         kind: 'Shoulder',
         name: 'Band row',
-        img: 'band-row.svg',
         mode: 'tempo',
         sets: 3,
         reps: 12,

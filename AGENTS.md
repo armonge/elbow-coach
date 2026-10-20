@@ -31,4 +31,4 @@ Elbow Coach: a mobile-first web app for daily elbow pain (lateral epicondylitis)
 - Colors and fonts come from the CSS tokens on `:root`. Every token needs both light and dark values.
 - Exercise content (cues, doses) is health guidance. Keep it conservative and evidence-based, and don't remove the "not medical advice" note.
 - Demos are a YouTube search link per exercise. Do not embed third-party clips or videos (such as Physiotec or CSP clips) due to copyright and licensing restrictions; keep using dynamic YouTube search links.
-- Exception: pictures in `img/` (exercise `img` field, with extension). `.jpg` files are BruceBlaus, CC BY-SA 4.0, from Wikimedia Commons, credited under the picture. `.svg` files are our own schematic drawings. Only use a picture that shows the exact movement (e.g. the wrist-curl picture is palm up, so it's medial only).
+- Exception: pictures in `img/` (exercise `img` field, with extension). All are BruceBlaus, CC BY-SA 4.0, from Wikimedia Commons, credited under the picture. Only use a picture that shows the exact movement (e.g. the wrist-curl picture is palm up, so it's medial only).
