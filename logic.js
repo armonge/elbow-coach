@@ -20,7 +20,7 @@ const PHASES = [
         medial: {
           name: 'Wrist flexor stretch',
           img: 'flexor-stretch.jpg',
-          cues: ['Arm straight, palm up', 'Gently bend the wrist back with the other hand, fingers down', 'Mild pull only, never sharp pain'],
+          cues: ['Arm straight in front, fingers up, palm facing away', 'Gently pull the fingers back toward you with the other hand', 'Mild pull only, never sharp pain'],
         },
       },
       {
@@ -57,7 +57,11 @@ const PHASES = [
         sets: 3,
         secs: 30,
         cues: ['Arm straight, palm down', 'Gently bend the wrist down', 'Mild pull only'],
-        medial: { name: 'Wrist flexor stretch', img: 'flexor-stretch.jpg', cues: ['Arm straight, palm up', 'Gently bend the wrist back with the other hand, fingers down', 'Mild pull only'] },
+        medial: {
+          name: 'Wrist flexor stretch',
+          img: 'flexor-stretch.jpg',
+          cues: ['Arm straight in front, fingers up, palm facing away', 'Gently pull the fingers back toward you with the other hand', 'Mild pull only'],
+        },
       },
       {
         kind: 'Strength',
@@ -96,7 +100,11 @@ const PHASES = [
         sets: 3,
         secs: 30,
         cues: ['Make a fist, palm down, arm straight', 'Bend the wrist down and toward the pinky', 'Mild pull only'],
-        medial: { name: 'Flexor stretch, elbow straight', img: 'flexor-stretch.jpg', cues: ['Arm straight, palm up', 'Pull the fingers and wrist back with the other hand', 'Mild pull only'] },
+        medial: {
+          name: 'Flexor stretch, elbow straight',
+          img: 'flexor-stretch.jpg',
+          cues: ['Arm straight in front, fingers up, palm facing away', 'Gently pull the fingers back toward you with the other hand', 'Mild pull only'],
+        },
       },
       {
         kind: 'Strength',
@@ -156,7 +164,11 @@ const PHASES = [
         sets: 3,
         secs: 30,
         cues: ['Fist, palm down, arm straight', 'Bend the wrist down', 'Mild pull only'],
-        medial: { name: 'Flexor stretch, elbow straight', img: 'flexor-stretch.jpg', cues: ['Arm straight, palm up', 'Pull the fingers and wrist back with the other hand', 'Mild pull only'] },
+        medial: {
+          name: 'Flexor stretch, elbow straight',
+          img: 'flexor-stretch.jpg',
+          cues: ['Arm straight in front, fingers up, palm facing away', 'Gently pull the fingers back toward you with the other hand', 'Mild pull only'],
+        },
       },
       {
         kind: 'Strength',
@@ -203,7 +215,11 @@ const PHASES = [
         sets: 2,
         secs: 30,
         cues: ['Fist, palm down, arm straight', 'Bend the wrist down', 'Mild pull only'],
-        medial: { name: 'Flexor stretch, elbow straight', img: 'flexor-stretch.jpg', cues: ['Arm straight, palm up', 'Pull the fingers and wrist back with the other hand', 'Mild pull only'] },
+        medial: {
+          name: 'Flexor stretch, elbow straight',
+          img: 'flexor-stretch.jpg',
+          cues: ['Arm straight in front, fingers up, palm facing away', 'Gently pull the fingers back toward you with the other hand', 'Mild pull only'],
+        },
       },
       {
         kind: 'Strength',
