@@ -292,6 +292,11 @@ function finishSession(state, entry) {
   return s;
 }
 
+// Rebuilds stage and good days from a log, e.g. to redo today without its entry.
+function replay(state, log) {
+  return log.reduce(finishSession, { ...state, phase: 0, games: 0, log: [] });
+}
+
 // Pain-free grip (0–10, 10 = as strong as the good hand) is asked once a week in the morning check.
 function gripDue(log, date) {
   const last = log.findLast(e => e.grip != null);
@@ -322,4 +327,4 @@ function dose(ex) {
   return `${ex.sets} × ${ex.reps} · tempo ${ex.tempo[0]} s up / ${ex.tempo[1]} s down`;
 }
 
-if (typeof module !== 'undefined') module.exports = { PHASES, PAIN, GAMES_TO_WIN_SET, trafficLight, exercises, todaysPlan, finishSession, gripDue, steps, dose };
+if (typeof module !== 'undefined') module.exports = { PHASES, PAIN, GAMES_TO_WIN_SET, trafficLight, exercises, todaysPlan, finishSession, replay, gripDue, steps, dose };

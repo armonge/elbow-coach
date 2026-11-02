@@ -234,6 +234,7 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
     <h2 id="done-title"></h2>
     <p id="done-text"></p>
     <p class="note">The next morning check opens tomorrow.</p>
+    <button class="small" id="btn-redo-day">Redo today from scratch</button>
   </section>
 
   <section class="card" aria-label="History">
@@ -377,6 +378,11 @@ $('btn-calibrate').onclick = () => {
 $('btn-recheck').onclick = () => { state.current = null; save(); render(); };
 $('btn-start').onclick = () => { state.current.started = true; save(); render(); };
 $('btn-plan').onclick = () => { stopTimer(); state.current.started = false; save(); render(); };
+$('btn-redo-day').onclick = () => {
+  if (!confirm('Delete today\'s session and start again from the morning check?')) return;
+  state = replay(state, state.log.slice(0, -1));
+  save(); render();
+};
 $('btn-stretch').onclick = () => { location.hash = 'stretch'; };
 
 // Exercise flow
