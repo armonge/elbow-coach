@@ -17,7 +17,7 @@ Elbow Coach: a mobile-first web app for daily elbow pain (lateral epicondylitis)
 ## Rules of the app
 
 - Morning stiffness 0–2 = green (full dose), 3–5 = amber (one set less), 6+ = red (stretch only). A "much worse" result yesterday caps today at amber.
-- A green session with every result "same or better" is a good day. Any "much worse" is a flare-up and takes one away. 6 good days (`GAMES_TO_WIN_SET`) move you to the next phase. The UI says "good days" and "stages"; the code still calls them `games` and `setWon`.
+- After each exercise you rate the elbow on the spot, against the 3/10 limit in the cues: fine (3/10 or less), sore (above 3/10) or much worse (sharp pain). No waiting, so the flow stays do, tap, move on. A green session with every result "fine" is a good day. Any "much worse" is a flare-up and takes one away. 6 good days (`GAMES_TO_WIN_SET`) move you to the next phase. The UI says "good days" and "stages"; the code still calls them `games` and `setWon`.
 - The morning check asks which side hurts (`state.side`: `lateral` default, or `medial`). Medial swaps in each exercise's `medial` name and cues (wrist flexors instead of extensors); doses stay the same.
 - Once a week the morning check also asks for pain-free grip (0–10 against the good hand, `gripDue`). It's stored as `grip` on the log entry and shown in the history. It doesn't change the plan.
 - Stages 3–5 add a shoulder exercise (band row) for the upper-limb kinetic chain.

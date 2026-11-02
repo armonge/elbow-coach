@@ -175,7 +175,12 @@ const PHASES = [
         mode: 'time',
         sets: 1,
         mins: 10,
-        cues: ['Easy version only, e.g. big holds, light tools, short rallies', 'Loose grip, relax between efforts', 'Stop if the elbow complains'],
+        cues: [
+          'Easy version only, e.g. big holds, light tools, short rallies',
+          'Climbing: easy problems on jugs only, no crimps, pockets or dynos',
+          'Loose grip, relax between efforts',
+          'Stop at the first twinge',
+        ],
       },
     ],
   },
@@ -236,7 +241,12 @@ const PHASES = [
         mode: 'time',
         sets: 1,
         mins: 20,
-        cues: ['Skip your hardest moves for now (small crimps, heavy lifts, slices)', 'Check grip pressure every few balls', 'Stop at the first sharp pain'],
+        cues: [
+          'Skip your hardest moves for now (small crimps, heavy lifts, slices)',
+          'Climbing: moderate problems, small holds open-handed, still no full crimps or campusing',
+          'Check grip pressure every few balls',
+          'Stop at the first sharp pain',
+        ],
       },
     ],
   },
@@ -317,8 +327,8 @@ const PHASES = [
   },
 ];
 
-// Pain after an exercise: 0 = same or better, 1 = slightly worse, 2 = much worse.
-const PAIN = ['Same or better', 'Slightly worse', 'Much worse'];
+// Pain right after an exercise, judged on the spot against the 3/10 limit in the cues: 0 = fine, 1 = sore, 2 = much worse.
+const PAIN = ['Fine (pain 3/10 or less)', 'Sore, above 3/10', 'Much worse (sharp pain)'];
 
 // Morning stiffness 0–10 plus yesterday's result gives today's light.
 function trafficLight(stiffness, lastEntry) {

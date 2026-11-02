@@ -147,9 +147,9 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
     <summary>How the scoring works</summary>
     <p>Each finished session counts as one of these:</p>
     <ul>
-      <li><strong>Good day:</strong> a green day where every exercise felt the same or better.</li>
-      <li><strong>Held steady:</strong> an amber or red day, or one exercise felt slightly worse. Counts neither way.</li>
-      <li><strong>Flare-up:</strong> any exercise felt much worse. You lose one good day, and tomorrow is capped at amber.</li>
+      <li><strong>Good day:</strong> a green day where every exercise was fine (pain 3/10 or less).</li>
+      <li><strong>Held steady:</strong> an amber or red day, or one exercise was sore, above 3/10. Counts neither way.</li>
+      <li><strong>Flare-up:</strong> any exercise was much worse (sharp pain). You lose one good day, and tomorrow is capped at amber.</li>
     </ul>
     <p>Collect 6 good days to move up to the next of the 5 stages, from calming the tendon to full activity. Steady days are fine: the rule is that you only add load once your elbow handles the current load well.</p>
     <p>That's at least 30 sessions. Tendons adapt slowly: some people recover in a few months, but for many it takes more than a year, and the pain often comes back. Keep doing strength work after you finish. The weekly grip check shows progress before the pain fully goes.</p>
@@ -349,7 +349,7 @@ function renderDone() {
   $('done-text').textContent = e.setWon ? PHASES[state.phase].goal
     : worst === 2 ? 'You lose one good day, and tomorrow is capped at amber. Back off the load and let it settle.'
     : e.light === 'green' && worst === 0 ? `${state.games} of ${GAMES_TO_WIN_SET} good days in this stage.`
-    : e.light === 'green' ? 'Something felt slightly worse, so this one doesn\'t count as a good day. No progress lost.' : 'Lighter days don\'t count as good days, but no progress is lost.';
+    : e.light === 'green' ? 'Something was sore above 3/10, so this one doesn\'t count as a good day. No progress lost.' : 'Lighter days don\'t count as good days, but no progress is lost.';
   show('v-done');
 }
 
