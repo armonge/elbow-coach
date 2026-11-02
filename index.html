@@ -222,6 +222,7 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
       </div>
     </div>
     <div id="ex-done-wrap"><button class="primary" id="btn-done" style="width:100%">I'm done</button></div>
+    <button class="small" id="btn-plan">Back to plan (to redo the morning check)</button>
     <div class="pain" id="pain" hidden>
       <p><strong>How does the elbow feel after this?</strong></p>
     </div>
@@ -324,6 +325,7 @@ function renderExercise(plan, idx) {
   $('t-skip').hidden = true;
   $('ex-done-wrap').hidden = false;
   $('pain').hidden = true;
+  $('btn-plan').hidden = stretchBreak();
   show('v-ex');
 }
 
@@ -374,6 +376,7 @@ $('btn-calibrate').onclick = () => {
 };
 $('btn-recheck').onclick = () => { state.current = null; save(); render(); };
 $('btn-start').onclick = () => { state.current.started = true; save(); render(); };
+$('btn-plan').onclick = () => { stopTimer(); state.current.started = false; save(); render(); };
 $('btn-stretch').onclick = () => { location.hash = 'stretch'; };
 
 // Exercise flow
