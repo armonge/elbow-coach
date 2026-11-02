@@ -22,6 +22,7 @@ const IMAGES = {
   'isometric-extension.jpg': { title: 'Isometric Wrist Extension', by: 'Google Gemini (AI-generated)' },
   'isometric-flexion.jpg': { title: 'Isometric Wrist Flexion', by: 'Google Gemini (AI-generated)' },
   'gentle-grip.jpg': { title: 'Gentle Grip', by: 'Google Gemini (AI-generated)' },
+  'band-row.jpg': { title: 'Band Row', by: 'Google Gemini (AI-generated)' },
 };
 
 // img: file in img/, credited from IMAGES. Medial overrides it (the BruceBlaus curl picture is palm up, so it's medial only).
@@ -163,6 +164,7 @@ const PHASES = [
       {
         kind: 'Shoulder',
         name: 'Band row',
+        img: 'band-row.jpg',
         mode: 'tempo',
         sets: 2,
         reps: 15,
@@ -229,6 +231,7 @@ const PHASES = [
       {
         kind: 'Shoulder',
         name: 'Band row',
+        img: 'band-row.jpg',
         mode: 'tempo',
         sets: 3,
         reps: 12,
@@ -309,6 +312,7 @@ const PHASES = [
       {
         kind: 'Shoulder',
         name: 'Band row',
+        img: 'band-row.jpg',
         mode: 'tempo',
         sets: 3,
         reps: 12,
