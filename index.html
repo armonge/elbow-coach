@@ -322,8 +322,9 @@ function renderExercise(plan, idx) {
   if (ex.img) {
     Object.assign($('ex-img'), { src: `img/${ex.img}`, alt: ex.name });
     const c = IMAGES[ex.img];
-    const a = (href, text) => `<a href="${href}" target="_blank" rel="noopener">${text}</a>`;
-    $('ex-credit').innerHTML = `${a(c.src, `“${c.title}”`)} by ${a(c.byUrl, c.by)}, ${a(c.licenseUrl, c.license)}, resized`;
+    const a = (href, text) => (href ? `<a href="${href}" target="_blank" rel="noopener">${text}</a>` : text);
+    const parts = [`${a(c.src, `“${c.title}”`)} by ${a(c.byUrl, c.by)}`, c.license && a(c.licenseUrl, c.license), 'resized'];
+    $('ex-credit').innerHTML = parts.filter(Boolean).join(', ');
   }
   $('ex-cues').innerHTML = ex.cues.map(t => `<li>${t}</li>`).join('');
   const query = `${ex.name.replace(/\(.*\)/, '')} elbow pain exercise`;

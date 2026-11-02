@@ -3,6 +3,7 @@
 const GAMES_TO_WIN_SET = 6;
 
 // Credits for img/ files (title, author, source, license). All are resized JPGs of the originals.
+// AI pictures have no source page or license, so the caption shows them without links.
 const BRUCE_BLAUS = { by: 'BruceBlaus', byUrl: 'https://commons.wikimedia.org/wiki/User:BruceBlaus', license: 'CC BY-SA 4.0', licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0/' };
 const IMAGES = {
   'extensor-stretch.jpg': { ...BRUCE_BLAUS, title: 'Exercise Wrist Extensor Stretch', src: 'https://commons.wikimedia.org/wiki/File:Exercise_Wrist_Extensor_Stretch.png' },
@@ -18,6 +19,9 @@ const IMAGES = {
     license: 'Public domain',
     licenseUrl: 'https://commons.wikimedia.org/wiki/Template:PD-self',
   },
+  'isometric-extension.jpg': { title: 'Isometric Wrist Extension', by: 'Google Gemini (AI-generated)' },
+  'isometric-flexion.jpg': { title: 'Isometric Wrist Flexion', by: 'Google Gemini (AI-generated)' },
+  'gentle-grip.jpg': { title: 'Gentle Grip', by: 'Google Gemini (AI-generated)' },
 };
 
 // img: file in img/, credited from IMAGES. Medial overrides it (the BruceBlaus curl picture is palm up, so it's medial only).
@@ -44,18 +48,21 @@ const PHASES = [
       {
         kind: 'Strength',
         name: 'Isometric wrist extension',
+        img: 'isometric-extension.jpg',
         mode: 'hold',
         sets: 5,
         secs: 45,
         cues: ['Forearm on a table, palm down, wrist off the edge', 'Push the back of the hand up into your other hand', 'Start light, about 30–40% effort, no movement', 'Pain up to 3/10 is OK'],
         medial: {
           name: 'Isometric wrist flexion',
+          img: 'isometric-flexion.jpg',
           cues: ['Forearm on a table, palm up, wrist off the edge', 'Push the palm up into your other hand', 'Start light, about 30–40% effort, no movement', 'Pain up to 3/10 is OK'],
         },
       },
       {
         kind: 'Activity',
         name: 'Gentle grip, elbow bent',
+        img: 'gentle-grip.jpg',
         mode: 'hold',
         sets: 3,
         secs: 20,
