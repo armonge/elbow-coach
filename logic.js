@@ -10,9 +10,17 @@ const IMAGES = {
   'wrist-curls.jpg': { ...BRUCE_BLAUS, title: 'Exercise Wrist Curls', src: 'https://commons.wikimedia.org/wiki/File:Exercise_Wrist_Curls.png' },
   'forearm-rotation.jpg': { ...BRUCE_BLAUS, title: 'Exercise Forearm Rotation', src: 'https://commons.wikimedia.org/wiki/File:Exercise_Forearm_Rotation.png' },
   'finger-extensions.jpg': { ...BRUCE_BLAUS, title: 'Exercise Finger Extensions', src: 'https://commons.wikimedia.org/wiki/File:Exercise_Finger_Extensions.png' },
+  'wrist-extension.jpg': {
+    title: 'Wrist curls',
+    src: 'https://commons.wikimedia.org/wiki/File:Wrist_curls.jpg',
+    by: 'Hipnotic88',
+    byUrl: 'https://commons.wikimedia.org/wiki/User:Hipnotic88',
+    license: 'Public domain',
+    licenseUrl: 'https://commons.wikimedia.org/wiki/Template:PD-self',
+  },
 };
 
-// img: file in img/, credited from IMAGES. Medial overrides it; the curl picture is palm up, so lateral extension has none.
+// img: file in img/, credited from IMAGES. Medial overrides it (the BruceBlaus curl picture is palm up, so it's medial only).
 // mode: 'hold' = isometric seconds, 'tempo' = reps at [up, down] seconds, 'time' = minutes of activity
 const PHASES = [
   {
@@ -76,6 +84,7 @@ const PHASES = [
       {
         kind: 'Strength',
         name: 'Eccentric wrist extension (1–2 kg)',
+        img: 'wrist-extension.jpg',
         mode: 'tempo',
         sets: 3,
         reps: 15,
@@ -184,6 +193,7 @@ const PHASES = [
       {
         kind: 'Strength',
         name: 'Heavy slow wrist extension',
+        img: 'wrist-extension.jpg',
         mode: 'tempo',
         sets: 3,
         reps: 8,
