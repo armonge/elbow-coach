@@ -473,7 +473,8 @@ $('btn-reset').onclick = () => { $('reset-confirm').hidden = false; };
 $('btn-reset-no').onclick = () => { $('reset-confirm').hidden = true; };
 $('btn-reset-yes').onclick = () => { state = { phase: 0, games: 0, log: [], current: null }; save(); $('reset-confirm').hidden = true; render(); };
 
-window.addEventListener('hashchange', render);
+// The stretch break opens in the top card, so jump up to it from the History button.
+window.addEventListener('hashchange', () => { render(); scrollTo(0, 0); });
 render();
 </script>
 </body>
