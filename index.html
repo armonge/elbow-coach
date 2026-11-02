@@ -208,7 +208,7 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
     <p class="dose" id="ex-dose"></p>
     <figure class="demo" id="ex-demo" hidden>
       <img id="ex-img" alt="">
-      <figcaption>Illustration: <a href="https://commons.wikimedia.org/wiki/User:BruceBlaus" target="_blank" rel="noopener">BruceBlaus</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a></figcaption>
+      <figcaption id="ex-credit"></figcaption>
     </figure>
     <span class="label">How to do it</span>
     <ol class="cues" id="ex-cues"></ol>
@@ -319,7 +319,12 @@ function renderExercise(plan, idx) {
   $('ex-name').textContent = ex.name;
   $('ex-dose').textContent = dose(ex);
   $('ex-demo').hidden = !ex.img;
-  if (ex.img) Object.assign($('ex-img'), { src: `img/${ex.img}`, alt: ex.name });
+  if (ex.img) {
+    Object.assign($('ex-img'), { src: `img/${ex.img}`, alt: ex.name });
+    const c = IMAGES[ex.img];
+    const a = (href, text) => `<a href="${href}" target="_blank" rel="noopener">${text}</a>`;
+    $('ex-credit').innerHTML = `${a(c.src, `“${c.title}”`)} by ${a(c.byUrl, c.by)}, ${a(c.licenseUrl, c.license)}, resized`;
+  }
   $('ex-cues').innerHTML = ex.cues.map(t => `<li>${t}</li>`).join('');
   const query = `${ex.name.replace(/\(.*\)/, '')} elbow pain exercise`;
   $('ex-more').href = `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;

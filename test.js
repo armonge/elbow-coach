@@ -1,7 +1,7 @@
 // Run: node test.js
 const assert = require('node:assert');
 const fs = require('node:fs');
-const { PHASES, exercises, trafficLight, todaysPlan, finishSession, replay, gripDue, steps, GAMES_TO_WIN_SET } = require('./logic.js');
+const { PHASES, IMAGES, exercises, trafficLight, todaysPlan, finishSession, replay, gripDue, steps, GAMES_TO_WIN_SET } = require('./logic.js');
 
 assert.equal(trafficLight(1), 'green');
 assert.equal(trafficLight(4), 'amber');
@@ -39,7 +39,8 @@ for (let i = 0; i < PHASES.length; i++) {
 }
 
 // Every demo image exists.
-for (let i = 0; i < PHASES.length; i++) for (const side of ['lateral', 'medial']) for (const e of exercises(i, side)) if (e.img) assert(fs.existsSync(`${__dirname}/img/${e.img}`), e.img);
+for (let i = 0; i < PHASES.length; i++)
+  for (const side of ['lateral', 'medial']) for (const e of exercises(i, side)) if (e.img) assert(fs.existsSync(`${__dirname}/img/${e.img}`) && IMAGES[e.img], e.img);
 
 assert(gripDue([], '2026-01-01'), 'first grip check is due');
 const gripLog = [{ date: '2026-01-01', grip: 4 }, { date: '2026-01-03' }];

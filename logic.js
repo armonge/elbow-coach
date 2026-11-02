@@ -2,7 +2,17 @@
 
 const GAMES_TO_WIN_SET = 6;
 
-// img: file in img/ (BruceBlaus, CC BY-SA 4.0, Wikimedia Commons). Medial overrides it; the curl picture is palm up, so lateral extension has none.
+// Credits for img/ files (title, author, source, license). All are resized JPGs of the originals.
+const BRUCE_BLAUS = { by: 'BruceBlaus', byUrl: 'https://commons.wikimedia.org/wiki/User:BruceBlaus', license: 'CC BY-SA 4.0', licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0/' };
+const IMAGES = {
+  'extensor-stretch.jpg': { ...BRUCE_BLAUS, title: 'Exercise Wrist Extensor Stretch', src: 'https://commons.wikimedia.org/wiki/File:Exercise_Wrist_Extensor_Stretch.png' },
+  'flexor-stretch.jpg': { ...BRUCE_BLAUS, title: 'Exercise Wrist Flexor Stretch', src: 'https://commons.wikimedia.org/wiki/File:Exercise_Wrist_Flexor_Stretch.png' },
+  'wrist-curls.jpg': { ...BRUCE_BLAUS, title: 'Exercise Wrist Curls', src: 'https://commons.wikimedia.org/wiki/File:Exercise_Wrist_Curls.png' },
+  'forearm-rotation.jpg': { ...BRUCE_BLAUS, title: 'Exercise Forearm Rotation', src: 'https://commons.wikimedia.org/wiki/File:Exercise_Forearm_Rotation.png' },
+  'finger-extensions.jpg': { ...BRUCE_BLAUS, title: 'Exercise Finger Extensions', src: 'https://commons.wikimedia.org/wiki/File:Exercise_Finger_Extensions.png' },
+};
+
+// img: file in img/, credited from IMAGES. Medial overrides it; the curl picture is palm up, so lateral extension has none.
 // mode: 'hold' = isometric seconds, 'tempo' = reps at [up, down] seconds, 'time' = minutes of activity
 const PHASES = [
   {
@@ -328,4 +338,4 @@ function dose(ex) {
   return `${ex.sets} × ${ex.reps} · tempo ${ex.tempo[0]} s up / ${ex.tempo[1]} s down`;
 }
 
-if (typeof module !== 'undefined') module.exports = { PHASES, PAIN, GAMES_TO_WIN_SET, trafficLight, exercises, todaysPlan, finishSession, replay, gripDue, steps, dose };
+if (typeof module !== 'undefined') module.exports = { PHASES, IMAGES, PAIN, GAMES_TO_WIN_SET, trafficLight, exercises, todaysPlan, finishSession, replay, gripDue, steps, dose };
