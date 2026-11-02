@@ -38,6 +38,11 @@ for (let i = 0; i < PHASES.length; i++) {
   );
 }
 
+// Wrist strength work carries on into the last stage, and grip progresses to the elbow straight.
+const last = exercises(PHASES.length - 1).map(e => e.name);
+assert(last.includes('Heavy slow wrist extension') && last.includes('Firm grip, elbow straight'));
+assert(exercises(PHASES.length - 1, 'medial').some(e => e.name === 'Heavy slow wrist flexion'));
+
 // Every demo image exists.
 for (let i = 0; i < PHASES.length; i++)
   for (const side of ['lateral', 'medial']) for (const e of exercises(i, side)) if (e.img) assert(fs.existsSync(`${__dirname}/img/${e.img}`) && IMAGES[e.img], e.img);

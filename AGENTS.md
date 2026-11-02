@@ -20,7 +20,8 @@ Elbow Coach: a mobile-first web app for daily elbow pain (lateral epicondylitis)
 - A green session with every result "same or better" is a good day. Any "much worse" is a flare-up and takes one away. 6 good days (`GAMES_TO_WIN_SET`) move you to the next phase. The UI says "good days" and "stages"; the code still calls them `games` and `setWon`.
 - The morning check asks which side hurts (`state.side`: `lateral` default, or `medial`). Medial swaps in each exercise's `medial` name and cues (wrist flexors instead of extensors); doses stay the same.
 - Once a week the morning check also asks for pain-free grip (0–10 against the good hand, `gripDue`). It's stored as `grip` on the log entry and shown in the history. It doesn't change the plan.
-- Stages 3–5 add a shoulder exercise (band row) for the upper-limb kinetic chain, so those days have four exercises.
+- Stages 3–5 add a shoulder exercise (band row) for the upper-limb kinetic chain.
+- Grip progresses: gentle with the elbow bent (stage 1), firm with the elbow bent (stage 4), firm with the elbow straight, the position that usually provokes pain (stage 5). Stage 5 keeps heavy slow wrist extension at 2×8 as maintenance, so the tendon stays loaded on return to full activity. Stage 4 has five exercises, stage 5 six.
 - Mid-session, "Back to plan" leads to "Redo morning check". After the session, "Redo today from scratch" drops today's log entry and rebuilds stage and good days with `replay`.
 - `/#stretch` opens the current phase's stretch as a break outside the session. The "Stretch break now" button in the History card opens it too. It doesn't count towards good days. `reminder.ics` schedules it at 13:00 and 18:00, plus the session at 8:00.
 - When you change a rule, update `test.js` and this section.
