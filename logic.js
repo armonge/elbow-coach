@@ -80,6 +80,7 @@ const PHASES = [
       {
         kind: 'Activity',
         name: 'Finger extension with a rubber band',
+        img: 'finger-extensions.jpg',
         mode: 'tempo',
         sets: 2,
         reps: 15,
