@@ -238,6 +238,7 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
   <section class="card" aria-label="History">
     <span class="label">History</span>
     <ul class="history" id="history"></ul>
+    <div class="row"><button class="small" id="btn-stretch">Stretch break now</button></div>
     <div class="row"><a class="more" href="reminder.ics" download>Add daily reminders to calendar (8:00 session, 13:00 and 18:00 stretch)</a></div>
     <div class="row"><button class="small" id="btn-reset">Reset all progress</button></div>
     <div class="row" id="reset-confirm" hidden>
@@ -373,6 +374,7 @@ $('btn-calibrate').onclick = () => {
 };
 $('btn-recheck').onclick = () => { state.current = null; save(); render(); };
 $('btn-start').onclick = () => { state.current.started = true; save(); render(); };
+$('btn-stretch').onclick = () => { location.hash = 'stretch'; };
 
 // Exercise flow
 $('btn-done').onclick = () => {

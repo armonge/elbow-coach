@@ -21,7 +21,7 @@ Elbow Coach: a mobile-first web app for daily elbow pain (lateral epicondylitis)
 - The morning check asks which side hurts (`state.side`: `lateral` default, or `medial`). Medial swaps in each exercise's `medial` name and cues (wrist flexors instead of extensors); doses stay the same.
 - Once a week the morning check also asks for pain-free grip (0–10 against the good hand, `gripDue`). It's stored as `grip` on the log entry and shown in the history. It doesn't change the plan.
 - Stages 3–5 add a shoulder exercise (band row) for the upper-limb kinetic chain, so those days have four exercises.
-- `/#stretch` opens the current phase's stretch as a break outside the session. It doesn't count towards good days. `reminder.ics` schedules it at 13:00 and 18:00, plus the session at 8:00.
+- `/#stretch` opens the current phase's stretch as a break outside the session. The "Stretch break now" button in the History card opens it too. It doesn't count towards good days. `reminder.ics` schedules it at 13:00 and 18:00, plus the session at 8:00.
 - When you change a rule, update `test.js` and this section.
 
 ## Conventions
