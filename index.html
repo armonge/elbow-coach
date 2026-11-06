@@ -253,7 +253,8 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
     </div>
   </section>
 
-  <p class="note">An educational self-management tool, not medical advice. If pain is sharp, at night, or getting worse over weeks, or comes with numbness, tingling or neck pain, see a clinician. Data stays in this browser.</p>
+  <p class="note"><strong>Not medical advice.</strong> This is an educational self-management tool. It does not replace a doctor or physiotherapist. If pain is sharp, at night, or getting worse over weeks, or comes with numbness, tingling or neck pain, see a clinician. Data stays in this browser.</p>
+  <p class="note"><a href="https://github.com/armonge/elbow-coach">Source on GitHub</a></p>
 </main>
 
 <script src="logic.js"></script>
@@ -297,7 +298,7 @@ function renderHistory() {
 const LIGHTS = {
   green: ['Green: full session', 'Your elbow is ready for the full dose.'],
   amber: ['Amber: hold steady', 'One set less today. It keeps your progress but doesn’t count as a good day.'],
-  red: ['Red: rest day', 'Only a gentle stretch today. Avoid painful gripping; ice, an elbow strap or rigid tape can ease pain short term.'],
+  red: ['Red: rest day', 'Only a gentle stretch today. Avoid painful gripping. Ice, an elbow strap or rigid tape can ease pain short term.'],
 };
 
 function renderPlan() {
@@ -347,7 +348,7 @@ function renderDone() {
     : worst === 2 ? 'Flare-up logged.'
     : e.light === 'green' && worst === 0 ? 'Good day.' : 'Held steady.';
   $('done-text').textContent = e.setWon ? PHASES[state.phase].goal
-    : worst === 2 ? 'You lose one good day, and tomorrow is capped at amber. Back off the load and let it settle.'
+    : worst === 2 ? 'You lose one good day, and the most you can do tomorrow is amber. Reduce the load and let it settle.'
     : e.light === 'green' && worst === 0 ? `${state.games} of ${GAMES_TO_WIN_SET} good days in this stage.`
     : e.light === 'green' ? 'Something was sore above 3/10, so this one doesn\'t count as a good day. No progress lost.' : 'Lighter days don\'t count as good days, but no progress is lost.';
   show('v-done');

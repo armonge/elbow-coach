@@ -55,5 +55,5 @@ assert(gripDue(gripLog, '2026-01-08'));
 // index.html: inline app script must parse, and the health note must stay.
 const html = fs.readFileSync(`${__dirname}/index.html`, 'utf8');
 for (const [, js] of html.matchAll(/<script>([\s\S]*?)<\/script>/g)) new Function(js);
-assert(html.includes('not medical advice'), 'keep the "not medical advice" note');
+assert(/not medical advice/i.test(html), 'keep the "not medical advice" note');
 console.log('ok');

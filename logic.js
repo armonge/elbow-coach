@@ -30,7 +30,7 @@ const IMAGES = {
 const PHASES = [
   {
     name: 'Acute Phase',
-    goal: 'Calm the tendon. Isometrics load it gently without movement; the benefit builds over weeks.',
+    goal: 'Calm the tendon. Isometrics load it gently without movement. The benefit builds over weeks.',
     exercises: [
       {
         kind: 'Stretch',
