@@ -279,7 +279,7 @@ const PHASES = [
         sets: 3,
         reps: 10,
         tempo: [3, 3],
-        cues: ['Hold a hammer by the handle, elbow at 90°', 'Rotate palm up, then palm down', 'Choke up to make it easier'],
+        cues: ['Hold a hammer by the handle, elbow at 90°', 'Rotate palm up, then palm down', 'To make it easier, hold the handle nearer the metal end'],
       },
       {
         kind: 'Strength',
@@ -289,11 +289,11 @@ const PHASES = [
         sets: 2,
         reps: 8,
         tempo: [3, 3],
-        cues: ['Pick a weight where 8 reps is hard', '3 seconds up, 3 seconds down', 'Keep this going 2–3 times a week after rehab'],
+        cues: ['Pick a weight where 8 reps is hard', '3 seconds up, 3 seconds down', 'Continue this 2–3 times a week after rehab'],
         medial: {
           name: 'Heavy slow wrist flexion',
           img: 'wrist-curls.jpg',
-          cues: ['Forearm supported, palm up', 'Pick a weight where 8 reps is hard', '3 seconds up, 3 seconds down', 'Keep this going 2–3 times a week after rehab'],
+          cues: ['Forearm supported, palm up', 'Pick a weight where 8 reps is hard', '3 seconds up, 3 seconds down', 'Continue this 2–3 times a week after rehab'],
         },
       },
       {

@@ -149,10 +149,10 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
     <ul>
       <li><strong>Good day:</strong> a green day where every exercise was fine (pain 3/10 or less).</li>
       <li><strong>Held steady:</strong> an amber or red day, or one exercise was sore, above 3/10. Counts neither way.</li>
-      <li><strong>Flare-up:</strong> any exercise was much worse (sharp pain). You lose one good day, and tomorrow is capped at amber.</li>
+      <li><strong>Flare-up:</strong> any exercise was much worse (sharp pain). You lose one good day, and the most you can do tomorrow is amber.</li>
     </ul>
-    <p>Collect 6 good days to move up to the next of the 5 stages, from calming the tendon to full activity. Steady days are fine: the rule is that you only add load once your elbow handles the current load well.</p>
-    <p>That's at least 30 sessions. Tendons adapt slowly: some people recover in a few months, but for many it takes more than a year, and the pain often comes back. Keep doing strength work after you finish. The weekly grip check shows progress before the pain fully goes.</p>
+    <p>Collect 6 good days to go to the next stage. There are 5 stages, from calming the tendon to full activity. Held-steady days are fine. You add load only when your elbow handles the current load well.</p>
+    <p>That's at least 30 sessions. Tendons adapt slowly. Some people recover in a few months. For many people, recovery takes more than a year, and the pain often returns. Keep doing strength work after you finish. The weekly grip check shows progress before the pain stops fully.</p>
   </details>
 
   <details class="card how">
@@ -160,7 +160,7 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
     <ul>
       <li>Lift with the palm up, or with both hands, instead of palm down at arm's length.</li>
       <li>Use thicker handles and a looser grip on tools, rackets, mice and bags.</li>
-      <li>Break up long gripping or typing with short pauses.</li>
+      <li>Make short pauses during long gripping or typing.</li>
       <li>A forearm strap worn during the activities that hurt can ease pain at the time.</li>
       <li>Keep moving: complete rest weakens the tendon. Reduce what hurts, don't stop everything.</li>
       <li>When you return to your sport, first practice its movements at low effort (for example, easy climbs). A coach can help you correct the technique that strains your elbow.</li>
@@ -254,7 +254,7 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
     </div>
   </section>
 
-  <p class="note"><strong>Not medical advice.</strong> This is an educational self-management tool. It does not replace a doctor or physiotherapist. If pain is sharp, at night, or getting worse over weeks, or comes with numbness, tingling or neck pain, see a clinician. If you see no progress after some months, ask a clinician about other treatments, such as shockwave therapy. Cortisone shots do not help long term and can weaken the tendon. Surgery is rarely necessary. Clinicians consider it only after 6–12 months of other treatment with no improvement. Data stays in this browser.</p>
+  <p class="note"><strong>Not medical advice.</strong> This is an educational self-management tool. It does not replace a doctor or physiotherapist. See a clinician if the pain is sharp, comes at night or gets worse over weeks. Also see a clinician if you have numbness, tingling or neck pain. If you see no progress after some months, ask a clinician about other treatments, such as shockwave therapy. Cortisone shots do not help long term and can weaken the tendon. Surgery is rarely necessary. Clinicians consider it only after 6–12 months of other treatment with no improvement. Data stays in this browser.</p>
   <p class="note"><a href="https://github.com/armonge/elbow-coach">Source on GitHub</a></p>
 </main>
 
@@ -349,9 +349,9 @@ function renderDone() {
     : worst === 2 ? 'Flare-up logged.'
     : e.light === 'green' && worst === 0 ? 'Good day.' : 'Held steady.';
   $('done-text').textContent = e.setWon ? PHASES[state.phase].goal
-    : worst === 2 ? 'You lose one good day, and the most you can do tomorrow is amber. Reduce the load and let it settle.'
+    : worst === 2 ? 'You lose one good day, and the most you can do tomorrow is amber. Reduce the load and let the elbow settle.'
     : e.light === 'green' && worst === 0 ? `${state.games} of ${GAMES_TO_WIN_SET} good days in this stage.`
-    : e.light === 'green' ? 'Something was sore above 3/10, so this one doesn\'t count as a good day. No progress lost.' : 'Lighter days don\'t count as good days, but no progress is lost.';
+    : e.light === 'green' ? 'Something was sore above 3/10, so this one doesn\'t count as a good day. You lose no progress.' : 'Lighter days don\'t count as good days, but you lose no progress.';
   show('v-done');
 }
 
