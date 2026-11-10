@@ -385,12 +385,12 @@ const WRIST_PHASES = [
       },
       {
         kind: 'Control',
-        name: 'Ball roll on a wall',
+        name: 'Ball roll on a table',
         mode: 'hold',
         move: true,
         sets: 2,
         secs: 30,
-        cues: [BOTH, 'Press a ball against a wall with the palm, arm straight at shoulder height', 'Roll small circles and lines, wrist steady', 'Light pressure. Push harder as it gets easy'],
+        cues: [BOTH, 'Put a ball on a table. Press it with the palm, wrist almost straight', 'Roll small circles and lines, wrist steady', 'Light pressure. Push harder as it gets easy'],
       },
     ],
   },
@@ -586,12 +586,7 @@ const WRIST_PHASES = [
         mode: 'hold',
         sets: 4,
         secs: 10,
-        cues: [
-          BOTH,
-          'Put an open hand on a sloper. Keep your feet on the floor or on a low step',
-          'Keep the wrist straight or a little bent forward, never bent back',
-          'Stop the set if it clicks with pain',
-        ],
+        cues: [BOTH, 'Put an open hand on a sloper. Keep your feet on the floor or on a low step', 'Keep the forearm under the hold and the wrist still', 'Stop the set if it clicks with pain'],
       },
       {
         kind: 'Strength',
