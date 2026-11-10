@@ -438,7 +438,7 @@ const WRIST_PHASES = [
         sets: 3,
         reps: 10,
         tempo: [3, 3],
-        cues: [BOTH, 'Elbow at 90° by your side, hold the dumbbell at one end', 'Rotate palm up, then palm down, slowly', 'Keep the wrist straight. The forearm does the turning'],
+        cues: [BOTH, 'Elbow at 90° by your side, hold the dumbbell at one end', 'Rotate palm up, then palm down, slowly', 'Keep the wrist straight. Turn the forearm, not the wrist'],
       },
     ],
   },
@@ -494,7 +494,7 @@ const WRIST_PHASES = [
           'Twist the bar as if you wring a wet towel',
           'Let it untwist slowly',
           'Change the direction each set',
-          'Keep the wrists straight. The forearms do the turning',
+          'Keep the wrists straight. Turn the forearms, not the wrists',
         ],
       },
     ],
@@ -525,7 +525,7 @@ const WRIST_PHASES = [
         move: true,
         sets: 3,
         secs: 20,
-        cues: [BOTH, 'Hold the bar in the middle, arm out in front', 'Shake it fast so the ends move up and down', 'The wrist stays straight and still. The bar does the moving'],
+        cues: [BOTH, 'Hold the bar in the middle, arm out in front', 'Shake it fast so the ends move up and down', 'The wrist stays straight and still. Only the bar moves'],
       },
       {
         kind: 'Control',
@@ -564,7 +564,7 @@ const WRIST_PHASES = [
         mode: 'hold',
         sets: 3,
         secs: 30,
-        cues: [BOTH, 'Bell up, elbow at 90°, wrist straight', 'Make it harder: slowly press it overhead and back', 'Continue this exercise 2–3 times a week after you finish the plan'],
+        cues: [BOTH, 'Bell up, elbow at 90°, wrist straight', 'Make it harder: slowly push it overhead, then lower it', 'Continue this exercise 2–3 times a week after you finish the plan'],
       },
       {
         kind: 'Climbing',
@@ -589,7 +589,7 @@ const WRIST_PHASES = [
         cues: [
           BOTH,
           'Put an open hand on a sloper. Keep your feet on the floor or on a low step',
-          'Keep the wrist straight or a little bent forward, not sagging back',
+          'Keep the wrist straight or a little bent forward, never bent back',
           'Stop the set if it clicks with pain',
         ],
       },
@@ -601,7 +601,7 @@ const WRIST_PHASES = [
         sets: 2,
         reps: 10,
         tempo: [3, 3],
-        cues: [BOTH, 'Elbow at 90°. Hold a dumbbell or a hammer at the end, far from the weight', 'Rotate palm up, then palm down, slowly', 'Wrist stays straight'],
+        cues: [BOTH, 'Elbow at 90°. Hold a dumbbell or a hammer at the end, far from the weight', 'Rotate palm up, then palm down, slowly', 'Keep the wrist straight'],
       },
       {
         kind: 'Activity',
@@ -610,7 +610,7 @@ const WRIST_PHASES = [
         sets: 1,
         mins: 30,
         cues: [
-          'Warm up with 10 easy minutes',
+          'Start with 10 minutes of easy climbing',
           'On slopers, pinches and side pulls, lock the wrist before you pull',
           'If a move clicks with pain, try it again with a straighter wrist, or skip it today',
         ],
