@@ -126,6 +126,8 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
 .how summary { font-weight: 700; cursor: pointer; }
 .how p, .how ul { margin: 0; }
 .how ul { padding-left: 1.2rem; display: grid; gap: 6px; }
+/* Two plans in one app: [data-plan] on <html> hides the other plan's parts. */
+[data-plan="wrist"] .elbow-only, [data-plan="elbow"] .wrist-only { display: none !important; }
 @media (prefers-reduced-motion: no-preference) { .card { animation: in .2s ease-out; } @keyframes in { from { transform: translateY(6px); opacity: .6; } } }
 </style>
 </head>
@@ -133,7 +135,7 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
 <main>
   <section class="board" aria-label="Progress">
     <div class="board-top">
-      <h1>Elbow Coach</h1>
+      <h1 data-wrist="Wrist Coach">Elbow Coach</h1>
       <span class="label" id="phase-name"></span>
     </div>
     <div class="sets" id="sets"></div>
@@ -151,11 +153,24 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
       <li><strong>Held steady:</strong> an amber or red day, or one exercise was sore, above 3/10. Counts neither way.</li>
       <li><strong>Flare-up:</strong> any exercise was much worse (sharp pain). You lose one good day, and the most you can do tomorrow is amber.</li>
     </ul>
-    <p>Collect 6 good days to go to the next stage. There are 5 stages, from calming the tendon to full activity. Held-steady days are fine. You add load only when your elbow handles the current load well.</p>
-    <p>That's at least 30 sessions. Tendons adapt slowly. Some people recover in a few months. For many people, recovery takes more than a year, and the pain often returns. Keep doing strength work after you finish. The weekly grip check shows progress before the pain stops fully.</p>
+    <p class="elbow-only">Collect 6 good days to go to the next stage. There are 5 stages, from calming the tendon to full activity. Held-steady days are fine. You add load only when your elbow handles the current load well.</p>
+    <p class="wrist-only">Collect 6 good days to go to the next stage. There are 5 stages, from feeling and holding the wrist to holding it steady on slopers and pinches. Held-steady days are fine. You add load only when your wrists handle the current load well. That's at least 30 sessions, because muscle control takes weeks to build. Keep the strength work 2–3 times a week after you finish.</p>
+    <p class="elbow-only">That's at least 30 sessions. Tendons adapt slowly. Some people recover in a few months. For many people, recovery takes more than a year, and the pain often returns. Keep doing strength work after you finish. The weekly grip check shows progress before the pain stops fully.</p>
   </details>
 
-  <details class="card how">
+  <details class="card how wrist-only">
+    <summary>Protecting the wrists day to day</summary>
+    <ul>
+      <li>Your ligaments are lax, so muscles must do the job. Don't stretch the wrists to the end of their range.</li>
+      <li>Do push-ups and planks on your fists or on handles, with the wrist straight.</li>
+      <li>On slopers, pinches and side pulls, lock the wrist straight before you pull. Don't let it sag back.</li>
+      <li>A soft click with no pain is common in lax joints. If a click causes pain, use a lighter load or keep the wrist straighter.</li>
+      <li>Wrist tape or a wrist band can give support during hard sessions. It helps, but it does not replace the training.</li>
+      <li>Keep your elbow strength work 2–3 times a week. Switch plans with the link in the History card.</li>
+    </ul>
+  </details>
+
+  <details class="card how elbow-only">
     <summary>Protecting the elbow day to day</summary>
     <ul>
       <li>Lift with the palm up, or with both hands, instead of palm down at arm's length.</li>
@@ -170,13 +185,13 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
   <!-- Morning check -->
   <section class="card" id="v-check" hidden>
     <span class="label">Morning check</span>
-    <h2>How stiff is your elbow right now?</h2>
+    <h2 data-wrist="How much discomfort do your wrists have right now?">How stiff is your elbow right now?</h2>
     <div class="stiff">
       <div class="stiff-value" id="stiff-out">2</div>
       <input type="range" id="stiff" min="0" max="10" step="1" value="2" aria-label="Stiffness from 0 to 10">
       <div class="scale"><span>0 · none</span><span>5 · moderate</span><span>10 · worst</span></div>
     </div>
-    <div class="grip" id="grip-wrap" hidden>
+    <div class="grip elbow-only" id="grip-wrap" hidden>
       <label class="label" for="grip">Weekly grip check</label>
       <p class="note">Arm straight, palm down. Squeeze a rolled towel until it starts to hurt. How strong was that compared with your good hand? 10 = just as strong. <span id="grip-last"></span></p>
       <select id="grip">
@@ -185,8 +200,8 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
         <option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
       </select>
     </div>
-    <label class="label" for="side">Where does it hurt?</label>
-    <select id="side">
+    <label class="label elbow-only" for="side">Where does it hurt?</label>
+    <select id="side" class="elbow-only">
       <option value="lateral">Outer elbow (tennis elbow)</option>
       <option value="medial">Inner elbow (golfer's elbow)</option>
     </select>
@@ -225,7 +240,7 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
     <div id="ex-done-wrap"><button class="primary" id="btn-done" style="width:100%">I'm done</button></div>
     <button class="small" id="btn-plan">Back to plan (to redo the morning check)</button>
     <div class="pain" id="pain" hidden>
-      <p><strong>How does the elbow feel after this?</strong></p>
+      <p><strong data-wrist="How do the wrists feel after this?">How does the elbow feel after this?</strong></p>
     </div>
   </section>
 
@@ -245,8 +260,9 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
   <section class="card" aria-label="History">
     <span class="label">History</span>
     <ul class="history" id="history"></ul>
-    <div class="row"><button class="small" id="btn-stretch">Stretch break now</button></div>
-    <div class="row"><a class="more" href="reminder.ics" download>Add daily reminders to calendar (8:00 session, 13:00 and 18:00 stretch)</a></div>
+    <div class="row"><button class="small" id="btn-stretch" data-wrist="Movement break now">Stretch break now</button></div>
+    <div class="row"><a class="more elbow-only" href="?plan=wrist">Switch to Wrist Coach →</a><a class="more wrist-only" href="./">Switch to Elbow Coach →</a></div>
+    <div class="row elbow-only"><a class="more" href="reminder.ics" download>Add daily reminders to calendar (8:00 session, 13:00 and 18:00 stretch)</a></div>
     <div class="row"><button class="small" id="btn-reset">Reset all progress</button></div>
     <div class="row" id="reset-confirm" hidden>
       <button class="small" id="btn-reset-yes">Yes, delete everything</button>
@@ -254,14 +270,24 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
     </div>
   </section>
 
-  <p class="note"><strong>Not medical advice.</strong> This is an educational self-management tool. It does not replace a doctor or physiotherapist. See a clinician if the pain is sharp, comes at night or gets worse over weeks. Also see a clinician if you have numbness, tingling or neck pain. If you see no progress after some months, ask a clinician about other treatments, such as shockwave therapy. Cortisone shots do not help long term and can weaken the tendon. Surgery is rarely necessary. Clinicians consider it only after 6–12 months of other treatment with no improvement. Data stays in this browser.</p>
+  <p class="note"><strong>Not medical advice.</strong> This is an educational self-management tool. It does not replace a doctor or physiotherapist. <span class="wrist-only">See a clinician if a click comes with sharp pain, swelling or a weak grip, or if the wrist suddenly fails under load. Also see a clinician if you have numbness or tingling.</span><span class="elbow-only">See a clinician if the pain is sharp, comes at night or gets worse over weeks. Also see a clinician if you have numbness, tingling or neck pain. If you see no progress after some months, ask a clinician about other treatments, such as shockwave therapy. Cortisone shots do not help long term and can weaken the tendon. Surgery is rarely necessary. Clinicians consider it only after 6–12 months of other treatment with no improvement.</span> Data stays in this browser.</p>
   <p class="note"><a href="https://github.com/armonge/elbow-coach">Source on GitHub</a></p>
 </main>
 
 <script src="logic.js"></script>
 <script>
 const $ = id => document.getElementById(id);
-const KEY = 'elbow-coach-v1';
+// ?plan=wrist opens the wrist plan. Each plan keeps its own progress under its own key.
+const PLAN = new URLSearchParams(location.search).get('plan') === 'wrist' ? 'wrist' : 'elbow';
+const PHASES_ = PLANS[PLAN];
+const PART = PLAN === 'wrist' ? 'wrists' : 'elbow';
+const KEY = `${PLAN}-coach-v1`;
+document.documentElement.dataset.plan = PLAN;
+if (PLAN === 'wrist') {
+  for (const el of document.querySelectorAll('[data-wrist]')) el.textContent = el.dataset.wrist;
+  document.title = 'Wrist Coach';
+  $('stiff').setAttribute('aria-label', 'Discomfort from 0 to 10');
+}
 const today = () => new Date().toLocaleDateString('sv'); // YYYY-MM-DD local
 
 function load() {
@@ -270,7 +296,8 @@ function load() {
 function save() {
   try { localStorage.setItem(KEY, JSON.stringify(state)); } catch {}
 }
-let state = load() || { phase: 0, games: 0, log: [], current: null };
+const fresh = () => ({ plan: PLAN, phase: 0, games: 0, log: [], current: null });
+let state = load() || fresh();
 // A session left open on an earlier day is dropped.
 if (state.current && state.current.date !== today()) state.current = null;
 
@@ -279,9 +306,9 @@ function show(id) {
 }
 
 function renderBoard() {
-  $('phase-name').textContent = PHASES[state.phase].name;
-  $('sets').innerHTML = PHASES.map((p, i) =>
-    `<div class="set ${i < state.phase ? 'won' : i === state.phase ? 'now' : ''}">${i + 1}<small>${['Acute', 'Early', 'Build', 'Strength', 'Sport'][i]}</small></div>`).join('');
+  $('phase-name').textContent = PHASES_[state.phase].name;
+  $('sets').innerHTML = PHASES_.map((p, i) =>
+    `<div class="set ${i < state.phase ? 'won' : i === state.phase ? 'now' : ''}">${i + 1}<small>${(PLAN === 'wrist' ? ['Feel', 'Stable', 'Strong', 'React', 'Climb'] : ['Acute', 'Early', 'Build', 'Strength', 'Sport'])[i]}</small></div>`).join('');
   $('games').innerHTML = Array.from({ length: GAMES_TO_WIN_SET }, (_, i) =>
     `<span class="ball ${i < state.games ? 'on' : ''}"></span>`).join('');
   $('games').setAttribute('aria-label', `${state.games} of ${GAMES_TO_WIN_SET} good days`);
@@ -292,14 +319,15 @@ function renderHistory() {
   $('history').innerHTML = rows.length ? rows.map(e => {
     const worst = Math.max(...e.results);
     const res = e.setWon ? 'Next stage' : worst === 2 ? 'Flare-up' : e.light === 'green' && worst === 0 ? 'Good day' : 'Held steady';
-    return `<li><span class="dot ${e.light}"></span><span class="when">${e.date.slice(5)}</span><span>Stiffness ${e.stiffness}${e.grip != null ? ` · Grip ${e.grip}/10` : ''} · ${PHASES[e.phase].name}</span><span class="res">${res}</span></li>`;
+    return `<li><span class="dot ${e.light}"></span><span class="when">${e.date.slice(5)}</span><span>${PLAN === 'wrist' ? 'Discomfort' : 'Stiffness'} ${e.stiffness}${e.grip != null ? ` · Grip ${e.grip}/10` : ''} · ${PHASES_[e.phase].name}</span><span class="res">${res}</span></li>`;
   }).join('') : '<li class="empty" style="display:block">No sessions yet. Your first morning check starts the plan.</li>';
 }
 
 const LIGHTS = {
-  green: ['Green: full session', 'Your elbow is ready for the full dose.'],
+  green: ['Green: full session', `Your ${PART} ${PLAN === 'wrist' ? 'are' : 'is'} ready for the full dose.`],
   amber: ['Amber: hold steady', 'One set less today. It keeps your progress but doesn’t count as a good day.'],
-  red: ['Red: rest day', 'Only a gentle stretch today. Avoid painful gripping. Ice, an elbow strap or rigid tape can ease pain short term. Put ice on the elbow for 15–20 minutes, 3–4 times a day, wrapped in a thin towel.'],
+  red: PLAN === 'wrist' ? ['Red: rest day', 'Only gentle wrist circles today. Avoid the grips that cause a painful click. Wrist tape or a wrist band can give support.']
+    : ['Red: rest day', 'Only a gentle stretch today. Avoid painful gripping. Ice, an elbow strap or rigid tape can ease pain short term. Put ice on the elbow for 15–20 minutes, 3–4 times a day, wrapped in a thin towel.'],
 };
 
 function renderPlan() {
@@ -329,7 +357,7 @@ function renderExercise(plan, idx) {
     $('ex-credit').innerHTML = parts.filter(Boolean).join(', ');
   }
   $('ex-cues').innerHTML = ex.cues.map(t => `<li>${t}</li>`).join('');
-  const query = `${ex.name.replace(/\(.*\)/, '')} elbow pain exercise`;
+  const query = `${ex.name.replace(/\(.*\)/, '')} ${PLAN === 'wrist' ? 'wrist stability' : 'elbow pain'} exercise`;
   $('ex-more').href = `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
   $('t-label').textContent = 'Timer is optional';
   $('t-clock').textContent = '–';
@@ -345,11 +373,11 @@ function renderExercise(plan, idx) {
 function renderDone() {
   const e = state.log[state.log.length - 1];
   const worst = Math.max(...e.results);
-  $('done-title').textContent = e.setWon ? `Stage complete! On to ${PHASES[state.phase].name}.`
+  $('done-title').textContent = e.setWon ? `Stage complete! On to ${PHASES_[state.phase].name}.`
     : worst === 2 ? 'Flare-up logged.'
     : e.light === 'green' && worst === 0 ? 'Good day.' : 'Held steady.';
-  $('done-text').textContent = e.setWon ? PHASES[state.phase].goal
-    : worst === 2 ? 'You lose one good day, and the most you can do tomorrow is amber. Reduce the load and let the elbow settle.'
+  $('done-text').textContent = e.setWon ? PHASES_[state.phase].goal
+    : worst === 2 ? `You lose one good day, and the most you can do tomorrow is amber. Reduce the load and let the ${PART} settle.`
     : e.light === 'green' && worst === 0 ? `${state.games} of ${GAMES_TO_WIN_SET} good days in this stage.`
     : e.light === 'green' ? 'Something was sore above 3/10, so this one doesn\'t count as a good day. You lose no progress.' : 'Lighter days don\'t count as good days, but you lose no progress.';
   show('v-done');
@@ -362,7 +390,7 @@ const stretchBreak = () => location.hash === '#stretch';
 function render() {
   renderBoard();
   renderHistory();
-  if (stretchBreak()) return renderExercise([exercises(state.phase, state.side)[0]], 0);
+  if (stretchBreak()) return renderExercise([exercises(state.phase, state.side, PLAN)[0]], 0);
   const last = state.log[state.log.length - 1];
   if (state.current) state.current.started ? renderExercise(state.current.plan, state.current.idx) : renderPlan();
   else if (last && last.date === today()) renderDone();
@@ -384,7 +412,7 @@ $('btn-calibrate').onclick = () => {
   const stiffness = +$('stiff').value;
   const light = trafficLight(stiffness, state.log[state.log.length - 1]);
   const grip = $('grip-wrap').hidden || $('grip').value === '' ? undefined : +$('grip').value;
-  state.current = { date: today(), stiffness, grip, light, phase: state.phase, plan: todaysPlan(state.phase, light, state.side), idx: 0, results: [], started: false };
+  state.current = { date: today(), stiffness, grip, light, phase: state.phase, plan: todaysPlan(state.phase, light, state.side, PLAN), idx: 0, results: [], started: false };
   save(); render();
 };
 $('btn-recheck').onclick = () => { state.current = null; save(); render(); };
@@ -398,7 +426,7 @@ $('btn-stretch').onclick = () => { location.hash = 'stretch'; };
 // Exercise flow
 $('btn-done').onclick = () => {
   stopTimer();
-  if (stretchBreak()) { history.replaceState(null, '', location.pathname); return render(); }
+  if (stretchBreak()) { history.replaceState(null, '', location.pathname + location.search); return render(); }
   $('ex-done-wrap').hidden = true; $('pain').hidden = false; $('pain').querySelector('button').focus();
 };
 PAIN.forEach((label, p) => {
@@ -473,7 +501,7 @@ $('t-skip').onclick = () => nextStep();
 // Reset
 $('btn-reset').onclick = () => { $('reset-confirm').hidden = false; };
 $('btn-reset-no').onclick = () => { $('reset-confirm').hidden = true; };
-$('btn-reset-yes').onclick = () => { state = { phase: 0, games: 0, log: [], current: null }; save(); $('reset-confirm').hidden = true; render(); };
+$('btn-reset-yes').onclick = () => { state = fresh(); save(); $('reset-confirm').hidden = true; render(); };
 
 // The stretch break opens in the top card, so jump up to it from the History button.
 window.addEventListener('hashchange', () => { render(); scrollTo(0, 0); });

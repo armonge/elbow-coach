@@ -1,7 +1,7 @@
 // Run: node test.js
 const assert = require('node:assert');
 const fs = require('node:fs');
-const { PHASES, IMAGES, exercises, trafficLight, todaysPlan, finishSession, replay, gripDue, steps, GAMES_TO_WIN_SET } = require('./logic.js');
+const { PHASES, PLANS, IMAGES, exercises, trafficLight, todaysPlan, finishSession, replay, gripDue, steps, dose, GAMES_TO_WIN_SET } = require('./logic.js');
 
 assert.equal(trafficLight(1), 'green');
 assert.equal(trafficLight(4), 'amber');
@@ -46,6 +46,19 @@ assert(exercises(PHASES.length - 1, 'medial').some(e => e.name === 'Heavy slow w
 // Every demo image exists.
 for (let i = 0; i < PHASES.length; i++)
   for (const side of ['lateral', 'medial']) for (const e of exercises(i, side)) if (e.img) assert(fs.existsSync(`${__dirname}/img/${e.img}`) && IMAGES[e.img], e.img);
+
+// Wrist plan: red days and the stretch break give gentle mid-range circles (no passive stretch for lax wrists).
+const W = PLANS.wrist;
+for (let i = 0; i < W.length; i++) {
+  assert.equal(todaysPlan(i, 'red', undefined, 'wrist')[0].name, 'Slow wrist circles, mid-range');
+  for (const e of exercises(i, 'lateral', 'wrist')) if (e.img) assert(fs.existsSync(`${__dirname}/img/${e.img}`) && IMAGES[e.img], e.img);
+}
+let w = { plan: 'wrist', phase: W.length - 2, games: 0, log: [] };
+for (let i = 0; i < GAMES_TO_WIN_SET * 2; i++) w = finishSession(w, { light: 'green', results: [0] });
+assert.equal(w.phase, W.length - 1, 'wrist plan stops at its last stage');
+assert.equal(dose(W[0].exercises[0]), '2 × 30 s', 'moving exercises are not called holds');
+assert.equal(steps(W[0].exercises[0])[0].label, 'Set 1/2 · Move');
+assert.equal(exercises(W.length - 1, 'lateral', 'wrist').at(-1).kind, 'Activity', 'last stage ends with climbing');
 
 assert(gripDue([], '2026-01-01'), 'first grip check is due');
 const gripLog = [{ date: '2026-01-01', grip: 4 }, { date: '2026-01-03' }];
