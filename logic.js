@@ -326,7 +326,7 @@ const PHASES = [
         mode: 'time',
         sets: 1,
         mins: 30,
-        cues: ['Warm up with 5–10 easy minutes', 'Build to full intensity over the session', 'Keep doing strength work 2–3 times a week'],
+        cues: ['Start with 5–10 minutes at an easy level', 'Build to full intensity over the session', 'Keep doing strength work 2–3 times a week'],
       },
     ],
   },
