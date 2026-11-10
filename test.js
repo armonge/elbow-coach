@@ -58,7 +58,10 @@ for (let i = 0; i < GAMES_TO_WIN_SET * 2; i++) w = finishSession(w, { light: 'gr
 assert.equal(w.phase, W.length - 1, 'wrist plan stops at its last stage');
 assert.equal(dose(W[0].exercises[0]), '2 × 30 s', 'moving exercises are not called holds');
 assert.equal(steps(W[0].exercises[0])[0].label, 'Set 1/2 · Move');
-assert.equal(exercises(W.length - 1, 'lateral', 'wrist').at(-1).kind, 'Activity', 'last stage ends with climbing');
+assert(
+  W.every((_, i) => exercises(i, 'lateral', 'wrist').every(e => e.kind !== 'Activity')),
+  'wrist plan is a home routine: no gym or session items',
+);
 
 assert(gripDue([], '2026-01-01'), 'first grip check is due');
 const gripLog = [{ date: '2026-01-01', grip: 4 }, { date: '2026-01-03' }];
