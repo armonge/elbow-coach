@@ -47,6 +47,13 @@ assert(exercises(PHASES.length - 1, 'medial').some(e => e.name === 'Heavy slow w
 for (let i = 0; i < PHASES.length; i++)
   for (const side of ['lateral', 'medial']) for (const e of exercises(i, side)) if (e.img) assert(fs.existsSync(`${__dirname}/img/${e.img}`) && IMAGES[e.img], e.img);
 
+// Wrist stage 2 trains the DRUJ stabilizers, and the dart-thrower path has a stop cue for midcarpal laxity.
+assert(exercises(1, 'lateral', 'wrist').some(e => e.name === 'Isometric rotation holds'));
+assert(
+  exercises(1, 'lateral', 'wrist')
+    .find(e => e.name.startsWith('Dart'))
+    .cues.some(c => c.startsWith('Stop if the wrist clunks')),
+);
 // Wrist plan: red days and the stretch break give gentle mid-range circles (no passive stretch for lax wrists).
 const W = PLANS.wrist;
 for (let i = 0; i < W.length; i++) {

@@ -342,6 +342,10 @@ const PHASES = [
 // Wrist stability for lax wrists (both sides, click in the middle of the back of the wrist).
 // Muscle control and strength stabilize the carpal bones; ligaments don't tighten with training.
 // Order: feel and hold (proprioception), stabilizers (dart-thrower plane, ECU/FCU), mid-range strength, reaction, climbing.
+// Evidence is mostly expert opinion (Hagert 2020; Karagiannopoulos & Michlovitz 2016, J Hand Ther). Doses match the one RCT
+// (Lindholm & Claesson 2024, Clin Rehabil: 3x10 at 0.5-1 kg, daily). The dart-thrower path moves mostly the midcarpal joint,
+// where lax wrists are often loose, so it has a stop cue. Rotation holds train the DRUJ stabilizers (ECU, pronator quadratus;
+// Ho 2017, J Wrist Surg; Chen 2021, Hand Therapy). Climbing wrist injuries are mostly ulnar-sided (Schoffl/Lutter 2023, AJSM).
 // No passive stretching: lax wrists need control, not more range. The first exercise is gentle mid-range movement,
 // because red days and the stretch break use it.
 const BOTH = 'Both wrists, one after the other';
@@ -416,6 +420,21 @@ const WRIST_PHASES = [
           'Move the hand diagonally: from back-and-thumb side to forward-and-little-finger side, like throwing a dart',
           'This is the most stable path of the wrist',
           MID,
+          'Stop if the wrist clunks or shifts. Some lax wrists do not tolerate this path. Do slow wrist extension and flexion instead',
+        ],
+      },
+      {
+        kind: 'Strength',
+        name: 'Isometric rotation holds',
+        mode: 'hold',
+        sets: 2,
+        secs: 30,
+        cues: [
+          BOTH,
+          'Forearm on a table, thumb up, wrist straight. Hold the hand with your other hand',
+          'Try to turn the palm down, then up. Your other hand stops all movement',
+          'One set per direction. About 30–40% effort',
+          'This trains the muscles that hold the forearm bones together at the little-finger side',
         ],
       },
       {

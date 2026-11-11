@@ -128,12 +128,16 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
 .how ul { padding-left: 1.2rem; display: grid; gap: 6px; }
 /* Two plans in one app: [data-plan] on <html> hides the other plan's parts. */
 [data-plan="wrist"] .elbow-only, [data-plan="elbow"] .wrist-only { display: none !important; }
+.plans { display: flex; gap: 6px; }
+.plans a { color: inherit; text-decoration: none; font-weight: 700; font-size: .85rem; padding: 4px 14px; border-radius: 999px; border: 1px solid color-mix(in srgb, var(--court-ink) 40%, transparent); }
+.plans a[aria-current] { background: var(--court-ink); color: var(--court); }
 @media (prefers-reduced-motion: no-preference) { .card { animation: in .2s ease-out; } @keyframes in { from { transform: translateY(6px); opacity: .6; } } }
 </style>
 </head>
 <body>
 <main>
   <section class="board" aria-label="Progress">
+    <nav class="plans" aria-label="Plan"><a href="./" data-for="elbow">Elbow</a><a href="?plan=wrist" data-for="wrist">Wrist</a></nav>
     <div class="board-top">
       <h1 data-wrist="Wrist Coach">Elbow Coach</h1>
       <span class="label" id="phase-name"></span>
@@ -163,10 +167,10 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
     <ul>
       <li>Your ligaments are lax, so the muscles must hold the joint. Don't stretch the wrists to the end of their range.</li>
       <li>Do push-ups and planks on your fists or on handles, with the wrist straight.</li>
-      <li>On slopers, pinches and side pulls, lock the wrist straight before you pull. Don't let it move under load.</li>
+      <li>On slopers, pinches, side pulls and underclings, lock the wrist straight before you pull. Don't let it move under load.</li>
       <li>A soft click with no pain is common in lax joints. If a click causes pain, use a lighter load or keep the wrist straighter.</li>
-      <li>Wrist tape or a wrist band can give support during hard sessions. It helps, but it does not replace the training.</li>
-      <li>Continue your elbow strength work 2–3 times a week. Switch plans with the link in the History card.</li>
+      <li>Wrist tape or a wrist band can feel supportive during hard sessions. No study shows that it prevents injury, so it does not replace the training.</li>
+      <li>Continue your elbow strength work 2–3 times a week. Switch plans with the buttons at the top.</li>
     </ul>
   </details>
 
@@ -261,7 +265,6 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
     <span class="label">History</span>
     <ul class="history" id="history"></ul>
     <div class="row"><button class="small" id="btn-stretch" data-wrist="Movement break now">Stretch break now</button></div>
-    <div class="row"><a class="more elbow-only" href="?plan=wrist">Switch to Wrist Coach →</a><a class="more wrist-only" href="./">Switch to Elbow Coach →</a></div>
     <div class="row elbow-only"><a class="more" href="reminder.ics" download>Add daily reminders to calendar (8:00 session, 13:00 and 18:00 stretch)</a></div>
     <div class="row"><button class="small" id="btn-reset">Reset all progress</button></div>
     <div class="row" id="reset-confirm" hidden>
@@ -270,7 +273,7 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
     </div>
   </section>
 
-  <p class="note"><strong>Not medical advice.</strong> This is an educational self-management tool. It does not replace a doctor or physiotherapist. <span class="wrist-only">See a clinician if a click comes with sharp pain, swelling or a weak grip, or if the wrist suddenly fails under load. Also see a clinician if you have numbness or tingling.</span><span class="elbow-only">See a clinician if the pain is sharp, comes at night or gets worse over weeks. Also see a clinician if you have numbness, tingling or neck pain. If you see no progress after some months, ask a clinician about other treatments, such as shockwave therapy. Cortisone shots do not help long term and can weaken the tendon. Surgery is rarely necessary. Clinicians consider it only after 6–12 months of other treatment with no improvement.</span> Data stays in this browser.</p>
+  <p class="note"><strong>Not medical advice.</strong> This is an educational self-management tool. It does not replace a doctor or physiotherapist. <span class="wrist-only">See a clinician if a click comes with sharp pain, swelling or a weak grip, or if the wrist suddenly fails under load. Also see a clinician if wrist pain lasts more than 3 weeks, if it starts after a fall onto the hand, if you feel a painful snap when you turn the palm up, or if you have numbness or tingling. Small ligament tears and some fractures hurt only a little at first.</span><span class="elbow-only">See a clinician if the pain is sharp, comes at night or gets worse over weeks. Also see a clinician if you have numbness, tingling or neck pain. If you see no progress after some months, ask a clinician about other treatments, such as shockwave therapy. Cortisone shots do not help long term and can weaken the tendon. Surgery is rarely necessary. Clinicians consider it only after 6–12 months of other treatment with no improvement.</span> Data stays in this browser.</p>
   <p class="note"><a href="https://github.com/armonge/elbow-coach">Source on GitHub</a></p>
 </main>
 
@@ -283,6 +286,7 @@ const PHASES_ = PLANS[PLAN];
 const PART = PLAN === 'wrist' ? 'wrists' : 'elbow';
 const KEY = `${PLAN}-coach-v1`;
 document.documentElement.dataset.plan = PLAN;
+document.querySelector(`.plans [data-for="${PLAN}"]`).setAttribute('aria-current', 'page');
 if (PLAN === 'wrist') {
   for (const el of document.querySelectorAll('[data-wrist]')) el.textContent = el.dataset.wrist;
   document.title = 'Wrist Coach';
