@@ -13,7 +13,6 @@ const IMAGES = {
   'finger-extensions.jpg': { ...BRUCE_BLAUS, title: 'Exercise Finger Extensions', src: 'https://commons.wikimedia.org/wiki/File:Exercise_Finger_Extensions.png' },
   'wrist-extension.jpg': { title: 'Wrist Extension', by: 'Google Gemini (AI-generated)' },
   'wrist-circles.gif': { title: 'Wrist Circles', by: 'Google Gemini (AI-generated)' },
-  'position-matching.gif': { title: 'Wrist Position Matching', by: 'Google Gemini (AI-generated)' },
   'ball-roll.jpg': { title: 'Ball Roll', by: 'Google Gemini (AI-generated)' },
   'dart-thrower.jpg': { title: "Dart Thrower's Motion", by: 'Google Gemini (AI-generated)' },
   'side-lifts.jpg': { title: 'Side Wrist Lifts', by: 'Google Gemini (AI-generated)' },
@@ -369,22 +368,6 @@ const WRIST_PHASES = [
     goal: 'Teach the wrist muscles to feel and hold the joint. Use light effort and full attention.',
     exercises: [
       CIRCLES,
-      {
-        kind: 'Control',
-        name: 'Wrist position matching, eyes closed',
-        img: 'position-matching.gif',
-        mode: 'tempo',
-        sets: 2,
-        reps: 8,
-        tempo: [3, 3],
-        cues: [
-          BOTH,
-          'Forearm on a table, hand off the edge',
-          'Eyes closed: move the wrist to a target (for example, halfway back), and hold it',
-          'Open your eyes and check. Then return to straight',
-          'Change the target each rep: back, forward, thumb side, little-finger side',
-        ],
-      },
       {
         kind: 'Strength',
         name: 'Isometric holds, 4 directions',
