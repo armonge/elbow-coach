@@ -346,6 +346,8 @@ const PHASES = [
 // because red days and the stretch break use it.
 const BOTH = 'Both wrists, one after the other';
 const MID = 'Stay in the middle of the range: never force the wrist fully bent or fully back';
+const HARD = 'Choose a load that makes the last 2–3 reps hard, but still slow and steady';
+const MORE = 'Add 0.5–1 kg after 2 sessions in which all sets are easy';
 const CIRCLES = {
   kind: 'Warm-up',
   name: 'Slow wrist circles, mid-range',
@@ -430,6 +432,7 @@ const WRIST_PHASES = [
           'Thumb side: the weight is in front of the hand. Raise it toward the ceiling',
           'Little-finger side: hold the weight behind the hand. Raise it toward the ceiling',
           'Lower slowly',
+          HARD,
           MID,
         ],
       },
@@ -463,7 +466,7 @@ const WRIST_PHASES = [
         sets: 3,
         reps: 10,
         tempo: [3, 3],
-        cues: [BOTH, 'Forearm supported, palm down', 'Start with 1 kg. Use a heavier weight when 10 reps are easy', 'Lower only to a little below straight', MID],
+        cues: [BOTH, 'Forearm supported, palm down', 'Start with 1 kg', HARD, MORE, 'Lower only to a little below straight', MID],
       },
       {
         kind: 'Strength',
@@ -473,7 +476,7 @@ const WRIST_PHASES = [
         sets: 3,
         reps: 10,
         tempo: [3, 3],
-        cues: [BOTH, 'Forearm supported, palm up', 'Start with 1 kg. Use a heavier weight when 10 reps are easy', 'Lower only to a little below straight', MID],
+        cues: [BOTH, 'Forearm supported, palm up', 'Start with 1 kg', HARD, MORE, 'Lower only to a little below straight', MID],
       },
       {
         kind: 'Strength',
@@ -487,7 +490,8 @@ const WRIST_PHASES = [
           BOTH,
           'Hold the dumbbell at one end, like a hammer',
           'One set toward the thumb side, one set toward the little-finger side',
-          'To make it harder, hold the handle further from the weight',
+          HARD,
+          'After 2 sessions in which all sets are easy, hold the handle further from the weight',
           MID,
         ],
       },
