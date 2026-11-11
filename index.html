@@ -131,6 +131,7 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
 [data-plan="wrist"] .elbow-only, [data-plan="elbow"] .wrist-only { display: none !important; }
 .plans { display: flex; gap: 6px; }
 .plans a { color: inherit; text-decoration: none; font-weight: 700; font-size: .85rem; padding: 4px 14px; border-radius: 999px; border: 1px solid color-mix(in srgb, var(--court-ink) 40%, transparent); }
+.plans .break { margin-left: auto; border-style: dashed; }
 .plans a[aria-current] { background: var(--court-ink); color: var(--court); }
 @media (prefers-reduced-motion: no-preference) { .card { animation: in .2s ease-out; } @keyframes in { from { transform: translateY(6px); opacity: .6; } } }
 </style>
@@ -138,7 +139,7 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
 <body>
 <main>
   <section class="board" aria-label="Progress">
-    <nav class="plans" aria-label="Plan"><a href="./" data-for="elbow">Elbow</a><a href="?plan=wrist" data-for="wrist">Wrist</a></nav>
+    <nav class="plans" aria-label="Plan"><a href="./" data-for="elbow">Elbow</a><a href="?plan=wrist" data-for="wrist">Wrist</a><a href="#stretch" class="break" data-wrist="Movement break">Stretch break</a></nav>
     <div class="board-top">
       <h1 data-wrist="Wrist Coach">Elbow Coach</h1>
       <span class="label" id="phase-name"></span>
@@ -267,7 +268,6 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
       <summary class="label" id="history-sum">History</summary>
       <ul class="history" id="history"></ul>
     </details>
-    <div class="row"><button class="small" id="btn-stretch" data-wrist="Movement break now">Stretch break now</button></div>
     <div class="row elbow-only"><a class="more" href="reminder.ics" download>Add daily reminders to calendar (8:00 session, 13:00 and 18:00 stretch)</a></div>
     <div class="row"><button class="small" id="btn-reset">Reset all progress</button></div>
     <div class="row" id="reset-confirm" hidden>
@@ -429,7 +429,6 @@ $('btn-plan').onclick = () => { stopTimer(); state.current.started = false; save
 $('btn-redo-day').onclick = () => { $('redo-confirm').hidden = false; };
 $('btn-redo-no').onclick = () => { $('redo-confirm').hidden = true; };
 $('btn-redo-yes').onclick = () => { state = replay(state, state.log.slice(0, -1)); save(); $('redo-confirm').hidden = true; render(); };
-$('btn-stretch').onclick = () => { location.hash = 'stretch'; };
 
 // Exercise flow
 $('btn-done').onclick = () => {
@@ -511,7 +510,7 @@ $('btn-reset').onclick = () => { $('reset-confirm').hidden = false; };
 $('btn-reset-no').onclick = () => { $('reset-confirm').hidden = true; };
 $('btn-reset-yes').onclick = () => { state = fresh(); save(); $('reset-confirm').hidden = true; render(); };
 
-// The stretch break opens in the top card, so jump up to it from the History button.
+// The stretch break opens in the top card, so jump up to it from the break link on the board.
 window.addEventListener('hashchange', () => { render(); scrollTo(0, 0); });
 render();
 </script>
