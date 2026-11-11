@@ -126,6 +126,7 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
 .how summary { font-weight: 700; cursor: pointer; }
 .how p, .how ul { margin: 0; }
 .how ul { padding-left: 1.2rem; display: grid; gap: 6px; }
+.how .history { padding-left: 0; }
 /* Two plans in one app: [data-plan] on <html> hides the other plan's parts. */
 [data-plan="wrist"] .elbow-only, [data-plan="elbow"] .wrist-only { display: none !important; }
 .plans { display: flex; gap: 6px; }
@@ -262,8 +263,10 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
   </section>
 
   <section class="card" aria-label="History">
-    <span class="label">History</span>
-    <ul class="history" id="history"></ul>
+    <details class="how">
+      <summary class="label" id="history-sum">History</summary>
+      <ul class="history" id="history"></ul>
+    </details>
     <div class="row"><button class="small" id="btn-stretch" data-wrist="Movement break now">Stretch break now</button></div>
     <div class="row elbow-only"><a class="more" href="reminder.ics" download>Add daily reminders to calendar (8:00 session, 13:00 and 18:00 stretch)</a></div>
     <div class="row"><button class="small" id="btn-reset">Reset all progress</button></div>
@@ -320,6 +323,7 @@ function renderBoard() {
 
 function renderHistory() {
   const rows = state.log.slice(-14).reverse();
+  $('history-sum').textContent = `History (${state.log.length} session${state.log.length === 1 ? '' : 's'})`;
   $('history').innerHTML = rows.length ? rows.map(e => {
     const worst = Math.max(...e.results);
     const res = e.setWon ? 'Next stage' : worst === 2 ? 'Flare-up' : e.light === 'green' && worst === 0 ? 'Good day' : 'Held steady';
