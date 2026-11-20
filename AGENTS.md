@@ -6,11 +6,11 @@ Elbow Coach: a mobile-first web app for daily elbow pain (lateral epicondylitis)
 
 - `logic.js`: phases, exercises, and the rules (`trafficLight`, `exercises`, `todaysPlan`, `finishSession`, `steps`, `dose`). No DOM. Loaded as a classic `<script>` in the browser and via `require` in Node.
 - `index.html`: all UI, CSS and app code. Screens are `<section>`s toggled with `hidden` (`show(id)`), and `render()` redraws from `state`.
-- `test.js`: assert-based checks for `logic.js`.
+- `test.js`: unit tests for `logic.js` and `index.html` using `node:test` and `node:assert/strict`.
 
 ## Commands
 
-- Test: `node test.js` (prints `ok`) Also checks that the inline script in `index.html` parses.
+- Test: `node test.js` (uses `node:test`). Also checks that the inline script in `index.html` parses.
 - Hooks: `prek install` once per clone; `.pre-commit-config.yaml` runs hygiene checks, Biome (`biome.json`: lint, plus formatting for `.js` only) and `node test.js` on commit.
 - Run: `python3 -m http.server`, then open `http://localhost:8000`.
 

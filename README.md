@@ -1,15 +1,16 @@
 # Elbow Coach
 
-Daily rehab coach for elbow pain from overuse (lateral epicondylitis, often called tennis elbow, though climbing, lifting or desk work cause it too). Static web app, no build step.
+Daily rehab coach for elbow pain from overuse (lateral or medial epicondylitis, from climbing, lifting, desk work or racket sports) and a second plan for wrist stability (`?plan=wrist`). Static web app, no build step, no dependencies.
 
-- Pick outer (lateral) or inner (medial, golfer's elbow) side; the stretch and strength exercises switch to match.
-- Morning stiffness check sets a traffic light: green = full session, amber = one set less, red = stretch only.
-- 5 stages: Acute → Early Rehab → Conditioning → Strength → Sport-Proofing. 6 good days (green, nothing worse) move you up a stage; a flare-up takes one away.
-- Three exercises a day (four from stage 3, adding shoulder work), some with a picture, an optional tempo/hold timer (audio metronome) and pain logging after each one.
-- A weekly pain-free grip check tracks progress.
+- **Elbow plan**: pick outer (lateral, tennis elbow) or inner (medial, golfer's elbow) side; the stretch and strength exercises switch to match.
+- **Wrist plan** (`?plan=wrist` or the Wrist button at the top): daily home routine for lax (hypermobile) wrists, progressing from mid-range control and stabilizers to climbing grips.
+- **Traffic-light load**: morning stiffness/discomfort sets green (full session), amber (one set less) or red (gentle stretch / wrist circles only). A flare-up yesterday caps today at amber.
+- **5 stages**: 6 good days (green, nothing above 3/10) move you up a stage; a flare-up takes one away. Elbow stages progress from 3 exercises a day up to 6 (adding shoulder work and straight-elbow grip).
+- **Optional timer & breaks**: built-in audio metronome for holds and tempos, `/#stretch` for a standalone stretch/movement break, and `reminder.ics` for daily elbow calendar reminders.
+- **Weekly grip check** (elbow plan): tracks pain-free grip strength alongside your session history.
+- **Local storage**: progress stays in your browser (`localStorage`).
 
-Pictures: `img/` by BruceBlaus, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/), via Wikimedia Commons.
-- Progress is saved in the browser (`localStorage`).
+Pictures in `img/` are either by BruceBlaus ([CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/), via Wikimedia Commons) or AI-generated with Google Gemini, credited under each exercise.
 
 Run: open `index.html`, or `python3 -m http.server` and visit it from your phone.
 Test the rules: `node test.js`.

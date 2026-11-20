@@ -1,82 +1,187 @@
 // Run: node test.js
-const assert = require('node:assert');
+const { describe, it } = require('node:test');
+const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const { PHASES, PLANS, IMAGES, exercises, trafficLight, todaysPlan, finishSession, replay, gripDue, steps, dose, GAMES_TO_WIN_SET } = require('./logic.js');
 
-assert.equal(trafficLight(1), 'green');
-assert.equal(trafficLight(4), 'amber');
-assert.equal(trafficLight(7), 'red');
-assert.equal(trafficLight(1, { results: [0, 2, 0] }), 'amber', 'flare yesterday caps at amber');
+describe('trafficLight', () => {
+  it('maps morning stiffness to green, amber, and red', () => {
+    assert.equal(trafficLight(0), 'green');
+    assert.equal(trafficLight(2), 'green');
+    assert.equal(trafficLight(3), 'amber');
+    assert.equal(trafficLight(5), 'amber');
+    assert.equal(trafficLight(6), 'red');
+    assert.equal(trafficLight(10), 'red');
+  });
 
-assert.equal(todaysPlan(0, 'red').length, 1);
-assert.equal(todaysPlan(0, 'amber')[1].sets, 4);
+  it('caps green at amber after a flare-up yesterday', () => {
+    assert.equal(trafficLight(1, { results: [0, 2, 0] }), 'amber');
+    assert.equal(trafficLight(4, { results: [2] }), 'amber');
+    assert.equal(trafficLight(7, { results: [2] }), 'red');
+  });
 
-let s = { phase: 0, games: 0, log: [] };
-for (let i = 0; i < GAMES_TO_WIN_SET; i++) s = finishSession(s, { light: 'green', results: [0, 0, 0] });
-assert.deepEqual([s.phase, s.games], [1, 0], 'six clean games win the set');
-s = finishSession(s, { light: 'green', results: [0, 0, 0] });
-s = finishSession(s, { light: 'amber', results: [0, 0, 0] });
-assert.equal(s.games, 1, 'amber holds steady');
-s = finishSession(s, { light: 'green', results: [0, 2, 0] });
-assert.equal(s.games, 0, 'flare loses a game');
-const r = replay(s, s.log.slice(0, -1));
-assert.deepEqual([r.phase, r.games, r.log.length], [1, 1, s.log.length - 1], 'redoing today undoes its result');
+  it('keeps green when yesterday had no flare-up', () => {
+    assert.equal(trafficLight(1, { results: [0, 1, 0] }), 'green');
+  });
+});
 
-assert.equal(steps({ mode: 'tempo', sets: 2, reps: 3, tempo: [1, 4] }).length, 2 * 3 * 2 + 1);
-// Red days and the #stretch break both use the first exercise, so it must be the stretch.
-for (const p of PHASES) assert.equal(p.exercises[0].kind, 'Stretch');
+describe('exercises and todaysPlan', () => {
+  it('uses lateral by default and swaps medial overrides without leaking them', () => {
+    assert.equal(todaysPlan(0, 'green')[0].name, 'Wrist extensor stretch');
+    assert.equal(todaysPlan(0, 'red', 'medial')[0].name, 'Wrist flexor stretch');
+    assert.equal(todaysPlan(0, 'amber', 'medial')[1].sets, 4);
 
-assert.equal(todaysPlan(0, 'green')[0].name, 'Wrist extensor stretch', 'lateral is the default side');
-assert.equal(todaysPlan(0, 'red', 'medial')[0].name, 'Wrist flexor stretch');
-assert.equal(todaysPlan(0, 'amber', 'medial')[1].sets, 4, 'medial keeps the dose');
-for (let i = 0; i < PHASES.length; i++) {
-  const m = exercises(i, 'medial');
-  assert.equal(m[0].kind, 'Stretch');
-  assert(
-    m.every(e => !e.medial),
-    'override is not leaked',
-  );
-}
+    for (let i = 0; i < PHASES.length; i++) {
+      const m = exercises(i, 'medial');
+      assert.equal(m[0].kind, 'Stretch');
+      assert.ok(
+        m.every(e => !e.medial),
+        'medial override should not leak',
+      );
+    }
+  });
 
-// Wrist strength work carries on into the last stage, and grip progresses to the elbow straight.
-const last = exercises(PHASES.length - 1).map(e => e.name);
-assert(last.includes('Heavy slow wrist extension') && last.includes('Firm grip, elbow straight'));
-assert(exercises(PHASES.length - 1, 'medial').some(e => e.name === 'Heavy slow wrist flexion'));
+  it('adjusts daily load by traffic light', () => {
+    assert.equal(todaysPlan(0, 'red').length, 1);
+    assert.equal(todaysPlan(0, 'amber')[1].sets, 4);
+    // Single-set exercises never drop below 1 set on amber days.
+    assert.equal(todaysPlan(2, 'amber').find(e => e.kind === 'Activity').sets, 1);
+  });
 
-// Every demo image exists.
-for (let i = 0; i < PHASES.length; i++)
-  for (const side of ['lateral', 'medial']) for (const e of exercises(i, side)) if (e.img) assert(fs.existsSync(`${__dirname}/img/${e.img}`) && IMAGES[e.img], e.img);
+  it('keeps stretch first in every elbow stage for red days and #stretch', () => {
+    for (const p of PHASES) assert.equal(p.exercises[0].kind, 'Stretch');
+  });
 
-// Wrist stage 2 trains the DRUJ stabilizers, and the dart-thrower path has a stop cue for midcarpal laxity.
-assert(exercises(1, 'lateral', 'wrist').some(e => e.name === 'Isometric rotation holds'));
-assert(
-  exercises(1, 'lateral', 'wrist')
-    .find(e => e.name.startsWith('Dart'))
-    .cues.some(c => c.startsWith('Stop if the wrist clunks')),
-);
-// Wrist plan: red days and the stretch break give gentle mid-range circles (no passive stretch for lax wrists).
-const W = PLANS.wrist;
-for (let i = 0; i < W.length; i++) {
-  assert.equal(todaysPlan(i, 'red', undefined, 'wrist')[0].name, 'Slow wrist circles, mid-range');
-  for (const e of exercises(i, 'lateral', 'wrist')) if (e.img) assert(fs.existsSync(`${__dirname}/img/${e.img}`) && IMAGES[e.img], e.img);
-}
-let w = { plan: 'wrist', phase: W.length - 2, games: 0, log: [] };
-for (let i = 0; i < GAMES_TO_WIN_SET * 2; i++) w = finishSession(w, { light: 'green', results: [0] });
-assert.equal(w.phase, W.length - 1, 'wrist plan stops at its last stage');
-assert.equal(dose(W[0].exercises[0]), '2 × 30 s', 'moving exercises are not called holds');
-assert.equal(steps(W[0].exercises[0])[0].label, 'Set 1/2 · Move');
-assert(
-  W.every((_, i) => exercises(i, 'lateral', 'wrist').every(e => e.kind !== 'Activity')),
-  'wrist plan is a home routine: no gym or session items',
-);
+  it('carries wrist strength into stage 5 and progresses grip to elbow straight', () => {
+    const last = exercises(PHASES.length - 1).map(e => e.name);
+    assert.ok(last.includes('Heavy slow wrist extension'));
+    assert.ok(last.includes('Firm grip, elbow straight'));
+    assert.ok(exercises(PHASES.length - 1, 'medial').some(e => e.name === 'Heavy slow wrist flexion'));
+  });
 
-assert(gripDue([], '2026-01-01'), 'first grip check is due');
-const gripLog = [{ date: '2026-01-01', grip: 4 }, { date: '2026-01-03' }];
-assert(!gripDue(gripLog, '2026-01-07'), 'weekly, not daily');
-assert(gripDue(gripLog, '2026-01-08'));
+  it('follows wrist plan rules (no passive stretch, no Activity, DRUJ & dart-thrower cues)', () => {
+    const W = PLANS.wrist;
+    for (let i = 0; i < W.length; i++) {
+      assert.equal(todaysPlan(i, 'red', undefined, 'wrist')[0].name, 'Slow wrist circles, mid-range');
+      assert.ok(
+        exercises(i, 'lateral', 'wrist').every(e => e.kind !== 'Activity'),
+        'wrist plan is a home routine',
+      );
+    }
+    const stage2 = exercises(1, 'lateral', 'wrist');
+    assert.ok(stage2.some(e => e.name === 'Isometric rotation holds'));
+    assert.ok(stage2.find(e => e.name.startsWith('Dart')).cues.some(c => c.startsWith('Stop if the wrist clunks')));
+  });
+});
 
-// index.html: inline app script must parse, and the health note must stay.
-const html = fs.readFileSync(`${__dirname}/index.html`, 'utf8');
-for (const [, js] of html.matchAll(/<script>([\s\S]*?)<\/script>/g)) new Function(js);
-assert(/not medical advice/i.test(html), 'keep the "not medical advice" note');
-console.log('ok');
+describe('finishSession and replay', () => {
+  it('advances stage after 6 clean green days without mutating the entry', () => {
+    let s = { phase: 0, games: 0, log: [] };
+    const entries = [];
+    for (let i = 0; i < GAMES_TO_WIN_SET; i++) {
+      const entry = { light: 'green', results: [0, 0, 0] };
+      entries.push(entry);
+      s = finishSession(s, entry);
+    }
+    assert.deepEqual([s.phase, s.games], [1, 0]);
+    assert.equal(s.log.at(-1).setWon, true);
+    assert.equal(entries.at(-1).setWon, undefined, 'caller entry should not be mutated');
+  });
+
+  it('holds steady on amber, red, or green with sore exercises', () => {
+    let s = { phase: 1, games: 2, log: [] };
+    s = finishSession(s, { light: 'amber', results: [0, 0, 0] });
+    s = finishSession(s, { light: 'red', results: [0] });
+    s = finishSession(s, { light: 'green', results: [0, 1, 0] });
+    assert.equal(s.games, 2);
+  });
+
+  it('loses one good day on a flare-up, floored at 0', () => {
+    let s = { phase: 1, games: 1, log: [] };
+    s = finishSession(s, { light: 'green', results: [0, 2, 0] });
+    assert.equal(s.games, 0);
+    s = finishSession(s, { light: 'amber', results: [2] });
+    assert.equal(s.games, 0);
+  });
+
+  it('caps good days at GAMES_TO_WIN_SET on the final stage', () => {
+    const W = PLANS.wrist;
+    let w = { plan: 'wrist', phase: W.length - 2, games: 0, log: [] };
+    for (let i = 0; i < GAMES_TO_WIN_SET * 2 + 3; i++) w = finishSession(w, { light: 'green', results: [0] });
+    assert.equal(w.phase, W.length - 1);
+    assert.equal(w.games, GAMES_TO_WIN_SET);
+    assert.equal(w.log.at(-1).setWon, undefined);
+  });
+
+  it('rebuilds stage and good days when redoing today', () => {
+    let s = { phase: 0, games: 0, log: [] };
+    for (let i = 0; i < GAMES_TO_WIN_SET; i++) s = finishSession(s, { light: 'green', results: [0, 0, 0] });
+    assert.deepEqual([s.phase, s.games], [1, 0]);
+
+    const undoneStageUp = replay(s, s.log.slice(0, -1));
+    assert.deepEqual([undoneStageUp.phase, undoneStageUp.games, undoneStageUp.log.length], [0, GAMES_TO_WIN_SET - 1, GAMES_TO_WIN_SET - 1]);
+
+    s = finishSession(s, { light: 'green', results: [0, 0, 0] });
+    s = finishSession(s, { light: 'green', results: [0, 2, 0] });
+    const undoneFlare = replay(s, s.log.slice(0, -1));
+    assert.deepEqual([undoneFlare.phase, undoneFlare.games, undoneFlare.log.length], [1, 1, s.log.length - 1]);
+  });
+});
+
+describe('gripDue', () => {
+  it('asks on the first session and then every 7 days', () => {
+    assert.equal(gripDue([], '2026-01-01'), true);
+    const gripLog = [{ date: '2026-01-01', grip: 4 }, { date: '2026-01-03' }];
+    assert.equal(gripDue(gripLog, '2026-01-07'), false);
+    assert.equal(gripDue(gripLog, '2026-01-08'), true);
+  });
+});
+
+describe('steps and dose', () => {
+  it('formats dose and generates steps for hold, moving hold, tempo, and time exercises', () => {
+    const moving = PLANS.wrist[0].exercises[0];
+    assert.equal(dose(moving), '2 × 30 s');
+    assert.equal(steps(moving)[0].label, 'Set 1/2 · Move');
+
+    const hold = PHASES[0].exercises[0];
+    assert.equal(dose(hold), '3 × 30 s hold');
+    assert.equal(steps(hold)[0].label, 'Set 1/3 · Hold');
+    assert.equal(steps(hold)[1].rest, true);
+    assert.equal(steps(hold)[1].secs, 30);
+
+    const tempo = { mode: 'tempo', sets: 2, reps: 3, tempo: [1, 4] };
+    assert.equal(dose(tempo), '2 × 3 · tempo 1 s up / 4 s down');
+    assert.equal(steps(tempo).length, 2 * 3 * 2 + 1);
+    assert.equal(steps(tempo)[6].secs, 90);
+
+    const activity = { mode: 'time', sets: 1, mins: 10 };
+    assert.equal(dose(activity), '10 min');
+    assert.deepEqual(steps(activity), [{ label: 'Activity', secs: 600 }]);
+  });
+});
+
+describe('assets and index.html', () => {
+  it('has an existing file and credit for every referenced image, and no unused credits', () => {
+    const used = new Set();
+    for (const [plan, phases] of Object.entries(PLANS)) {
+      const sides = plan === 'elbow' ? ['lateral', 'medial'] : ['lateral'];
+      for (let i = 0; i < phases.length; i++) {
+        for (const side of sides) {
+          for (const e of exercises(i, side, plan)) {
+            if (!e.img) continue;
+            used.add(e.img);
+            assert.ok(fs.existsSync(`${__dirname}/img/${e.img}`), `missing file: img/${e.img}`);
+            assert.ok(IMAGES[e.img], `missing IMAGES credit: ${e.img}`);
+          }
+        }
+      }
+    }
+    for (const img of Object.keys(IMAGES)) assert.ok(used.has(img), `unused IMAGES credit: ${img}`);
+  });
+
+  it('parses the inline script and keeps the medical disclaimer', () => {
+    const html = fs.readFileSync(`${__dirname}/index.html`, 'utf8');
+    for (const [, js] of html.matchAll(/<script>([\s\S]*?)<\/script>/g)) new Function(js);
+    assert.match(html, /not medical advice/i);
+  });
+});

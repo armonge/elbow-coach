@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#1d4f7a">
+<meta name="theme-color" content="#1d4f7a" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#163b5c" media="(prefers-color-scheme: dark)">
 <title>Elbow Coach</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@600;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
@@ -327,7 +328,8 @@ function renderHistory() {
   $('history').innerHTML = rows.length ? rows.map(e => {
     const worst = Math.max(...e.results);
     const res = e.setWon ? 'Next stage' : worst === 2 ? 'Flare-up' : e.light === 'green' && worst === 0 ? 'Good day' : 'Held steady';
-    return `<li><span class="dot ${e.light}"></span><span class="when">${e.date.slice(5)}</span><span>${PLAN === 'wrist' ? 'Discomfort' : 'Stiffness'} ${e.stiffness}${e.grip != null ? ` · Grip ${e.grip}/10` : ''} · ${PHASES_[e.phase].name}</span><span class="res">${res}</span></li>`;
+    const lightName = e.light[0].toUpperCase() + e.light.slice(1);
+    return `<li><span class="dot ${e.light}" role="img" aria-label="${lightName} day" title="${lightName} day"></span><span class="when">${e.date.slice(5)}</span><span>${PLAN === 'wrist' ? 'Discomfort' : 'Stiffness'} ${e.stiffness}${e.grip != null ? ` · Grip ${e.grip}/10` : ''} · ${PHASES_[e.phase].name}</span><span class="res">${res}</span></li>`;
   }).join('') : '<li class="empty" style="display:block">No sessions yet. Your first morning check starts the plan.</li>';
 }
 
@@ -396,6 +398,7 @@ function renderDone() {
 const stretchBreak = () => location.hash === '#stretch';
 
 function render() {
+  stopTimer();
   renderBoard();
   renderHistory();
   if (stretchBreak()) return renderExercise([exercises(state.phase, state.side, PLAN)[0]], 0);
@@ -406,7 +409,7 @@ function render() {
 }
 
 function showCheck() {
-  $('grip-wrap').hidden = !gripDue(state.log, today());
+  $('grip-wrap').hidden = PLAN !== 'elbow' || !gripDue(state.log, today());
   const last = state.log.findLast(e => e.grip != null);
   $('grip-last').textContent = last ? `Last time: ${last.grip}/10.` : '';
   show('v-check');
@@ -419,7 +422,7 @@ $('side').onchange = e => { state.side = e.target.value; save(); };
 $('btn-calibrate').onclick = () => {
   const stiffness = +$('stiff').value;
   const light = trafficLight(stiffness, state.log[state.log.length - 1]);
-  const grip = $('grip-wrap').hidden || $('grip').value === '' ? undefined : +$('grip').value;
+  const grip = PLAN !== 'elbow' || $('grip-wrap').hidden || $('grip').value === '' ? undefined : +$('grip').value;
   state.current = { date: today(), stiffness, grip, light, phase: state.phase, plan: todaysPlan(state.phase, light, state.side, PLAN), idx: 0, results: [], started: false };
   save(); render();
 };
@@ -459,6 +462,7 @@ let audio, timer = null, seq = [], si = 0, left = 0, wakeLock = null, curEx = nu
 function beep(freq, ms) {
   try {
     audio = audio || new AudioContext();
+    if (audio.state === 'suspended') audio.resume();
     const o = audio.createOscillator(), g = audio.createGain();
     o.frequency.value = freq; g.gain.value = 0.15;
     o.connect(g).connect(audio.destination);
@@ -473,7 +477,7 @@ function showStep() {
 }
 function nextStep() {
   si++;
-  if (si >= seq.length) { stopTimer(); beep(660, 500); $('t-label').textContent = 'Finished. Tap "I\'m done".'; $('t-clock').textContent = '✓'; return; }
+  if (si >= seq.length) { stopTimer(); beep(660, 500); $('t-label').textContent = 'Finished. Tap "I\'m done".'; $('t-clock').textContent = '✓'; $('t-skip').hidden = true; return; }
   left = seq[si].secs; beep(seq[si].rest ? 440 : 990, 180); showStep();
 }
 function tick() {
@@ -508,7 +512,13 @@ $('t-skip').onclick = () => nextStep();
 // Reset
 $('btn-reset').onclick = () => { $('reset-confirm').hidden = false; };
 $('btn-reset-no').onclick = () => { $('reset-confirm').hidden = true; };
-$('btn-reset-yes').onclick = () => { state = fresh(); save(); $('reset-confirm').hidden = true; render(); };
+$('btn-reset-yes').onclick = () => {
+  state = fresh();
+  $('stiff').value = 2; $('stiff-out').textContent = '2';
+  $('grip').value = '';
+  $('side').value = 'lateral';
+  save(); $('reset-confirm').hidden = true; render();
+};
 
 // The stretch break opens in the top card, so jump up to it from the break link on the board.
 window.addEventListener('hashchange', () => { render(); scrollTo(0, 0); });

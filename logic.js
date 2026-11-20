@@ -2,7 +2,7 @@
 
 const GAMES_TO_WIN_SET = 6;
 
-// Credits for img/ files (title, author, source, license). All are resized JPGs of the originals.
+// Credits for img/ files (title, author, source, license). All are resized images of the originals.
 // AI pictures have no source page or license, so the caption shows them without links.
 const BRUCE_BLAUS = { by: 'BruceBlaus', byUrl: 'https://commons.wikimedia.org/wiki/User:BruceBlaus', license: 'CC BY-SA 4.0', licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0/' };
 const IMAGES = {
@@ -254,7 +254,7 @@ const PHASES = [
         cues: [
           'Skip your hardest moves for now (small crimps, heavy lifts, slices)',
           'Climbing: moderate problems, small holds open-handed, still no full crimps or campusing',
-          'Check grip pressure every few balls',
+          'Check your grip pressure every few minutes',
           'Stop at the first sharp pain',
         ],
       },
@@ -465,7 +465,7 @@ const WRIST_PHASES = [
         tempo: [3, 3],
         cues: [
           BOTH,
-          'Forearm on a table or elbow at 90° by your side. Hold the dumbbell at one end',
+          'Forearm on a table or elbow at 90° by your side. Hold the dumbbell in the middle (short lever)',
           'Rotate palm up, then palm down, slowly',
           'Keep the wrist straight. Turn the forearm, not the wrist',
         ],
@@ -508,7 +508,7 @@ const WRIST_PHASES = [
         cues: [
           BOTH,
           'Hold the dumbbell at one end, like a hammer',
-          'One set toward the thumb side, one set toward the little-finger side',
+          'Do each set toward the thumb side, then toward the little-finger side',
           HARD,
           'After 2 sessions in which all sets are easy, hold the handle further from the weight',
           MID,
@@ -681,15 +681,18 @@ function todaysPlan(phase, light, side, plan) {
 
 // Returns a new state after a finished session.
 function finishSession(state, entry) {
-  const s = { ...state, log: [...state.log, entry] };
-  const flare = entry.results.includes(2);
-  const clean = entry.light === 'green' && entry.results.every(r => r === 0);
+  const e = { ...entry };
+  delete e.setWon;
+  const s = { ...state, log: [...state.log, e] };
+  const flare = e.results.includes(2);
+  const clean = e.light === 'green' && e.results.every(r => r === 0);
+  const lastPhase = PLANS[s.plan || 'elbow'].length - 1;
   if (flare) s.games = Math.max(0, s.games - 1);
-  else if (clean) s.games += 1;
-  if (s.games >= GAMES_TO_WIN_SET && s.phase < PLANS[s.plan || 'elbow'].length - 1) {
+  else if (clean) s.games = Math.min(GAMES_TO_WIN_SET, s.games + 1);
+  if (s.games >= GAMES_TO_WIN_SET && s.phase < lastPhase) {
     s.phase += 1;
     s.games = 0;
-    entry.setWon = true;
+    e.setWon = true;
   }
   return s;
 }
