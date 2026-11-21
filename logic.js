@@ -10,6 +10,7 @@ const IMAGES = {
   'flexor-stretch.jpg': { ...BRUCE_BLAUS, title: 'Exercise Wrist Flexor Stretch', src: 'https://commons.wikimedia.org/wiki/File:Exercise_Wrist_Flexor_Stretch.png' },
   'wrist-curls.jpg': { ...BRUCE_BLAUS, title: 'Exercise Wrist Curls', src: 'https://commons.wikimedia.org/wiki/File:Exercise_Wrist_Curls.png' },
   'forearm-rotation-db.jpg': { title: 'Forearm Rotation', by: 'Google Gemini (AI-generated)' },
+  'forearm-rotation-short.jpg': { title: 'Forearm Rotation (Short Lever)', by: 'Google Gemini (AI-generated)' },
   'finger-extensions.jpg': { ...BRUCE_BLAUS, title: 'Exercise Finger Extensions', src: 'https://commons.wikimedia.org/wiki/File:Exercise_Finger_Extensions.png' },
   'wrist-extension.jpg': { title: 'Wrist Extension', by: 'Google Gemini (AI-generated)' },
   'wrist-circles.gif': { title: 'Wrist Circles', by: 'Google Gemini (AI-generated)' },
@@ -28,6 +29,7 @@ const IMAGES = {
   'pinch-book.jpg': { title: 'Pinch Hold', by: 'Google Gemini (AI-generated)' },
   'sloper-press.jpg': { title: 'Sloper Press', by: 'Google Gemini (AI-generated)' },
   'isometric-4.jpg': { title: 'Isometric Holds', by: 'Google Gemini (AI-generated)' },
+  'isometric-rotation.jpg': { title: 'Isometric Rotation Holds', by: 'Google Gemini (AI-generated)' },
   'band-row.jpg': { title: 'Band Row', by: 'Google Gemini (AI-generated)' },
 };
 
@@ -426,6 +428,7 @@ const WRIST_PHASES = [
       {
         kind: 'Strength',
         name: 'Isometric rotation holds',
+        img: 'isometric-rotation.jpg',
         mode: 'hold',
         sets: 2,
         secs: 30,
@@ -458,7 +461,7 @@ const WRIST_PHASES = [
       {
         kind: 'Strength',
         name: 'Forearm rotation (1 kg, short lever)',
-        img: 'forearm-rotation-db.jpg',
+        img: 'forearm-rotation-short.jpg',
         mode: 'tempo',
         sets: 3,
         reps: 10,
@@ -527,7 +530,8 @@ const WRIST_PHASES = [
           'Twist the bar as if you wring a wet towel',
           'Let it untwist slowly',
           'Change the direction each set',
-          'Keep the wrists straight. Turn the forearms, not the wrists',
+          'Keep the twist small',
+          MID,
         ],
       },
     ],
@@ -546,7 +550,7 @@ const WRIST_PHASES = [
         secs: 20,
         cues: [
           BOTH,
-          'Use your lightest kettlebell. Hold it by the handle, bell up, elbow at 90°',
+          'Use your lightest kettlebell. Hold it by the handle, bell up, elbow at 90° in front of you, forearm upright',
           'Squeeze the handle and keep the wrist straight',
           'The bell tries to fall over. Keep it upright with small corrections',
           'Too hard? Hold it bell down, by the handle',
@@ -601,7 +605,12 @@ const WRIST_PHASES = [
         mode: 'hold',
         sets: 3,
         secs: 30,
-        cues: [BOTH, 'Bell up, elbow at 90°, wrist straight', 'Make it harder: slowly push it overhead, then lower it', 'Continue this exercise 2–3 times a week after you finish the plan'],
+        cues: [
+          BOTH,
+          'Bell up, elbow at 90°, forearm upright, wrist straight',
+          'Make it harder: slowly push it overhead, then lower it',
+          'Continue this exercise 2–3 times a week after you finish the plan',
+        ],
       },
       {
         kind: 'Climbing',
