@@ -590,9 +590,9 @@ const THUMB_PHASES = [
         sets: 1,
         mins: 15,
         cues: [
-          'Practice the tasks that used to hurt — pouring a kettle, lifting, cooking, typing or crafting — with a straight wrist',
-          'Use both hands or scoop with palms up for heavy lifts instead of pinching with the thumb',
-          'Take short breaks and stop if you feel sharp pain at the base of the thumb',
+          'Practice the tasks that used to hurt — shaping dough, pouring a kettle, lifting or cooking — with straight wrists',
+          'Press dough with flat palms or knuckles instead of pinching with the thumb, and lift heavy trays or peels with both hands, palms up',
+          'Build back to full shifts in steps, take short shake-out breaks, and stop if you feel sharp pain at the base of the thumb',
         ],
       },
     ],
