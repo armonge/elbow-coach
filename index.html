@@ -129,7 +129,7 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
 .how ul { padding-left: 1.2rem; display: grid; gap: 6px; }
 .how .history { padding-left: 0; }
 /* Two plans in one app: [data-plan] on <html> hides the other plan's parts. */
-[data-plan="wrist"] .elbow-only, [data-plan="elbow"] .wrist-only { display: none !important; }
+[data-plan="thumb"] .elbow-only, [data-plan="elbow"] .thumb-only { display: none !important; }
 .plans { display: flex; gap: 6px; }
 .plans a { color: inherit; text-decoration: none; font-weight: 700; font-size: .85rem; padding: 4px 14px; border-radius: 999px; border: 1px solid color-mix(in srgb, var(--court-ink) 40%, transparent); }
 .plans .break { margin-left: auto; border-style: dashed; }
@@ -140,9 +140,9 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
 <body>
 <main>
   <section class="board" aria-label="Progress">
-    <nav class="plans" aria-label="Plan"><a href="./" data-for="elbow">Elbow</a><a href="?plan=wrist" data-for="wrist">Wrist</a><a href="#stretch" class="break" data-wrist="Movement break">Stretch break</a></nav>
+    <nav class="plans" aria-label="Plan"><a href="./" data-for="elbow">Elbow</a><a href="?plan=thumb" data-for="thumb">Thumb</a><a href="#stretch" class="break" data-thumb="Glide break">Stretch break</a></nav>
     <div class="board-top">
-      <h1 data-wrist="Wrist Coach">Elbow Coach</h1>
+      <h1 data-thumb="Thumb Coach">Elbow Coach</h1>
       <span class="label" id="phase-name"></span>
     </div>
     <div class="sets" id="sets"></div>
@@ -161,19 +161,20 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
       <li><strong>Flare-up:</strong> any exercise was much worse (sharp pain). You lose one good day, and the most you can do tomorrow is amber.</li>
     </ul>
     <p class="elbow-only">Collect 6 good days to go to the next stage. There are 5 stages, from calming the tendon to full activity. Held-steady days are fine. You add load only when your elbow handles the current load well.</p>
-    <p class="wrist-only">Collect 6 good days to go to the next stage. There are 5 stages, from feeling and holding the wrist to holding it steady on sloper and pinch grips. Held-steady days are fine. You add load only when your wrists handle the current load well. That's at least 30 sessions, because muscle control takes weeks to build. Continue the strength work 2–3 times a week after you finish.</p>
+    <p class="thumb-only">Collect 6 good days to go to the next stage. There are 5 stages, from calming the tendons at the base of the thumb (de Quervain's tenosynovitis) to rebuilding strength for daily lifting and gripping. Held-steady days are fine. You add load only when your thumb handles the current load well. That's at least 30 sessions, because tendons adapt slowly. Continue the strength work 2–3 times a week after you finish.</p>
     <p class="elbow-only">That's at least 30 sessions. Tendons adapt slowly. Some people recover in a few months. For many people, recovery takes more than a year, and the pain often returns. Keep doing strength work after you finish. The weekly grip check shows progress before the pain stops fully.</p>
   </details>
 
-  <details class="card how wrist-only">
-    <summary>Protecting the wrists day to day</summary>
+  <details class="card how thumb-only">
+    <summary>Protecting the thumb day to day</summary>
     <ul>
-      <li>Your ligaments are lax, so the muscles must hold the joint. Don't stretch the wrists to the end of their range.</li>
-      <li>Do push-ups and planks on your fists or on handles, with the wrist straight.</li>
-      <li>On slopers, pinches, side pulls and underclings, lock the wrist straight before you pull. Don't let it move under load.</li>
-      <li>A soft click with no pain is common in lax joints. If a click causes pain, use a lighter load or keep the wrist straighter.</li>
-      <li>Wrist tape or a wrist band can feel supportive during hard sessions. No study shows that it prevents injury, so it does not replace the training.</li>
-      <li>Continue your elbow strength work 2–3 times a week. Switch plans with the buttons at the top.</li>
+      <li><strong>After a corticosteroid shot:</strong> pain often fades within days, but the tendons stay vulnerable for 2–4 weeks. Stick to unloaded <em>Glide break</em> only for the first 2 weeks before starting resistance exercises, and don't jump back into heavy lifting just because it doesn't hurt.</li>
+      <li><strong>Thumb spica splint &amp; stiffness:</strong> a splint rests the tendons during flares or right after a shot, but wearing it 24/7 makes the joint stiff. Once your clinician clears you, take it off for gentle glides and wean off it gradually over 1–2 weeks (keep it for heavy or risky tasks first).</li>
+      <li>Avoid pinching with the thumb while bending the wrist toward the pinky (such as lifting a heavy mug, kettle, pan or child with one hand).</li>
+      <li>Scoop with both hands, palms up and wrists straight, instead of hooking your thumbs under what you lift.</li>
+      <li>Use two hands or voice typing on your phone instead of one-handed thumb scrolling.</li>
+      <li>Don't force a "Finkelstein" stretch (tucking the thumb into your palm and pulling the wrist down). That pinches the irritated tendons in their tunnel.</li>
+      <li>Keep moving gently: prolonged full-time rest causes stiffness and weakens the tendons. Cut back the moves that cause sharp pain, and rebuild load gradually.</li>
     </ul>
   </details>
 
@@ -192,7 +193,7 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
   <!-- Morning check -->
   <section class="card" id="v-check" hidden>
     <span class="label">Morning check</span>
-    <h2 data-wrist="How much discomfort do your wrists have right now?">How stiff is your elbow right now?</h2>
+    <h2 data-thumb="How stiff or sore is your thumb side right now?">How stiff is your elbow right now?</h2>
     <div class="stiff">
       <div class="stiff-value" id="stiff-out">2</div>
       <input type="range" id="stiff" min="0" max="10" step="1" value="2" aria-label="Stiffness from 0 to 10">
@@ -247,7 +248,7 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
     <div id="ex-done-wrap"><button class="primary" id="btn-done" style="width:100%">I'm done</button></div>
     <button class="small" id="btn-plan">Back to plan (to redo the morning check)</button>
     <div class="pain" id="pain" hidden>
-      <p><strong data-wrist="How do the wrists feel after this?">How does the elbow feel after this?</strong></p>
+      <p><strong data-thumb="How does the thumb side feel after this?">How does the elbow feel after this?</strong></p>
     </div>
   </section>
 
@@ -277,24 +278,24 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
     </div>
   </section>
 
-  <p class="note"><strong>Not medical advice.</strong> This is an educational self-management tool. It does not replace a doctor or physiotherapist. <span class="wrist-only">See a clinician if a click comes with sharp pain, swelling or a weak grip, or if the wrist suddenly fails under load. Also see a clinician if wrist pain lasts more than 3 weeks, if it starts after a fall onto the hand, if you feel a painful snap when you turn the palm up, or if you have numbness or tingling. Small ligament tears and some fractures hurt only a little at first.</span><span class="elbow-only">See a clinician if the pain is sharp, comes at night or gets worse over weeks. Also see a clinician if you have numbness, tingling or neck pain. If you see no progress after some months, ask a clinician about other treatments, such as shockwave therapy. Cortisone shots do not help long term and can weaken the tendon. Surgery is rarely necessary. Clinicians consider it only after 6–12 months of other treatment with no improvement.</span> Data stays in this browser.</p>
+  <p class="note"><strong>Not medical advice.</strong> This is an educational self-management tool. It does not replace a doctor or physiotherapist. <span class="thumb-only">See a clinician if the pain is sharp, swollen or warm, wakes you at night, or does not improve after 4–6 weeks of splinting and gradual exercise. Also see a clinician if you have numbness, tingling, or a thumb that catches or locks, or if the pain started after a fall. If symptoms persist, ask a clinician about a custom thumb spica splint or other treatments (a corticosteroid injection can help stubborn cases, and minor release surgery is an option only if conservative care fails).</span><span class="elbow-only">See a clinician if the pain is sharp, comes at night or gets worse over weeks. Also see a clinician if you have numbness, tingling or neck pain. If you see no progress after some months, ask a clinician about other treatments, such as shockwave therapy. Cortisone shots do not help long term and can weaken the tendon. Surgery is rarely necessary. Clinicians consider it only after 6–12 months of other treatment with no improvement.</span> Data stays in this browser.</p>
   <p class="note"><a href="https://github.com/armonge/elbow-coach">Source on GitHub</a></p>
 </main>
 
 <script src="logic.js"></script>
 <script>
 const $ = id => document.getElementById(id);
-// ?plan=wrist opens the wrist plan. Each plan keeps its own progress under its own key.
-const PLAN = new URLSearchParams(location.search).get('plan') === 'wrist' ? 'wrist' : 'elbow';
+// ?plan=thumb opens the thumb (de Quervain's) plan. Each plan keeps its own progress under its own key.
+const PLAN = new URLSearchParams(location.search).get('plan') === 'thumb' ? 'thumb' : 'elbow';
 const PHASES_ = PLANS[PLAN];
-const PART = PLAN === 'wrist' ? 'wrists' : 'elbow';
+const PART = PLAN === 'thumb' ? 'thumb' : 'elbow';
 const KEY = `${PLAN}-coach-v1`;
 document.documentElement.dataset.plan = PLAN;
 document.querySelector(`.plans [data-for="${PLAN}"]`).setAttribute('aria-current', 'page');
-if (PLAN === 'wrist') {
-  for (const el of document.querySelectorAll('[data-wrist]')) el.textContent = el.dataset.wrist;
-  document.title = 'Wrist Coach';
-  $('stiff').setAttribute('aria-label', 'Discomfort from 0 to 10');
+if (PLAN === 'thumb') {
+  for (const el of document.querySelectorAll('[data-thumb]')) el.textContent = el.dataset.thumb;
+  document.title = 'Thumb Coach';
+  $('stiff').setAttribute('aria-label', 'Stiffness or soreness from 0 to 10');
 }
 const today = () => new Date().toLocaleDateString('sv'); // YYYY-MM-DD local
 
@@ -316,7 +317,7 @@ function show(id) {
 function renderBoard() {
   $('phase-name').textContent = PHASES_[state.phase].name;
   $('sets').innerHTML = PHASES_.map((p, i) =>
-    `<div class="set ${i < state.phase ? 'won' : i === state.phase ? 'now' : ''}">${i + 1}<small>${(PLAN === 'wrist' ? ['Feel', 'Stable', 'Strong', 'React', 'Climb'] : ['Acute', 'Early', 'Build', 'Strength', 'Sport'])[i]}</small></div>`).join('');
+    `<div class="set ${i < state.phase ? 'won' : i === state.phase ? 'now' : ''}">${i + 1}<small>${(PLAN === 'thumb' ? ['Calm', 'Hold', 'Load', 'Strength', 'Daily'] : ['Acute', 'Early', 'Build', 'Strength', 'Sport'])[i]}</small></div>`).join('');
   $('games').innerHTML = Array.from({ length: GAMES_TO_WIN_SET }, (_, i) =>
     `<span class="ball ${i < state.games ? 'on' : ''}"></span>`).join('');
   $('games').setAttribute('aria-label', `${state.games} of ${GAMES_TO_WIN_SET} good days`);
@@ -329,14 +330,14 @@ function renderHistory() {
     const worst = Math.max(...e.results);
     const res = e.setWon ? 'Next stage' : worst === 2 ? 'Flare-up' : e.light === 'green' && worst === 0 ? 'Good day' : 'Held steady';
     const lightName = e.light[0].toUpperCase() + e.light.slice(1);
-    return `<li><span class="dot ${e.light}" role="img" aria-label="${lightName} day" title="${lightName} day"></span><span class="when">${e.date.slice(5)}</span><span>${PLAN === 'wrist' ? 'Discomfort' : 'Stiffness'} ${e.stiffness}${e.grip != null ? ` · Grip ${e.grip}/10` : ''} · ${PHASES_[e.phase].name}</span><span class="res">${res}</span></li>`;
+    return `<li><span class="dot ${e.light}" role="img" aria-label="${lightName} day" title="${lightName} day"></span><span class="when">${e.date.slice(5)}</span><span>${PLAN === 'thumb' ? 'Stiff / sore' : 'Stiffness'} ${e.stiffness}${e.grip != null ? ` · Grip ${e.grip}/10` : ''} · ${PHASES_[e.phase].name}</span><span class="res">${res}</span></li>`;
   }).join('') : '<li class="empty" style="display:block">No sessions yet. Your first morning check starts the plan.</li>';
 }
 
 const LIGHTS = {
-  green: ['Green: full session', `Your ${PART} ${PLAN === 'wrist' ? 'are' : 'is'} ready for the full dose.`],
+  green: ['Green: full session', `Your ${PART} is ready for the full dose.`],
   amber: ['Amber: hold steady', 'One set less today. It keeps your progress but doesn’t count as a good day.'],
-  red: PLAN === 'wrist' ? ['Red: rest day', 'Only gentle wrist circles today. Avoid the grips that cause a painful click. Wrist tape or a wrist band can give support.']
+  red: PLAN === 'thumb' ? ['Red: rest day', 'Only gentle thumb glides today. Avoid pinching and lifting with the wrist tilted toward the pinky. A thumb spica splint or an ice pack wrapped in a thin towel (10–15 minutes) can ease pain short term.']
     : ['Red: rest day', 'Only a gentle stretch today. Avoid painful gripping. Ice, an elbow strap or rigid tape can ease pain short term. Put ice on the elbow for 15–20 minutes, 3–4 times a day, wrapped in a thin towel.'],
 };
 
@@ -367,7 +368,7 @@ function renderExercise(plan, idx) {
     $('ex-credit').innerHTML = parts.filter(Boolean).join(', ');
   }
   $('ex-cues').innerHTML = ex.cues.map(t => `<li>${t}</li>`).join('');
-  const query = `${ex.name.replace(/\(.*\)/, '')} ${PLAN === 'wrist' ? 'wrist stability' : 'elbow pain'} exercise`;
+  const query = `${ex.name.replace(/\(.*\)/, '')} ${PLAN === 'thumb' ? 'de Quervain thumb' : 'elbow pain'} exercise`;
   $('ex-more').href = `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
   $('t-label').textContent = 'Timer is optional';
   $('t-clock').textContent = '–';

@@ -59,18 +59,22 @@ describe('exercises and todaysPlan', () => {
     assert.ok(exercises(PHASES.length - 1, 'medial').some(e => e.name === 'Heavy slow wrist flexion'));
   });
 
-  it('follows wrist plan rules (no passive stretch, no Activity, DRUJ & dart-thrower cues)', () => {
-    const W = PLANS.wrist;
-    for (let i = 0; i < W.length; i++) {
-      assert.equal(todaysPlan(i, 'red', undefined, 'wrist')[0].name, 'Slow wrist circles, mid-range');
+  it('follows thumb plan rules (gentle glides first, no passive stretch, isometric & eccentric progression)', () => {
+    const T = PLANS.thumb;
+    assert.equal(T.length, 5);
+    for (let i = 0; i < T.length; i++) {
+      assert.equal(todaysPlan(i, 'red', undefined, 'thumb')[0].name, 'Gentle thumb glides');
       assert.ok(
-        exercises(i, 'lateral', 'wrist').every(e => e.kind !== 'Activity'),
-        'wrist plan is a home routine',
+        exercises(i, 'lateral', 'thumb').every(e => e.kind !== 'Stretch'),
+        'thumb plan avoids passive Finkelstein stretching',
       );
     }
-    const stage2 = exercises(1, 'lateral', 'wrist');
-    assert.ok(stage2.some(e => e.name === 'Isometric rotation holds'));
-    assert.ok(stage2.find(e => e.name.startsWith('Dart')).cues.some(c => c.startsWith('Stop if the wrist clunks')));
+    assert.ok(exercises(0, 'lateral', 'thumb').some(e => e.name === 'Isometric thumb extension (light)'));
+    assert.ok(exercises(1, 'lateral', 'thumb').some(e => e.name === 'Isometric thumb abduction'));
+    assert.ok(exercises(2, 'lateral', 'thumb').some(e => e.name.startsWith('Eccentric radial lift')));
+    assert.ok(exercises(2, 'lateral', 'thumb').some(e => e.name.startsWith('Eccentric thumb lift')));
+    assert.ok(exercises(3, 'lateral', 'thumb').some(e => e.name === 'Pinch hold with a book'));
+    assert.ok(exercises(4, 'lateral', 'thumb').some(e => e.kind === 'Activity'));
   });
 });
 
@@ -105,12 +109,12 @@ describe('finishSession and replay', () => {
   });
 
   it('caps good days at GAMES_TO_WIN_SET on the final stage', () => {
-    const W = PLANS.wrist;
-    let w = { plan: 'wrist', phase: W.length - 2, games: 0, log: [] };
-    for (let i = 0; i < GAMES_TO_WIN_SET * 2 + 3; i++) w = finishSession(w, { light: 'green', results: [0] });
-    assert.equal(w.phase, W.length - 1);
-    assert.equal(w.games, GAMES_TO_WIN_SET);
-    assert.equal(w.log.at(-1).setWon, undefined);
+    const T = PLANS.thumb;
+    let t = { plan: 'thumb', phase: T.length - 2, games: 0, log: [] };
+    for (let i = 0; i < GAMES_TO_WIN_SET * 2 + 3; i++) t = finishSession(t, { light: 'green', results: [0] });
+    assert.equal(t.phase, T.length - 1);
+    assert.equal(t.games, GAMES_TO_WIN_SET);
+    assert.equal(t.log.at(-1).setWon, undefined);
   });
 
   it('rebuilds stage and good days when redoing today', () => {
@@ -139,7 +143,7 @@ describe('gripDue', () => {
 
 describe('steps and dose', () => {
   it('formats dose and generates steps for hold, moving hold, tempo, and time exercises', () => {
-    const moving = PLANS.wrist[0].exercises[0];
+    const moving = PLANS.thumb[0].exercises[0];
     assert.equal(dose(moving), '2 × 30 s');
     assert.equal(steps(moving)[0].label, 'Set 1/2 · Move');
 
