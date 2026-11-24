@@ -59,6 +59,30 @@ describe('exercises and todaysPlan', () => {
     assert.ok(exercises(PHASES.length - 1, 'medial').some(e => e.name === 'Heavy slow wrist flexion'));
   });
 
+  it('resolves exercise variants from choices and defaults to the first variant', () => {
+    const def = todaysPlan(4, 'green');
+    const rotDef = def.find(e => e.id === 'forearm-rotation');
+    assert.equal(rotDef.variant, 'dumbbell');
+    assert.equal(rotDef.img, 'forearm-rotation-db.jpg');
+    assert.deepEqual(
+      rotDef.variants.map(v => v.id),
+      ['dumbbell', 'pan'],
+    );
+
+    const chosen = todaysPlan(4, 'green', 'lateral', 'elbow', { 'forearm-rotation': 'pan', 'firm-grip-straight': 'jug-hang' });
+    const rotPan = chosen.find(e => e.id === 'forearm-rotation');
+    assert.equal(rotPan.variant, 'pan');
+    assert.equal(rotPan.img, 'forearm-rotation-pan.jpg');
+    assert.match(rotPan.cues[0], /cast-iron pan/i);
+
+    const hang = chosen.find(e => e.id === 'firm-grip-straight');
+    assert.equal(hang.variant, 'jug-hang');
+    assert.equal(hang.img, undefined, 'variant without an illustration should not inherit another variant image');
+
+    const fallback = todaysPlan(4, 'green', 'lateral', 'elbow', { 'forearm-rotation': 'unknown' });
+    assert.equal(fallback.find(e => e.id === 'forearm-rotation').variant, 'dumbbell');
+  });
+
   it('follows thumb plan rules (gentle glides first, no passive stretch, isometric & eccentric progression)', () => {
     const T = PLANS.thumb;
     assert.equal(T.length, 5);
@@ -167,15 +191,22 @@ describe('steps and dose', () => {
 describe('assets and index.html', () => {
   it('has an existing file and credit for every referenced image, and no unused credits', () => {
     const used = new Set();
+    const check = img => {
+      if (!img) return;
+      used.add(img);
+      assert.ok(fs.existsSync(`${__dirname}/img/${img}`), `missing file: img/${img}`);
+      assert.ok(IMAGES[img], `missing IMAGES credit: ${img}`);
+    };
     for (const [plan, phases] of Object.entries(PLANS)) {
       const sides = plan === 'elbow' ? ['lateral', 'medial'] : ['lateral'];
       for (let i = 0; i < phases.length; i++) {
         for (const side of sides) {
           for (const e of exercises(i, side, plan)) {
-            if (!e.img) continue;
-            used.add(e.img);
-            assert.ok(fs.existsSync(`${__dirname}/img/${e.img}`), `missing file: img/${e.img}`);
-            assert.ok(IMAGES[e.img], `missing IMAGES credit: ${e.img}`);
+            check(e.img);
+            for (const v of e.variants || []) {
+              const resolved = exercises(i, side, plan, { [e.id]: v.id }).find(x => x.id === e.id);
+              check(resolved.img);
+            }
           }
         }
       }

@@ -83,9 +83,14 @@ input[type=range] { width: 100%; accent-color: var(--court); height: 36px; }
 .light { display: flex; gap: 12px; align-items: center; }
 .lamp { width: 44px; height: 44px; border-radius: 50%; flex: none; }
 .lamp.green { background: var(--green); } .lamp.amber { background: var(--amber); } .lamp.red { background: var(--red); }
-.plan { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
-.plan li { display: grid; grid-template-columns: 5.5rem 1fr; gap: 8px; border-top: 1px solid var(--line); padding-top: 10px; }
+.plan { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.plan li { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; align-items: center; border-top: 1px solid var(--line); padding-top: 12px; }
 .plan li > * { min-width: 0; }
+.plan-info { display: grid; gap: 2px; }
+.plan-thumb { width: 68px; height: 68px; object-fit: contain; border-radius: 8px; background: #fff; border: 1px solid var(--line); padding: 2px; }
+.variants { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.variants button { min-height: 34px; padding: 4px 10px; font-size: .82rem; border-radius: 999px; border-width: 1.5px; }
+.variants button[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
 .dose { color: var(--muted); font-size: .9rem; }
 
 /* Exercise card */
@@ -347,7 +352,12 @@ function renderPlan() {
   const c = state.current;
   $('lamp').className = `lamp ${c.light}`;
   [$('light-title').textContent, $('light-text').textContent] = LIGHTS[c.light];
-  $('plan').innerHTML = c.plan.map(e => `<li><span class="label">${e.kind}</span><div><strong>${e.name}</strong><div class="dose">${dose(e)}</div></div></li>`).join('');
+  $('plan').innerHTML = c.plan.map(e => {
+    const picker = e.variants ? `<div class="variants" role="group" aria-label="${e.name} option">${e.variants.map(v =>
+      `<button type="button" data-ex="${e.id}" data-var="${v.id}" aria-pressed="${v.id === e.variant}">${v.label}</button>`).join('')}</div>` : '';
+    const thumb = e.img ? `<img class="plan-thumb" src="img/${e.img}" alt="">` : '';
+    return `<li><div class="plan-info"><span class="label">${e.kind}</span><strong>${e.name}</strong><div class="dose">${dose(e)}</div>${picker}</div>${thumb}</li>`;
+  }).join('');
   $('btn-start').textContent = c.idx > 0 ? `Resume (exercise ${c.idx + 1} of ${c.plan.length})` : 'Start session';
   show('v-plan');
 }
@@ -426,9 +436,16 @@ $('btn-calibrate').onclick = () => {
   const stiffness = +$('stiff').value;
   const light = trafficLight(stiffness, state.log[state.log.length - 1]);
   const grip = PLAN !== 'elbow' || $('grip-wrap').hidden || $('grip').value === '' ? undefined : +$('grip').value;
-  state.current = { date: today(), stiffness, grip, light, phase: state.phase, plan: todaysPlan(state.phase, light, state.side, PLAN), idx: 0, results: [], started: false };
+  state.current = { date: today(), stiffness, grip, light, phase: state.phase, plan: todaysPlan(state.phase, light, state.side, PLAN, state.choices), idx: 0, results: [], started: false };
   save(); render();
 };
+$('plan').addEventListener('click', ev => {
+  const btn = ev.target.closest('button[data-ex]');
+  if (!btn || !state.current) return;
+  state.choices = { ...state.choices, [btn.dataset.ex]: btn.dataset.var };
+  state.current.plan = todaysPlan(state.current.phase, state.current.light, state.side, PLAN, state.choices);
+  save(); renderPlan();
+});
 $('btn-recheck').onclick = () => { state.current = null; save(); render(); };
 $('btn-start').onclick = () => { state.current.started = true; save(); render(); };
 $('btn-plan').onclick = () => { stopTimer(); state.current.started = false; save(); render(); };

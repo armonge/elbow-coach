@@ -10,13 +10,16 @@ const IMAGES = {
   'flexor-stretch.jpg': { ...BRUCE_BLAUS, title: 'Exercise Wrist Flexor Stretch', src: 'https://commons.wikimedia.org/wiki/File:Exercise_Wrist_Flexor_Stretch.png' },
   'wrist-curls.jpg': { ...BRUCE_BLAUS, title: 'Exercise Wrist Curls', src: 'https://commons.wikimedia.org/wiki/File:Exercise_Wrist_Curls.png' },
   'forearm-rotation-db.jpg': { title: 'Forearm Rotation', by: 'Google Gemini (AI-generated)' },
+  'forearm-rotation-pan.jpg': { title: 'Forearm Rotation (Cast-Iron Pan)', by: 'Google Gemini (AI-generated)' },
   'finger-extensions.jpg': { ...BRUCE_BLAUS, title: 'Exercise Finger Extensions', src: 'https://commons.wikimedia.org/wiki/File:Exercise_Finger_Extensions.png' },
   'wrist-extension.jpg': { title: 'Wrist Extension', by: 'Google Gemini (AI-generated)' },
   'firm-grip-straight.jpg': { title: 'Firm Grip, Elbow Straight', by: 'Google Gemini (AI-generated)' },
   'isometric-extension.jpg': { title: 'Isometric Wrist Extension', by: 'Google Gemini (AI-generated)' },
   'isometric-flexion.jpg': { title: 'Isometric Wrist Flexion', by: 'Google Gemini (AI-generated)' },
   'firm-grip.jpg': { title: 'Firm Grip', by: 'Google Gemini (AI-generated)' },
+  'firm-grip-ball.jpg': { title: 'Firm Grip (Firm Ball)', by: 'Google Gemini (AI-generated)' },
   'gentle-grip.jpg': { title: 'Gentle Grip', by: 'Google Gemini (AI-generated)' },
+  'gentle-grip-towel.jpg': { title: 'Gentle Grip (Rolled Towel)', by: 'Google Gemini (AI-generated)' },
   'pinch-book.jpg': { title: 'Pinch Hold', by: 'Google Gemini (AI-generated)' },
   'band-row.jpg': { title: 'Band Row', by: 'Google Gemini (AI-generated)' },
   'thumb-glides.jpg': { title: 'Gentle Thumb Glides', by: 'Google Gemini (AI-generated)' },
@@ -64,13 +67,16 @@ const PHASES = [
         },
       },
       {
+        id: 'gentle-grip',
         kind: 'Activity',
         name: 'Gentle grip, elbow bent',
-        img: 'gentle-grip.jpg',
         mode: 'hold',
         sets: 3,
         secs: 20,
-        cues: ['Squeeze a soft ball or rolled towel, elbow bent at 90°', 'Light effort, about 30%', 'Pain up to 3/10 is OK'],
+        variants: [
+          { id: 'ball', label: 'Soft ball', img: 'gentle-grip.jpg', cues: ['Squeeze a soft ball, elbow bent at 90°', 'Light effort, about 30%', 'Pain up to 3/10 is OK'] },
+          { id: 'towel', label: 'Rolled towel', img: 'gentle-grip-towel.jpg', cues: ['Squeeze a rolled towel, elbow bent at 90°', 'Light effort, about 30%', 'Pain up to 3/10 is OK'] },
+        ],
       },
     ],
   },
@@ -223,13 +229,16 @@ const PHASES = [
         },
       },
       {
+        id: 'firm-grip',
         kind: 'Strength',
         name: 'Firm grip, elbow bent',
-        img: 'firm-grip.jpg',
         mode: 'hold',
         sets: 3,
         secs: 10,
-        cues: ['Squeeze a firm ball or hand gripper, elbow bent at 90°', 'Medium effort, about 60%', 'Pain up to 3/10 is OK'],
+        variants: [
+          { id: 'gripper', label: 'Hand gripper', img: 'firm-grip.jpg', cues: ['Squeeze a hand gripper, elbow bent at 90°', 'Medium effort, about 60%', 'Pain up to 3/10 is OK'] },
+          { id: 'ball', label: 'Firm ball', img: 'firm-grip-ball.jpg', cues: ['Squeeze a firm ball, elbow bent at 90°', 'Medium effort, about 60%', 'Pain up to 3/10 is OK'] },
+        ],
       },
       {
         kind: 'Shoulder',
@@ -275,14 +284,37 @@ const PHASES = [
         },
       },
       {
+        id: 'forearm-rotation',
         kind: 'Strength',
-        name: 'Dumbbell pronation / supination',
-        img: 'forearm-rotation-db.jpg',
+        name: 'Forearm rotation',
         mode: 'tempo',
         sets: 3,
         reps: 10,
         tempo: [3, 3],
-        cues: ['Forearm on a table or elbow at 90° by your side. Hold a dumbbell at one end', 'Rotate palm up, then palm down', 'To make it easier, hold the dumbbell in the middle'],
+        variants: [
+          {
+            id: 'dumbbell',
+            label: 'Dumbbell',
+            name: 'Forearm rotation (dumbbell)',
+            img: 'forearm-rotation-db.jpg',
+            cues: [
+              'Forearm on a table or elbow at 90° by your side. Hold a 1–3 kg dumbbell at one end',
+              'Rotate palm up, then palm down slowly',
+              'To make it easier, hold the dumbbell closer to the middle',
+            ],
+          },
+          {
+            id: 'pan',
+            label: 'Cast-iron pan',
+            name: 'Forearm rotation (cast-iron pan)',
+            img: 'forearm-rotation-pan.jpg',
+            cues: [
+              'Forearm on a table or elbow at 90° by your side. Hold a cast-iron pan by the handle',
+              'Rotate palm up, then palm down slowly',
+              'Slide your hand closer to the pan to make it easier, or toward the end of the handle to make it harder',
+            ],
+          },
+        ],
       },
       {
         kind: 'Strength',
@@ -300,17 +332,16 @@ const PHASES = [
         },
       },
       {
+        id: 'firm-grip-straight',
         kind: 'Strength',
         name: 'Firm grip, elbow straight',
-        img: 'firm-grip-straight.jpg',
         mode: 'hold',
         sets: 3,
         secs: 10,
-        cues: [
-          'Arm straight out in front, palm down',
-          'Squeeze a firm ball or hand gripper, about 60–70% effort',
-          'Climbers: hang from big jugs, arms straight, feet on the floor taking some weight',
-          'Pain up to 3/10 is OK',
+        variants: [
+          { id: 'ball', label: 'Firm ball', img: 'firm-grip-straight.jpg', cues: ['Arm straight out in front, palm down', 'Squeeze a firm ball, about 60–70% effort', 'Pain up to 3/10 is OK'] },
+          { id: 'gripper', label: 'Hand gripper', cues: ['Arm straight out in front, palm down', 'Squeeze a hand gripper, about 60–70% effort', 'Pain up to 3/10 is OK'] },
+          { id: 'jug-hang', label: 'Jug hang', cues: ['Hang from big climbing jugs, arms straight', 'Keep feet on the floor taking some weight (about 60–70% effort)', 'Pain up to 3/10 is OK'] },
         ],
       },
       {
@@ -449,19 +480,37 @@ const THUMB_PHASES = [
     exercises: [
       GLIDES,
       {
+        id: 'eccentric-radial-lift',
         kind: 'Strength',
         name: 'Eccentric radial lift (0.5–1 kg)',
-        img: 'radial-lift.jpg',
         mode: 'tempo',
         sets: 3,
         reps: 12,
         tempo: [1, 4],
-        cues: [
-          'Forearm on a table, thumb pointing up, hand off the edge',
-          'Hold a light dumbbell (0.5–1 kg) or small water bottle in the middle',
-          'Use your other hand to lift the thumb side up toward the ceiling',
-          "Let go and lower slowly over 4 seconds, stopping at straight (don't drop all the way toward the pinky)",
-          PAIN_OK,
+        variants: [
+          {
+            id: 'dumbbell',
+            label: 'Dumbbell',
+            img: 'radial-lift.jpg',
+            cues: [
+              'Forearm on a table, thumb pointing up, hand off the edge',
+              'Hold a light dumbbell (0.5–1 kg) in the middle',
+              'Use your other hand to lift the thumb side up toward the ceiling',
+              "Let go and lower slowly over 4 seconds, stopping at straight (don't drop all the way toward the pinky)",
+              PAIN_OK,
+            ],
+          },
+          {
+            id: 'bottle',
+            label: 'Water bottle',
+            cues: [
+              'Forearm on a table, thumb pointing up, hand off the edge',
+              'Hold a small water bottle (0.5–1 L) in the middle',
+              'Use your other hand to lift the thumb side up toward the ceiling',
+              "Let go and lower slowly over 4 seconds, stopping at straight (don't drop all the way toward the pinky)",
+              PAIN_OK,
+            ],
+          },
         ],
       },
       {
@@ -480,13 +529,26 @@ const THUMB_PHASES = [
         ],
       },
       {
+        id: 'gentle-grip',
         kind: 'Strength',
         name: 'Gentle grip, elbow bent',
-        img: 'gentle-grip.jpg',
         mode: 'hold',
         sets: 3,
         secs: 15,
-        cues: ['Squeeze a soft ball or rolled towel, elbow bent at 90°, wrist straight', 'Light effort, about 30%. Keep the wrist from tilting toward the pinky', PAIN_OK],
+        variants: [
+          {
+            id: 'ball',
+            label: 'Soft ball',
+            img: 'gentle-grip.jpg',
+            cues: ['Squeeze a soft ball, elbow bent at 90°, wrist straight', 'Light effort, about 30%. Keep the wrist from tilting toward the pinky', PAIN_OK],
+          },
+          {
+            id: 'towel',
+            label: 'Rolled towel',
+            img: 'gentle-grip-towel.jpg',
+            cues: ['Squeeze a rolled towel, elbow bent at 90°, wrist straight', 'Light effort, about 30%. Keep the wrist from tilting toward the pinky', PAIN_OK],
+          },
+        ],
       },
     ],
   },
@@ -565,23 +627,59 @@ const THUMB_PHASES = [
         ],
       },
       {
+        id: 'forearm-rotation',
         kind: 'Strength',
-        name: 'Dumbbell pronation / supination',
-        img: 'forearm-rotation-db.jpg',
+        name: 'Forearm rotation',
         mode: 'tempo',
         sets: 3,
         reps: 10,
         tempo: [3, 3],
-        cues: ['Forearm on a table or elbow at 90° by your side. Hold a light dumbbell at one end', 'Rotate palm up, then palm down, slowly', 'To make it easier, hold the dumbbell in the middle'],
+        variants: [
+          {
+            id: 'dumbbell',
+            label: 'Dumbbell',
+            name: 'Forearm rotation (dumbbell)',
+            img: 'forearm-rotation-db.jpg',
+            cues: [
+              'Forearm on a table or elbow at 90° by your side. Hold a light dumbbell (0.5–2 kg) at one end',
+              'Rotate palm up, then palm down slowly',
+              'To make it easier, hold the dumbbell closer to the middle',
+            ],
+          },
+          {
+            id: 'pan',
+            label: 'Cast-iron pan',
+            name: 'Forearm rotation (cast-iron pan)',
+            img: 'forearm-rotation-pan.jpg',
+            cues: [
+              'Forearm on a table or elbow at 90° by your side. Hold a light frying or cast-iron pan by the handle',
+              'Rotate palm up, then palm down slowly',
+              'Slide your hand closer to the pan to make it easier, or toward the end of the handle to make it harder',
+            ],
+          },
+        ],
       },
       {
+        id: 'firm-grip',
         kind: 'Strength',
         name: 'Firm grip, elbow bent',
-        img: 'firm-grip.jpg',
         mode: 'hold',
         sets: 3,
         secs: 10,
-        cues: ['Squeeze a firm ball or hand gripper, elbow bent at 90°, wrist straight', 'Medium effort, about 60%. Keep the wrist straight, not bent toward the pinky', PAIN_OK],
+        variants: [
+          {
+            id: 'gripper',
+            label: 'Hand gripper',
+            img: 'firm-grip.jpg',
+            cues: ['Squeeze a hand gripper, elbow bent at 90°, wrist straight', 'Medium effort, about 60%. Keep the wrist straight, not bent toward the pinky', PAIN_OK],
+          },
+          {
+            id: 'ball',
+            label: 'Firm ball',
+            img: 'firm-grip-ball.jpg',
+            cues: ['Squeeze a firm ball, elbow bent at 90°, wrist straight', 'Medium effort, about 60%. Keep the wrist straight, not bent toward the pinky', PAIN_OK],
+          },
+        ],
       },
       {
         kind: 'Activity',
@@ -614,13 +712,20 @@ function trafficLight(stiffness, lastEntry) {
 // side: 'lateral' (outer elbow, wrist extensors) or 'medial' (inner elbow, wrist flexors).
 // Medial swaps in an exercise's `medial` name and cues; exercises without one suit both sides.
 // plan: key of PLANS. The thumb plan has no medial overrides.
-function exercises(phase, side = 'lateral', plan = 'elbow') {
-  return PLANS[plan][phase].exercises.map(({ medial, ...e }) => (side === 'medial' && medial ? { ...e, ...medial } : e));
+// choices: optional map of exercise id -> chosen variant id (defaults to the first variant).
+function exercises(phase, side = 'lateral', plan = 'elbow', choices = {}) {
+  return PLANS[plan][phase].exercises.map(({ medial, variants, ...e }) => {
+    const base = side === 'medial' && medial ? { ...e, ...medial } : e;
+    if (!variants) return base;
+    const chosen = variants.find(v => v.id === choices?.[e.id]) || variants[0];
+    const { id: variant, label: _, ...fields } = chosen;
+    return { ...base, ...fields, img: chosen.img, variant, variants: variants.map(({ id, label }) => ({ id, label })) };
+  });
 }
 
 // green = full dose, amber = one set less, red = only the stretch
-function todaysPlan(phase, light, side, plan) {
-  const ex = exercises(phase, side, plan);
+function todaysPlan(phase, light, side, plan, choices) {
+  const ex = exercises(phase, side, plan, choices);
   if (light === 'red') return [ex[0]];
   if (light === 'amber') return ex.map(e => ({ ...e, sets: Math.max(1, e.sets - 1) }));
   return ex;
