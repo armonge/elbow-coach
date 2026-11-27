@@ -14,6 +14,8 @@ const IMAGES = {
   'finger-extensions.jpg': { ...BRUCE_BLAUS, title: 'Exercise Finger Extensions', src: 'https://commons.wikimedia.org/wiki/File:Exercise_Finger_Extensions.png' },
   'wrist-extension.jpg': { title: 'Wrist Extension', by: 'Google Gemini (AI-generated)' },
   'firm-grip-straight.jpg': { title: 'Firm Grip, Elbow Straight', by: 'Google Gemini (AI-generated)' },
+  'firm-grip-straight-gripper.jpg': { title: 'Firm Grip, Elbow Straight (Hand Gripper)', by: 'Google Gemini (AI-generated)' },
+  'firm-grip-straight-hang.jpg': { title: 'Firm Grip, Elbow Straight (Jug Hang)', by: 'Google Gemini (AI-generated)' },
   'isometric-extension.jpg': { title: 'Isometric Wrist Extension', by: 'Google Gemini (AI-generated)' },
   'isometric-flexion.jpg': { title: 'Isometric Wrist Flexion', by: 'Google Gemini (AI-generated)' },
   'firm-grip.jpg': { title: 'Firm Grip', by: 'Google Gemini (AI-generated)' },
@@ -27,6 +29,7 @@ const IMAGES = {
   'isometric-radial-lift.jpg': { title: 'Isometric Wrist Radial Lift', by: 'Google Gemini (AI-generated)' },
   'isometric-thumb-abduction.jpg': { title: 'Isometric Thumb Abduction', by: 'Google Gemini (AI-generated)' },
   'radial-lift.jpg': { title: 'Wrist Radial Lift', by: 'Google Gemini (AI-generated)' },
+  'radial-lift-bottle.jpg': { title: 'Wrist Radial Lift (Water Bottle)', by: 'Google Gemini (AI-generated)' },
   'banded-thumb-lift.jpg': { title: 'Banded Thumb Lift', by: 'Google Gemini (AI-generated)' },
 };
 
@@ -340,8 +343,18 @@ const PHASES = [
         secs: 10,
         variants: [
           { id: 'ball', label: 'Firm ball', img: 'firm-grip-straight.jpg', cues: ['Arm straight out in front, palm down', 'Squeeze a firm ball, about 60–70% effort', 'Pain up to 3/10 is OK'] },
-          { id: 'gripper', label: 'Hand gripper', cues: ['Arm straight out in front, palm down', 'Squeeze a hand gripper, about 60–70% effort', 'Pain up to 3/10 is OK'] },
-          { id: 'jug-hang', label: 'Jug hang', cues: ['Hang from big climbing jugs, arms straight', 'Keep feet on the floor taking some weight (about 60–70% effort)', 'Pain up to 3/10 is OK'] },
+          {
+            id: 'gripper',
+            label: 'Hand gripper',
+            img: 'firm-grip-straight-gripper.jpg',
+            cues: ['Arm straight out in front, palm down', 'Squeeze a hand gripper, about 60–70% effort', 'Pain up to 3/10 is OK'],
+          },
+          {
+            id: 'jug-hang',
+            label: 'Jug hang',
+            img: 'firm-grip-straight-hang.jpg',
+            cues: ['Hang from big climbing jugs, arms straight', 'Keep feet on the floor taking some weight (about 60–70% effort)', 'Pain up to 3/10 is OK'],
+          },
         ],
       },
       {
@@ -503,6 +516,7 @@ const THUMB_PHASES = [
           {
             id: 'bottle',
             label: 'Water bottle',
+            img: 'radial-lift-bottle.jpg',
             cues: [
               'Forearm on a table, thumb pointing up, hand off the edge',
               'Hold a small water bottle (0.5–1 L) in the middle',

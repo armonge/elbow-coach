@@ -77,7 +77,7 @@ describe('exercises and todaysPlan', () => {
 
     const hang = chosen.find(e => e.id === 'firm-grip-straight');
     assert.equal(hang.variant, 'jug-hang');
-    assert.equal(hang.img, undefined, 'variant without an illustration should not inherit another variant image');
+    assert.equal(hang.img, 'firm-grip-straight-hang.jpg');
 
     const fallback = todaysPlan(4, 'green', 'lateral', 'elbow', { 'forearm-rotation': 'unknown' });
     assert.equal(fallback.find(e => e.id === 'forearm-rotation').variant, 'dumbbell');
